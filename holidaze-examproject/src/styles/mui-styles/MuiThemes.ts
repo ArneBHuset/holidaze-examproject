@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import Cinzel
+
 
 
 const theme = createTheme({
@@ -62,7 +62,6 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Lora", "Helvetica", "Arial", sans-serif',
 
-    // Headings (h1 to h6) should use Cinzel
     h1: {
       fontFamily: '"Cinzel", "Helvetica", "Arial", sans-serif',
       fontSize: '6rem',
