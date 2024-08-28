@@ -6,14 +6,16 @@ import SubTitle from '../titles/SubTitle.tsx';
 import { VisuallyHiddenInput } from '../../styles/mui-styles/components/HiddenInput.tsx';
 import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch.tsx';
 
-function Register() {
+function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
 
   return (
     <FormCard>
       <FormControl>
         <Grid container spacing={4}>
           <Grid size={12}>
+            <Box>
             <MaterialUISwitch/>
+              </Box>
           </Grid>
           <Grid size={12}>
             <Box>
@@ -59,7 +61,7 @@ function Register() {
               </Box>
           </Grid>
           <Grid size={12}>
-            <Button>Allready signed up? Login instead</Button>
+              <Button onClick={() => setIsRegistering(false)}>Already signed up? Login instead</Button>
           </Grid>
         </Grid>
       </FormControl>

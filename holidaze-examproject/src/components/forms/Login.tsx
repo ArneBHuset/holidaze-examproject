@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid2';
 import FormCard from '../../layout/FormCard.tsx';
 import SubTitle from '../titles/SubTitle.tsx';
 
-function Login() {
+function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
   return (
     <FormCard>
       <FormControl>
@@ -24,7 +24,7 @@ function Login() {
             </Box>
           </Grid>
           <Grid size={12}>
-            <Button>Register new profile?</Button>
+            <Button onClick={() => setIsRegistering(true)}>Register new profile?</Button>
           </Grid>
         </Grid>
       </FormControl>

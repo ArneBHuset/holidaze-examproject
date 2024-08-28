@@ -1,0 +1,6 @@
+$transition-duration: 0.5s !default;
+$transition-timing: ease !default;
+
+@mixin slide-transition($duration, $timing) {
+  transition: left $duration $timing;
+}
