@@ -1,7 +1,7 @@
-MuiTheme.ts applies styling for MUI components 
-GlobalStyles uses MUIThemes and applies global values to the root body. 
+MuiTheme.ts applies styling for MUI components
+GlobalStyles uses MUIThemes and applies global values to the root body.
 
-SCSS applies custom styling where needed. 
+SCSS applies custom styling where needed.
 
 The themeProvider wraps the entry point in main.tsx, so that themes are globally available,
 however, if specific themes needs to be applied to specific components, use:

@@ -12,19 +12,19 @@ const GlobalStyles = () => (
         fontStyle: 'normal',
         fontDisplay: 'swap',
       },
-  body: {
-    margin: 0,
-      padding: 0,
-      backgroundColor: theme.palette.background.default,
-      color: theme.palette.text.primary,
-      fontFamily: theme.typography.fontFamily,
-  },
-  h1: {
-    fontSize: theme.typography.h1.fontSize,
-      color: theme.palette.primary.main,
-  },
-}}
-/>
+      body: {
+        margin: 0,
+        padding: 0,
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+        fontFamily: theme.typography.fontFamily,
+      },
+      h1: {
+        fontSize: theme.typography.h1.fontSize,
+        color: theme.palette.primary.main,
+      },
+    }}
+  />
 );
 
 export default GlobalStyles;

@@ -17,7 +17,6 @@ import { useTheme } from '@mui/material';
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-
 /**
  * Header structure from materialUI library
  * @param {SearchFieldProps} props - The props passed to the component.
@@ -27,7 +26,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -45,7 +44,7 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" style={{backgroundColor: theme.palette.background.default }}>
+    <AppBar position="static" style={{ backgroundColor: theme.palette.background.default }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

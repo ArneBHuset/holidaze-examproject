@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 import Header from '../components/header/Header.tsx';
-import { Box, Container } from "@mui/material";
+import { Box, Container } from '@mui/material';
 
 interface LayoutProps {
   children: ReactNode;
