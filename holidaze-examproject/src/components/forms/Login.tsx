@@ -9,12 +9,17 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
     <FormCard>
       <FormControl>
         <Grid container spacing={4}>
-          <Grid size={12}>
-          </Grid>
+          <Grid size={12}></Grid>
           <Grid size={12}>
             <Box>
               <SubTitle>Email</SubTitle>
-              <TextField fullWidth={true} id="standard-basic" type={'email'} placeholder="anderson@noroff.no" variant="standard" />
+              <TextField
+                fullWidth={true}
+                id="standard-basic"
+                type={'email'}
+                placeholder="anderson@noroff.no"
+                variant="standard"
+              />
             </Box>
           </Grid>
           <Grid size={12}>
