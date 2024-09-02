@@ -10,7 +10,7 @@ function RegisterLoginPage() {
   console.log(isRegistering);
   return (
     <Container maxWidth="sm">
-      <Box marginTop={"20px"} className="register-login-container">
+      <Box marginTop={'20px'} className="register-login-container">
         <Box className={`form-box ${isRegistering ? 'show' : ''}`}>
           <Register setIsRegistering={setIsRegistering} />
         </Box>

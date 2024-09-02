@@ -1,4 +1,3 @@
-
 export default interface ApiParameters {
   url: string;
   method: string;

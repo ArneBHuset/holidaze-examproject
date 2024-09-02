@@ -2,24 +2,33 @@ import React, { useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import FormCard from '../../layout/FormCard.tsx';
-import SubTitle from '../titles/SubTitle.tsx';
-import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch.tsx';
-import apiMain from '../../services/api/apiMain.ts';
-import { getApiKey } from '../../services/api/auth/apiKey.ts';
+import FormCard from '../../layout/FormCard';
+import SubTitle from '../titles/SubTitle';
+import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch';
+import RegistrationData from '../../services/interfaces/registrationForm.ts';
+import { registerValidation } from './validation/registerValidation.ts';
+import { registrationApiCall } from '../../services/api/auth/RegisterApi.ts';
 
+/**
+ * React component for registration form
+ * @param {boolean} setIsRegistering - booleon to toggle between registration and login
+ */
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
 
-  const data = getApiKey()
-  console.log(data)
-  const [formData, setFormData] = useState({
-    userType: false,
+  const [registrationFormData, setFormData] = useState<RegistrationData>({
+    venueManager: false,
     name: '',
     email: '',
     password: '',
     bio: '',
-    profileUrl: '',
-    bannerUrl: '',
+    avatar: {
+      url: '',
+      alt: ''
+    },
+    banner: {
+      url: '',
+      alt: ''
+    }
   });
 
   const [errors, setErrors] = useState({
@@ -27,88 +36,81 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
     email: '',
     password: '',
     bio: '',
-    profileUrl: '',
+    avatarUrl: '',
+    avatarAlt: '',
     bannerUrl: '',
+    bannerAlt: '',
   });
 
-  const validateForm = () => {
-    let formIsValid = true;
-    const newErrors = { ...errors };
-
-    if (!formData.name) {
-      newErrors.name = 'Name is required';
-      formIsValid = false;
-    } else {
-      newErrors.name = '';
-    }
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Valid email is required';
-      formIsValid = false;
-    } else {
-      newErrors.email = '';
-    }
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-      formIsValid = false;
-    } else {
-      newErrors.password = '';
-    }
-    if (!formData.bio) {
-      newErrors.bio = 'Bio is required';
-      formIsValid = false;
-    } else {
-      newErrors.bio = '';
-    }
-    if (formData.profileUrl && !/\.(jpeg|jpg|gif|png)$/.test(formData.profileUrl)) {
-      newErrors.profileUrl = 'Please enter a valid image URL';
-      formIsValid = false;
-    } else {
-      newErrors.profileUrl = '';
-    }
-    if (formData.bannerUrl && !/\.(jpeg|jpg|gif|png)$/.test(formData.bannerUrl)) {
-      newErrors.bannerUrl = 'Please enter a valid image URL';
-      formIsValid = false;
-    } else {
-      newErrors.bannerUrl = '';
-    }
-
-    setErrors(newErrors);
-    return formIsValid;
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (validateForm()) {
-      console.log('Form data:', formData);
+
+    const validationErrors = registerValidation(registrationFormData, errors, setErrors);
+
+    if (validationErrors) {
+      const requestData: RegistrationData = {
+        name: registrationFormData.name,
+        email: registrationFormData.email,
+        password: registrationFormData.password,
+        bio: registrationFormData.bio,
+        venueManager: registrationFormData.venueManager,
+      };
+
+      if (registrationFormData.avatar?.url) {
+        requestData.avatar = registrationFormData.avatar;
+      }
+
+      if (registrationFormData.banner?.url) {
+        requestData.banner = registrationFormData.banner;
+      }
+
+      try {
+        const response = await registrationApiCall(requestData);
+        console.log('Registration successful:', response);
+      } catch (error) {
+        console.error('Registration failed:', error);
+      }
     } else {
       console.log('Form has errors:', errors);
     }
   };
 
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
+
+    if (id.startsWith('avatar') || id.startsWith('banner')) {
+      const [type, field] = id.split('.');
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [type]: {
+          ...(prevData[type as keyof RegistrationData] as any),
+          [field]: value,
+        },
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
   };
 
   const handleSwitchChange = () => {
     setFormData((prevData) => ({
       ...prevData,
-      userType: !prevData.userType,
+      venueManager: !prevData.venueManager,
     }));
   };
-
-
 
   return (
     <FormCard>
       <FormControl component="form" onSubmit={handleSubmit}>
         <Grid container spacing={4}>
           <Grid size={{ xs: 12}}>
-            <Box width={'100%'}>
-              <MaterialUISwitch checked={formData.userType} onChange={handleSwitchChange} />
+            <Box width="100%">
+              <MaterialUISwitch checked={registrationFormData.venueManager} onChange={handleSwitchChange} />
             </Box>
           </Grid>
           <Grid size={{ xs: 12}}>
@@ -119,7 +121,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 id="name"
                 placeholder="Mr. Anderson"
                 variant="standard"
-                value={formData.name}
+                value={registrationFormData.name}
                 onChange={handleInputChange}
                 error={Boolean(errors.name)}
                 helperText={errors.name}
@@ -135,7 +137,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 type="email"
                 placeholder="anderson@noroff.no"
                 variant="standard"
-                value={formData.email}
+                value={registrationFormData.email}
                 onChange={handleInputChange}
                 error={Boolean(errors.email)}
                 helperText={errors.email}
@@ -150,7 +152,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 id="password"
                 type="password"
                 variant="standard"
-                value={formData.password}
+                value={registrationFormData.password}
                 onChange={handleInputChange}
                 error={Boolean(errors.password)}
                 helperText={errors.password}
@@ -167,7 +169,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 rows={3}
                 placeholder="Adventurer by heart, and..."
                 variant="standard"
-                value={formData.bio}
+                value={registrationFormData.bio}
                 onChange={handleInputChange}
                 error={Boolean(errors.bio)}
                 helperText={errors.bio}
@@ -179,14 +181,30 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <SubTitle>Profile picture</SubTitle>
               <TextField
                 fullWidth
-                id="profileUrl"
+                id="avatar.url"
                 type="url"
                 placeholder="Profile picture URL"
                 variant="standard"
-                value={formData.profileUrl}
+                value={registrationFormData.avatar?.url || ''}
                 onChange={handleInputChange}
-                error={Boolean(errors.profileUrl)}
-                helperText={errors.profileUrl}
+                error={Boolean(errors.avatarUrl)}
+                helperText={errors.avatarUrl}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 6}}>
+            <Box>
+              <SubTitle>Profile Picture Alt Text</SubTitle>
+              <TextField
+                fullWidth
+                id="avatar.alt"
+                type="text"
+                placeholder="Me at my 24th birthday"
+                variant="standard"
+                value={registrationFormData.avatar?.alt || ''}
+                onChange={handleInputChange}
+                error={Boolean(errors.avatarAlt)}
+                helperText={errors.avatarAlt}
               />
             </Box>
           </Grid>
@@ -195,14 +213,30 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <SubTitle>Banner picture</SubTitle>
               <TextField
                 fullWidth
-                id="bannerUrl"
+                id="banner.url"
                 type="url"
                 placeholder="Banner picture URL"
                 variant="standard"
-                value={formData.bannerUrl}
+                value={registrationFormData.banner?.url || ''}
                 onChange={handleInputChange}
                 error={Boolean(errors.bannerUrl)}
                 helperText={errors.bannerUrl}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 6}}>
+            <Box>
+              <SubTitle>Banner Picture Alt Text</SubTitle>
+              <TextField
+                fullWidth
+                id="banner.alt"
+                type="text"
+                placeholder="My favorite view"
+                variant="standard"
+                value={registrationFormData.banner?.alt || ''}
+                onChange={handleInputChange}
+                error={Boolean(errors.bannerAlt)}
+                helperText={errors.bannerAlt}
               />
             </Box>
           </Grid>

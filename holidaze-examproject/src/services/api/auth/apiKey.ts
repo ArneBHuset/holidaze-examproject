@@ -1,18 +1,20 @@
 import baseApiCall from '../apiMain.ts';
 import { apiKeyEndpoint } from '../variables/ApiEndpoints.ts';
-import { unValidatedHeader } from '../variables/headers.ts';
+import { getValidatedHeader } from '../variables/headers.ts';
 
+/**
+ * Function only to be used when new API key is needed
+ */
 export async function getApiKey() {
   const apiKeyBody = JSON.stringify({ name: 'Holidaze ApiKey Arne' });
-
-  console.log('used for KEYcall', apiKeyEndpoint, 'POST', unValidatedHeader, apiKeyBody);
+  const headers = getValidatedHeader()
 
   const apiKey = await baseApiCall({
     url: apiKeyEndpoint,
     method: 'POST',
-    headers: unValidatedHeader,
+    headers: headers,
     body: apiKeyBody,
   });
 
-  console.log('KEY HAS ARRIVED', apiKey);
+  console.log('Apikey response', apiKey);
 }
