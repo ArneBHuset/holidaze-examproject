@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import '../styles/scss/component-specific/_form-carousel.scss';
 
+
 function RegisterLoginPage() {
   const [isRegistering, setIsRegistering] = useState(true);
   console.log(isRegistering);

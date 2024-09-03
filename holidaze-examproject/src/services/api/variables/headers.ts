@@ -11,6 +11,6 @@ export const getValidatedHeader = () => {
   const accessToken = localStorage.getItem('accessToken');
   return {
     'Content-Type': 'application/json',
-    ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
+    ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
   };
 };

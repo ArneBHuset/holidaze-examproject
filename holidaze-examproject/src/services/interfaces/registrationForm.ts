@@ -1,10 +1,10 @@
 export interface AvatarData {
-  url: string;
+  url?: string;
   alt?: string;
 }
 
 export interface BannerData {
-  url: string;
+  url?: string;
   alt?: string;
 }
 

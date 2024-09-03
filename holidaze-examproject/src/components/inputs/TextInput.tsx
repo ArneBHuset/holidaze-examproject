@@ -1,7 +1,6 @@
-import React from 'react';
-import { Box, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 
-function CustomInput(props) {
+function CustomInput() {
   return (
     <>
       <TextField fullWidth={true} label="Name" />

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import FormControl from '@mui/material/FormControl';
 import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
@@ -6,246 +8,219 @@ import FormCard from '../../layout/FormCard';
 import SubTitle from '../titles/SubTitle';
 import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch';
 import RegistrationData from '../../services/interfaces/registrationForm.ts';
-import { registerValidation } from './validation/registerValidation.ts';
+import { registerValidationSchema } from './validation/registerValidation.ts';
 import { registrationApiCall } from '../../services/api/auth/RegisterApi.ts';
 
 /**
  * React component for registration form
- * @param {boolean} setIsRegistering - booleon to toggle between registration and login
+ * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
  */
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
-
-  const [registrationFormData, setFormData] = useState<RegistrationData>({
-    venueManager: false,
-    name: '',
-    email: '',
-    password: '',
-    bio: '',
-    avatar: {
-      url: '',
-      alt: ''
-    },
-    banner: {
-      url: '',
-      alt: ''
-    }
+  // Use useForm hook with Yup validation
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegistrationData>({
+    resolver: yupResolver(registerValidationSchema),
   });
 
-  const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    password: '',
-    bio: '',
-    avatarUrl: '',
-    avatarAlt: '',
-    bannerUrl: '',
-    bannerAlt: '',
-  });
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const validationErrors = registerValidation(registrationFormData, errors, setErrors);
-
-    if (validationErrors) {
-      const requestData: RegistrationData = {
-        name: registrationFormData.name,
-        email: registrationFormData.email,
-        password: registrationFormData.password,
-        bio: registrationFormData.bio,
-        venueManager: registrationFormData.venueManager,
-      };
-
-      if (registrationFormData.avatar?.url) {
-        requestData.avatar = registrationFormData.avatar;
-      }
-
-      if (registrationFormData.banner?.url) {
-        requestData.banner = registrationFormData.banner;
-      }
-
-      try {
-        const response = await registrationApiCall(requestData);
-        console.log('Registration successful:', response);
-      } catch (error) {
-        console.error('Registration failed:', error);
-      }
-    } else {
-      console.log('Form has errors:', errors);
+  const onSubmit = async (data: RegistrationData) => {
+    try {
+      const response = await registrationApiCall(data);
+      console.log('Registration successful:', response);
+    } catch (error) {
+      console.error('Registration failed:', error);
     }
-  };
-
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    if (id.startsWith('avatar') || id.startsWith('banner')) {
-      const [type, field] = id.split('.');
-
-      setFormData((prevData) => ({
-        ...prevData,
-        [type]: {
-          ...(prevData[type as keyof RegistrationData] as any),
-          [field]: value,
-        },
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [id]: value,
-      }));
-    }
-  };
-
-  const handleSwitchChange = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      venueManager: !prevData.venueManager,
-    }));
   };
 
   return (
     <FormCard>
-      <FormControl component="form" onSubmit={handleSubmit}>
+      <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-          <Grid size={{ xs: 12}}>
+          <Grid size={{ xs: 12 }}>
             <Box width="100%">
-              <MaterialUISwitch checked={registrationFormData.venueManager} onChange={handleSwitchChange} />
+              <Controller
+                name="venueManager"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => <MaterialUISwitch checked={field.value} onChange={field.onChange} />}
+              />
             </Box>
           </Grid>
-          <Grid size={{ xs: 12}}>
+          <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Name</SubTitle>
-              <TextField
-                fullWidth
-                id="name"
-                placeholder="Mr. Anderson"
-                variant="standard"
-                value={registrationFormData.name}
-                onChange={handleInputChange}
-                error={Boolean(errors.name)}
-                helperText={errors.name}
+              <Controller
+                name="name"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    placeholder="Mr. Anderson"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 12}}>
+          <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Email</SubTitle>
-              <TextField
-                fullWidth
-                id="email"
-                type="email"
-                placeholder="anderson@noroff.no"
-                variant="standard"
-                value={registrationFormData.email}
-                onChange={handleInputChange}
-                error={Boolean(errors.email)}
-                helperText={errors.email}
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="email"
+                    placeholder="anderson@noroff.no"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 12}}>
+          <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Password</SubTitle>
-              <TextField
-                fullWidth
-                id="password"
-                type="password"
-                variant="standard"
-                value={registrationFormData.password}
-                onChange={handleInputChange}
-                error={Boolean(errors.password)}
-                helperText={errors.password}
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="password"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 12}}>
+          <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Bio</SubTitle>
-              <TextField
-                fullWidth
-                id="bio"
-                multiline
-                rows={3}
-                placeholder="Adventurer by heart, and..."
-                variant="standard"
-                value={registrationFormData.bio}
-                onChange={handleInputChange}
-                error={Boolean(errors.bio)}
-                helperText={errors.bio}
+              <Controller
+                name="bio"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    placeholder="Adventurer by heart, and..."
+                    variant="standard"
+                    {...field}
+                    error={!!errors.bio}
+                    helperText={errors.bio?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Profile picture</SubTitle>
-              <TextField
-                fullWidth
-                id="avatar.url"
-                type="url"
-                placeholder="Profile picture URL"
-                variant="standard"
-                value={registrationFormData.avatar?.url || ''}
-                onChange={handleInputChange}
-                error={Boolean(errors.avatarUrl)}
-                helperText={errors.avatarUrl}
+              <Controller
+                name="avatar.url"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="url"
+                    placeholder="Profile picture URL"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.avatar?.url}
+                    helperText={errors.avatar?.url?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Profile Picture Alt Text</SubTitle>
-              <TextField
-                fullWidth
-                id="avatar.alt"
-                type="text"
-                placeholder="Me at my 24th birthday"
-                variant="standard"
-                value={registrationFormData.avatar?.alt || ''}
-                onChange={handleInputChange}
-                error={Boolean(errors.avatarAlt)}
-                helperText={errors.avatarAlt}
+              <Controller
+                name="avatar.alt"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="text"
+                    placeholder="Me at my 24th birthday"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.avatar?.alt}
+                    helperText={errors.avatar?.alt?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Banner picture</SubTitle>
-              <TextField
-                fullWidth
-                id="banner.url"
-                type="url"
-                placeholder="Banner picture URL"
-                variant="standard"
-                value={registrationFormData.banner?.url || ''}
-                onChange={handleInputChange}
-                error={Boolean(errors.bannerUrl)}
-                helperText={errors.bannerUrl}
+              <Controller
+                name="banner.url"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="url"
+                    placeholder="Banner picture URL"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.banner?.url}
+                    helperText={errors.banner?.url?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Banner Picture Alt Text</SubTitle>
-              <TextField
-                fullWidth
-                id="banner.alt"
-                type="text"
-                placeholder="My favorite view"
-                variant="standard"
-                value={registrationFormData.banner?.alt || ''}
-                onChange={handleInputChange}
-                error={Boolean(errors.bannerAlt)}
-                helperText={errors.bannerAlt}
+              <Controller
+                name="banner.alt"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="text"
+                    placeholder="My favorite view"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.banner?.alt}
+                    helperText={errors.banner?.alt?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
-          <Grid size={{ xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Button variant="contained" onClick={() => setIsRegistering(false)}>
               Already signed up? Login instead
             </Button>
           </Grid>
-          <Grid size={{ xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Button type="submit" variant="contained" color="primary">
               Submit
             </Button>

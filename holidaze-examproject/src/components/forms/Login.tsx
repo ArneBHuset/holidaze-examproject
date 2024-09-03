@@ -1,90 +1,80 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import FormControl from '@mui/material/FormControl';
 import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import FormCard from '../../layout/FormCard';
 import SubTitle from '../titles/SubTitle';
 import LoginData from '../../services/interfaces/LoginForm.ts';
-import { loginValidation } from './validation/loginValidation';
+import { loginValidationSchema } from './validation/loginValidation';
 import { loginApiCall } from '../../services/api/auth/loginApi.ts';
 
 /**
  * React component for login form
- * @param {boolean} setIsRegistering - booleon to toggle between registration and login
+ * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
  */
 function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const [loginFormData, setLoginFormData] = useState<LoginData>({
-    email: '',
-    password: '',
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginData>({
+    resolver: yupResolver(loginValidationSchema),
   });
 
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-  });
+  const onSubmit = async (data: LoginData) => {
+    const response = await loginApiCall(data);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const isValid = loginValidation(loginFormData, errors, setErrors);
-    if (isValid) {
-      const response = await loginApiCall(loginFormData);
-
-      if (response.success) {
-        console.log('Login successful!');
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          password: response.message || 'Login failed.',
-        }));
-        console.log('Login failed:', response.message);
-      }
+    if (response.success) {
+      console.log('Login successful!');
     } else {
-      console.log('Form validation errors:', errors);
+      console.log('Login failed:', response.message);
     }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setLoginFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
   };
 
   return (
     <FormCard>
-      <FormControl component="form" onSubmit={handleSubmit}>
+      <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Email</SubTitle>
-              <TextField
-                fullWidth
-                id="email"
-                type="email"
-                placeholder="anderson@noroff.no"
-                variant="standard"
-                value={loginFormData.email}
-                onChange={handleInputChange}
-                error={Boolean(errors.email)}
-                helperText={errors.email}
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="email"
+                    placeholder="anderson@noroff.no"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Password</SubTitle>
-              <TextField
-                fullWidth
-                id="password"
-                type="password"
-                variant="standard"
-                value={loginFormData.password}
-                onChange={handleInputChange}
-                error={Boolean(errors.password)}
-                helperText={errors.password}
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    type="password"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                  />
+                )}
               />
             </Box>
           </Grid>

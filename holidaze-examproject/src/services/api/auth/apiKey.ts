@@ -7,7 +7,7 @@ import { getValidatedHeader } from '../variables/headers.ts';
  */
 export async function getApiKey() {
   const apiKeyBody = JSON.stringify({ name: 'Holidaze ApiKey Arne' });
-  const headers = getValidatedHeader()
+  const headers = getValidatedHeader();
 
   const apiKey = await baseApiCall({
     url: apiKeyEndpoint,
