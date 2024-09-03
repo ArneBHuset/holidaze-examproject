@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormControl from '@mui/material/FormControl';
 import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
+import { useNavigate } from 'react-router-dom';
 import FormCard from '../../layout/FormCard';
 import SubTitle from '../titles/SubTitle';
 import LoginData from '../../services/interfaces/LoginForm.ts';
@@ -15,6 +16,7 @@ import { loginApiCall } from '../../services/api/auth/loginApi.ts';
  * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
  */
 function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -25,9 +27,9 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
 
   const onSubmit = async (data: LoginData) => {
     const response = await loginApiCall(data);
-
     if (response.success) {
-      console.log('Login successful!');
+      navigate('/');
+      console.error('Login successful, but accessToken is not set!');
     } else {
       console.log('Login failed:', response.message);
     }
@@ -79,7 +81,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
-            <Button onClick={() => setIsRegistering(true)}>Register new profile?</Button>
+            <Button onClick={() => setIsRegistering(false)}>Register new profile?</Button>
           </Grid>
           <Grid size={{ xs: 6 }}>
             <Button type="submit" variant="contained" color="primary">

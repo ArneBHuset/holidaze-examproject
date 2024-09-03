@@ -11,10 +11,6 @@ import RegistrationData from '../../services/interfaces/registrationForm.ts';
 import { registerValidationSchema } from './validation/registerValidation.ts';
 import { registrationApiCall } from '../../services/api/auth/RegisterApi.ts';
 
-/**
- * React component for registration form
- * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
- */
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
   // Use useForm hook with Yup validation
   const {
@@ -22,9 +18,10 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
     handleSubmit,
     formState: { errors },
   } = useForm<RegistrationData>({
-    resolver: yupResolver(registerValidationSchema),
+    resolver: yupResolver<RegistrationData>(registerValidationSchema),
   });
 
+  // Handle form submission
   const onSubmit = async (data: RegistrationData) => {
     try {
       const response = await registrationApiCall(data);
@@ -216,7 +213,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
-            <Button variant="contained" onClick={() => setIsRegistering(false)}>
+            <Button variant="contained" onClick={() => setIsRegistering(true)}>
               Already signed up? Login instead
             </Button>
           </Grid>

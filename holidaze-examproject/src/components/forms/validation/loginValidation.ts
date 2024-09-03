@@ -12,7 +12,7 @@ import * as yup from 'yup';
 export const loginValidationSchema = yup.object().shape({
   email: yup
     .string()
-    .required('Valid stud.noroff.no email is required')
+    .required('Please enter email')
     .matches(/^[\w.-]+@stud\.noroff\.no$/, 'Email must be a valid stud.noroff.no email'),
   password: yup
     .string()
