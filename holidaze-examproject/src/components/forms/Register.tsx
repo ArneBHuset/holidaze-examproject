@@ -10,6 +10,8 @@ import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch';
 import RegistrationData from '../../services/interfaces/registrationForm.ts';
 import { registerValidationSchema } from './validation/registerValidation.ts';
 import { registrationApiCall } from '../../services/api/auth/RegisterApi.ts';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
+import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
   // Use useForm hook with Yup validation
@@ -53,6 +55,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     placeholder="Mr. Anderson"
@@ -61,6 +64,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.name}
                     helperText={errors.name?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
@@ -73,6 +77,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="email"
@@ -82,6 +87,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.email}
                     helperText={errors.email?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
@@ -94,6 +100,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="password"
@@ -102,6 +109,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.password}
                     helperText={errors.password?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
@@ -114,6 +122,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     multiline
@@ -124,18 +133,20 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.bio}
                     helperText={errors.bio?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
             <Box>
-              <SubTitle>Profile picture</SubTitle>
+              <SubTitle>Avatar picture</SubTitle>
               <Controller
                 name="avatar.url"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="url"
@@ -145,18 +156,21 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.avatar?.url}
                     helperText={errors.avatar?.url?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
             <Box>
-              <SubTitle>Profile Picture Alt Text</SubTitle>
+              <SubTitle>Avatar description</SubTitle>
+
               <Controller
                 name="avatar.alt"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="text"
@@ -166,6 +180,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.avatar?.alt}
                     helperText={errors.avatar?.alt?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
@@ -178,6 +193,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="url"
@@ -187,18 +203,20 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.banner?.url}
                     helperText={errors.banner?.url?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
             <Box>
-              <SubTitle>Banner Picture Alt Text</SubTitle>
+              <SubTitle>Banner description</SubTitle>
               <Controller
                 name="banner.alt"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="text"
@@ -208,19 +226,24 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     error={!!errors.banner?.alt}
                     helperText={errors.banner?.alt?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
-            <Button variant="contained" onClick={() => setIsRegistering(true)}>
-              Already signed up? Login instead
+            <DefaultButton>
+            <Button onClick={() => setIsRegistering(true)} fullWidth={true}>
+              Back to Login
             </Button>
+            </DefaultButton>
           </Grid>
           <Grid size={{ xs: 6 }}>
-            <Button type="submit" variant="contained" color="primary">
+            <DefaultButton>
+            <Button type="submit" fullWidth={true} >
               Submit
             </Button>
+          </DefaultButton>
           </Grid>
         </Grid>
       </FormControl>

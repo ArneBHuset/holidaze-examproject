@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
 
-export default interface BtnProps {
+export default interface ButtonNode {
   children: ReactNode;
 }

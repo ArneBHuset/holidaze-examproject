@@ -9,20 +9,16 @@ function WelcomeCard() {
       img: 'https://th.bing.com/th/id/R.18d0d9117a2f5ba5ab53bcb3f4a4a23b?rik=kJH4Pg77%2bTytlg&pid=ImgRaw&r=0',
       title: 'Beautiful Venue 1',
     },
-    // {
-    //   img: 'https://www.jetsetmag.com/wp-content/uploads/2015/12/k2_galleries_1788_Club%20at%20Kukuiula%20view.jpg',
-    //   title: 'Beautiful Venue 2',
-    // },
   ];
   return (
     <Card sx={{ mt: 6, mb: 2, backgroundColor: theme.palette.background.paper }}>
-      <CardContent sx={{display:'flex'}}>
+      <CardContent sx={{display:'flex', gap:4}}>
         <Box>
         <Typography variant="h1">HOLIDAZE</Typography>
-        <Typography maxWidth={'70%'}>Where Every Venue Becomes Your Dream Destination</Typography>
+        <Typography>Where Every Venue Becomes Your Dream Destination</Typography>
         </Box>
         <Box>
-          <ImageList sx={{ width: 220, height: 120, mt:1,  }} >
+          <ImageList sx={{ width: 220, height: 120, mt:1, borderRadius: 3  }} >
             {itemData.map((item) => (
               <ImageListItem key={item.img} sx={{borderRadius:'4px'}}>
                 <img

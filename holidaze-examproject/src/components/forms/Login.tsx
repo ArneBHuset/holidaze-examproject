@@ -11,8 +11,9 @@ import LoginData from '../../services/interfaces/LoginForm.ts';
 import { loginValidationSchema } from './validation/loginValidation';
 import { loginApiCall } from '../../services/api/auth/loginApi.ts';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
-import { useTheme} from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
 import '../../styles/scss/component-specific/input.scss';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
 
 
@@ -21,7 +22,6 @@ import '../../styles/scss/component-specific/input.scss';
  * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
  */
 function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const theme = useTheme();
   const navigate = useNavigate();
   const {
     control,
@@ -80,6 +80,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
                   <TextField
                     fullWidth
                     type="password"
+                    placeholder='df'
                     variant="standard"
                     {...field}
                     error={!!errors.password}
@@ -91,12 +92,16 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
-            <Button onClick={() => setIsRegistering(false)}>Register new profile?</Button>
-          </Grid>
+            <DefaultButton>
+            <Button  onClick={() => setIsRegistering(false)} fullWidth={true} >Register  ? </Button>
+            </DefaultButton>
+            </Grid>
           <Grid size={{ xs: 6 }}>
-            <Button type="submit" variant="contained" color="primary">
-              Submit
+            <DefaultButton>
+            <Button endIcon={<LoginIcon/>} type="submit" fullWidth={true} >
+              Log in
             </Button>
+            </DefaultButton>
           </Grid>
         </Grid>
       </FormControl>

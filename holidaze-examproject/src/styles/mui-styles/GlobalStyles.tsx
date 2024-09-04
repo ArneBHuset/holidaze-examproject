@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { GlobalStyles as MUIGlobalStyles } from '@mui/material';
 import theme from './MuiThemes.ts';
 

@@ -1,4 +1,3 @@
-import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import { createTheme, ThemeProvider, Theme, useTheme } from '@mui/material/styles';
 import InputNode from '../../../services/interfaces/react-nodes/inputNode.ts';
 
@@ -11,17 +10,17 @@ const customTheme = (outerTheme: Theme) =>
             '--TextField-brandBorderColor': outerTheme.palette.primary.main,
             '--TextField-brandBorderHoverColor': outerTheme.palette.secondary.main,
             '--TextField-brandBorderFocusedColor': outerTheme.palette.secondary.main,
-            '--TextField-errorBorderColor': outerTheme.palette.error.main, // Error color
+            '--TextField-errorBorderColor': outerTheme.palette.error.main,
           },
         },
       },
       MuiInput: {
         styleOverrides: {
           root: {
-            // Default and hover state for bottom and left borders
             '&::before': {
               borderBottom: `1px solid var(--TextField-brandBorderColor)`,
               borderLeft: `1px solid var(--TextField-brandBorderColor)`,
+              borderBottomLeftRadius: '5px',
               height: '38px',
               content: '""',
               position: 'absolute',
@@ -29,14 +28,14 @@ const customTheme = (outerTheme: Theme) =>
               left: 0,
               right: 0,
             },
-            // Hover state for bottom and left borders
             '&:hover:not(.Mui-disabled, .Mui-error):before': {
               borderBottom: `2px solid var(--TextField-brandBorderHoverColor)`,
               borderLeft: `2px solid var(--TextField-brandBorderHoverColor)`,
+              borderBottomLeftRadius: '5px',
             },
-            // Focus state: bottom border with ::after and left border with ::before
             '&::after': {
               borderBottom: `2px solid var(--TextField-brandBorderFocusedColor)`,
+              borderBottomLeftRadius: '5px',
               content: '""',
               position: 'absolute',
               bottom: 0,
@@ -45,25 +44,24 @@ const customTheme = (outerTheme: Theme) =>
             },
             '&.Mui-focused::before': {
               borderLeft: `2px solid var(--TextField-brandBorderFocusedColor)`,
+              borderBottomLeftRadius: '5px',
             },
-            // Error state for bottom and left borders
             '&.Mui-error::before': {
               borderBottom: `2px solid var(--TextField-errorBorderColor)`,
               borderLeft: `2px solid var(--TextField-errorBorderColor)`,
+              borderBottomLeftRadius: '5px',
             },
             '&.Mui-error::after': {
               borderBottom: `2px solid var(--TextField-errorBorderColor)`,
+              borderBottomLeftRadius: '5px',
             },
           },
           input: {
-            ...outerTheme.typography.body1, // Default state: Use body1 typography from the theme
-            color: outerTheme.palette.primary.main, // Default state: primary color for text
+            ...outerTheme.typography.body1,
+            color: outerTheme.palette.primary.main,
             padding: '5px 12px',
             height: '40px',
 
-
-
-            // Disabled state
             '&.Mui-disabled': {
               color: outerTheme.palette.text.disabled, // Text color when disabled
               backgroundColor: outerTheme.palette.action.disabledBackground, // Background color when disabled
