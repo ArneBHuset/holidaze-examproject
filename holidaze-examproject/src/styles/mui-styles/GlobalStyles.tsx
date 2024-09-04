@@ -19,10 +19,7 @@ const GlobalStyles = () => (
         color: theme.palette.text.primary,
         fontFamily: theme.typography.fontFamily,
       },
-      h1: {
-        fontSize: theme.typography.h1.fontSize,
-        color: theme.palette.primary.main,
-      },
+
     }}
   />
 );

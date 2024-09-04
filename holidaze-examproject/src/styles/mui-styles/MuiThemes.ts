@@ -2,53 +2,35 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
     primary: {
       main: '#121212',
-      light: '#63a4ff',
-      dark: '#004ba0',
-      contrastText: '#fff',
+      light: '#404040',  //Remove?
+      dark: '#004ba0', //Remove?
     },
     secondary: {
       main: '#F88349',
-      light: '#d05ce3',
-      dark: '#6a0080',
-      contrastText: '#fff',
+      light: '#49bef8', //Consider this color, which is tetradic with the secondary main orange
+      dark: '#6a0080', //Remove?
     },
     error: {
-      main: '#d32f2f',
-      light: '#ef5350',
-      dark: '#c62828',
-      contrastText: '#fff',
-    },
-    warning: {
-      main: '#ed6c02',
-      light: '#ff9800',
-      dark: '#e65100',
-      contrastText: '#fff',
+      main: '#e1642c',
     },
     info: {
-      main: '#0288d1',
-      light: '#03a9f4',
-      dark: '#01579b',
-      contrastText: '#fff',
+      main: '#49bef8',
     },
     success: {
-      main: '#2e7d32',
-      light: '#4caf50',
-      dark: '#1b5e20',
-      contrastText: '#fff',
+      main: '#67F849',
     },
     background: {
       default: '#E8EDF0',
       paper: '#FCFCFC',
     },
     text: {
-      primary: 'rgba(0, 0, 0, 0.87)',
-      secondary: 'rgba(0, 0, 0, 0.6)',
-      disabled: 'rgba(0, 0, 0, 0.38)',
+      primary: '#121212',
+      secondary: '#FCFCFC',
+      disabled: 'rgba(18,18,18, 0.5)',
     },
-    divider: 'rgba(0, 0, 0, 0.12)',
+    divider: 'rgba(0, 0, 0, 0.12)', //Remove?
     action: {
       active: 'rgba(0, 0, 0, 0.54)',
       hover: 'rgba(0, 0, 0, 0.04)',
@@ -61,56 +43,56 @@ const theme = createTheme({
     fontFamily: '"Lora", "Helvetica", "Arial", sans-serif',
 
     h1: {
-      fontFamily: '"Cinzel", "Helvetica", "Arial", sans-serif',
-      fontSize: '6rem',
+      fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
+      fontSize: '3.6rem',
       fontWeight: 300,
       lineHeight: 1.167,
-      letterSpacing: '-0.01562em',
+      letterSpacing: '0.025em',
     },
     h2: {
-      fontFamily: '"Cinzel", "Helvetica", "Arial", sans-serif',
-      fontSize: '3.75rem',
+      fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
+      fontSize: '2.8rem',
       fontWeight: 300,
       lineHeight: 1.2,
-      letterSpacing: '-0.00833em',
+      letterSpacing: '0.018',
     },
     h3: {
-      fontFamily: '"Cinzel", "Helvetica", "Arial", sans-serif',
-      fontSize: '3rem',
-      fontWeight: 400,
+      fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
+      fontSize: '2.1rem',
+      fontWeight: 300,
       lineHeight: 1.167,
-      letterSpacing: '0em',
+      letterSpacing: '0.015',
     },
     h4: {
-      fontFamily: '"Cinzel", "Helvetica", "Arial", sans-serif',
-      fontSize: '2.125rem',
-      fontWeight: 400,
+      fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
+      fontSize: '1.6rem',
+      fontWeight: 300,
       lineHeight: 1.235,
-      letterSpacing: '0.00735em',
+      letterSpacing: '0.00',
     },
     h5: {
-      fontFamily: '"Cinzel", "Helvetica", "Arial", sans-serif',
-      fontSize: '1.5rem',
-      fontWeight: 400,
+      fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
+      fontSize: '1.2rem',
+      fontWeight: 300,
       lineHeight: 1.334,
       letterSpacing: '0em',
     },
     h6: {
-      fontFamily: '"Cinzel", "Helvetica", "Arial", sans-serif',
-      fontSize: '1.25rem',
-      fontWeight: 500,
+      fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
+      fontSize: '0.95rem',
+      fontWeight: 300,
       lineHeight: 1.6,
       letterSpacing: '0.0075em',
     },
     subtitle1: {
-      fontSize: '1rem',
-      fontWeight: 400,
+      fontSize: '1.2rem',
+      fontWeight: 300,
       lineHeight: 1.75,
-      letterSpacing: '0.00938em',
+      letterSpacing: '0.05em',
     },
-    subtitle2: {
+    subtitle2: { //remove?
       fontSize: '0.875rem',
-      fontWeight: 500,
+      fontWeight: 300,
       lineHeight: 1.57,
       letterSpacing: '0.00714em',
     },
@@ -127,26 +109,14 @@ const theme = createTheme({
       letterSpacing: '0.01071em',
     },
     button: {
-      fontSize: '0.875rem',
-      fontWeight: 500,
+      fontSize: '1rem',
+      fontWeight: 300,
       lineHeight: 1.75,
-      letterSpacing: '0.02857em',
-      textTransform: 'uppercase',
-    },
-    caption: {
-      fontSize: '0.75rem',
-      fontWeight: 400,
-      lineHeight: 1.66,
-      letterSpacing: '0.03333em',
-    },
-    overline: {
-      fontSize: '0.75rem',
-      fontWeight: 400,
-      lineHeight: 2.66,
-      letterSpacing: '0.08333em',
+      letterSpacing: '0.05em',
       textTransform: 'uppercase',
     },
   },
+  //Remove the rest under?
   spacing: 8,
   breakpoints: {
     values: {
