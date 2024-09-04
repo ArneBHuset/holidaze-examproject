@@ -1,0 +1,254 @@
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import FormControl from '@mui/material/FormControl';
+import { TextField, Button, Box } from '@mui/material';
+import Grid from '@mui/material/Grid2';
+import FormCard from '../../layout/FormCard';
+import SubTitle from '../titles/SubTitle';
+import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch';
+import RegistrationData from '../../services/interfaces/registrationForm.ts';
+import { registerValidationSchema } from './validation/registerValidation.ts';
+import { registrationApiCall } from '../../services/api/auth/RegisterApi.ts';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
+import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
+
+function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
+  // Use useForm hook with Yup validation
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegistrationData>({
+    resolver: yupResolver<RegistrationData>(registerValidationSchema),
+  });
+
+  // Handle form submission
+  const onSubmit = async (data: RegistrationData) => {
+    try {
+      const response = await registrationApiCall(data);
+      console.log('Registration successful:', response);
+    } catch (error) {
+      console.error('Registration failed:', error);
+    }
+  };
+
+  return (
+    <FormCard>
+      <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={4}>
+          <Grid size={{ xs: 12 }}>
+            <Box width="100%">
+              <Controller
+                name="venueManager"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => <MaterialUISwitch checked={field.value} onChange={field.onChange} />}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <Box>
+              <SubTitle>Name</SubTitle>
+              <Controller
+                name="name"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    placeholder="Mr. Anderson"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <Box>
+              <SubTitle>Email</SubTitle>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="email"
+                    placeholder="anderson@noroff.no"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <Box>
+              <SubTitle>Password</SubTitle>
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="password"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <Box>
+              <SubTitle>Bio</SubTitle>
+              <Controller
+                name="bio"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    placeholder="Adventurer by heart, and..."
+                    variant="standard"
+                    {...field}
+                    error={!!errors.bio}
+                    helperText={errors.bio?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 6 }}>
+            <Box>
+              <SubTitle>Avatar picture</SubTitle>
+              <Controller
+                name="avatar.url"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="url"
+                    placeholder="Profile picture URL"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.avatar?.url}
+                    helperText={errors.avatar?.url?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 6 }}>
+            <Box>
+              <SubTitle>Avatar description</SubTitle>
+
+              <Controller
+                name="avatar.alt"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    placeholder="Me at my 24th birthday"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.avatar?.alt}
+                    helperText={errors.avatar?.alt?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 6 }}>
+            <Box>
+              <SubTitle>Banner picture</SubTitle>
+              <Controller
+                name="banner.url"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="url"
+                    placeholder="Banner picture URL"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.banner?.url}
+                    helperText={errors.banner?.url?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 6 }}>
+            <Box>
+              <SubTitle>Banner description</SubTitle>
+              <Controller
+                name="banner.alt"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    placeholder="My favorite view"
+                    variant="standard"
+                    {...field}
+                    error={!!errors.banner?.alt}
+                    helperText={errors.banner?.alt?.message}
+                  />
+                  </DefaultInput>
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 6 }}>
+            <DefaultButton>
+            <Button onClick={() => setIsRegistering(true)} fullWidth={true}>
+              Back to Login
+            </Button>
+            </DefaultButton>
+          </Grid>
+          <Grid size={{ xs: 6 }}>
+            <DefaultButton>
+            <Button type="submit" fullWidth={true} >
+              Submit
+            </Button>
+          </DefaultButton>
+          </Grid>
+        </Grid>
+      </FormControl>
+    </FormCard>
+  );
+}
+
+export default Register;
