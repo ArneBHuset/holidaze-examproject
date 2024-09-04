@@ -6,16 +6,22 @@ import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
 import FormCard from '../../layout/FormCard';
-import SubTitle from '../titles/SubTitle';
+import DefaultSubTitle from '../titles/SubTitle.tsx';
 import LoginData from '../../services/interfaces/LoginForm.ts';
 import { loginValidationSchema } from './validation/loginValidation';
 import { loginApiCall } from '../../services/api/auth/loginApi.ts';
+import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
+import { useTheme} from '@mui/material';
+import '../../styles/scss/component-specific/input.scss';
+
+
 
 /**
  * React component for login form
  * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
  */
 function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
+  const theme = useTheme();
   const navigate = useNavigate();
   const {
     control,
@@ -41,12 +47,13 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
         <Grid container spacing={4}>
           <Grid size={{ xs: 12 }}>
             <Box>
-              <SubTitle>Email</SubTitle>
+              <DefaultSubTitle>Email</DefaultSubTitle>
               <Controller
                 name="email"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="email"
@@ -56,18 +63,20 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
                     error={!!errors.email}
                     helperText={errors.email?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>
           </Grid>
           <Grid size={{ xs: 12 }}>
             <Box>
-              <SubTitle>Password</SubTitle>
+              <DefaultSubTitle>Password</DefaultSubTitle>
               <Controller
                 name="password"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
+                  <DefaultInput>
                   <TextField
                     fullWidth
                     type="password"
@@ -76,6 +85,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
                     error={!!errors.password}
                     helperText={errors.password?.message}
                   />
+                  </DefaultInput>
                 )}
               />
             </Box>

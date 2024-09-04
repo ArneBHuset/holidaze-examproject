@@ -9,7 +9,7 @@ interface CardProps {
 function FormCard(props: CardProps) {
   const theme = useTheme();
   return (
-    <Card sx={{}} style={{ backgroundColor: theme.palette.background.default }}>
+    <Card sx={{}} style={{ backgroundColor: theme.palette.background.paper }}>
       <CardContent>{props.children}</CardContent>
     </Card>
   );
