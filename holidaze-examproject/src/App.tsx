@@ -8,9 +8,12 @@ import ManageVenuePage from './pages/ManageVenuePage.tsx';
 import UserOverviewPage from './pages/UserOverviewPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import './index.scss';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 function App() {
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
     <Router>
       <Routes>
         <>
@@ -60,6 +63,7 @@ function App() {
         </>
       </Routes>
     </Router>
+    </LocalizationProvider>
   );
 }
 
