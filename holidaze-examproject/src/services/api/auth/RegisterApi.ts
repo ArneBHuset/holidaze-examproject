@@ -1,5 +1,5 @@
 import baseApiCall from '../apiMain.ts';
-import { registerEndpoint } from '../variables/ApiEndpoints.ts';
+import { registerEndpoint } from '../variables/endpoints/authEndpoint.ts';
 import { unValidatedHeader } from '../variables/headers.ts';
 import RegistrationData from '../../interfaces/registrationForm.ts';
 

@@ -4,7 +4,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#121212',
-      light: '#404040',  //Remove?
+      light: '#404040', //Remove?
       dark: '#004ba0', //Remove?
     },
     secondary: {
@@ -91,7 +91,8 @@ const theme = createTheme({
       lineHeight: 1.75,
       letterSpacing: '0.05em',
     },
-    subtitle2: { //remove?
+    subtitle2: {
+      //remove?
       fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
       fontSize: '0.875rem',
       fontWeight: 300,

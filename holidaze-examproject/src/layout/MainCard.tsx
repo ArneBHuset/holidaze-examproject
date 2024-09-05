@@ -6,13 +6,13 @@ interface CardProps {
   children: ReactNode;
 }
 
-function FormCard(props: CardProps) {
+function MainCard(props: CardProps) {
   const theme = useTheme();
   return (
-    <Card sx={{}} style={{ backgroundColor: theme.palette.background.paper }}>
+    <Card sx={{ backgroundColor: theme.palette.background.paper }}>
       <CardContent>{props.children}</CardContent>
     </Card>
   );
 }
 
-export default FormCard;
+export default MainCard;

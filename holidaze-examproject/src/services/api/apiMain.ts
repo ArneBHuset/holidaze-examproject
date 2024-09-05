@@ -1,5 +1,5 @@
-import { baseUrl } from './variables/ApiEndpoints.ts';
-import ApiParameters from '../interfaces/apiParameters.ts';
+import { baseUrl } from './variables/endpoints/baseUrl.ts';
+import ApiParameters from '../interfaces/api/apiParameters.ts';
 
 /**
  * Main API call function, taking 4 parameters to make a specific API call.

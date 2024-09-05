@@ -1,5 +1,5 @@
 import baseApiCall from '../apiMain.ts';
-import { apiKeyEndpoint } from '../variables/ApiEndpoints.ts';
+import { apiKeyEndpoint } from '../variables/endpoints/authEndpoint.ts';
 import { getValidatedHeader } from '../variables/headers.ts';
 
 /**
