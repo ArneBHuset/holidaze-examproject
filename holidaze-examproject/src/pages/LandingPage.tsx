@@ -3,10 +3,9 @@ import LandingPageGrid from '../layout/LandingPageGrid.tsx';
 import Container from '@mui/material/Container';
 
 export default function LandingPage() {
-
   return (
-  <Container maxWidth="sm">
-    <LandingPageGrid/>
-  </Container>
-);
+    <Container maxWidth="sm">
+      <LandingPageGrid />
+    </Container>
+  );
 }

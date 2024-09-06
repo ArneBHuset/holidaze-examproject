@@ -66,6 +66,7 @@ const customTheme = (outerTheme: Theme) =>
               color: outerTheme.palette.text.disabled, // Text color when disabled
               backgroundColor: outerTheme.palette.action.disabledBackground, // Background color when disabled
             },
+
           },
         },
       },

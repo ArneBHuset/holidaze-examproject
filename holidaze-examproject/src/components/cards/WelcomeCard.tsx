@@ -11,7 +11,7 @@ function WelcomeCard() {
     },
   ];
   return (
-<MainCard>
+    <MainCard>
       <CardContent sx={{ display: 'flex', gap: 4 }}>
         <Box>
           <Typography variant="h1">HOLIDAZE</Typography>
@@ -32,7 +32,7 @@ function WelcomeCard() {
           </ImageList>
         </Box>
       </CardContent>
-</MainCard>
+    </MainCard>
   );
 }
 

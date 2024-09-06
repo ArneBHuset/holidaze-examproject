@@ -9,60 +9,60 @@ import UserOverviewPage from './pages/UserOverviewPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import './index.scss';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Router>
-      <Routes>
-        <>
-          <Route
-            path="/"
-            element={
-              <MainLayout>
-                <LandingPage />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/add-venue"
-            element={
-              <MainLayout>
-                <AddVenuePage />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/manage-venue"
-            element={
-              <MainLayout>
-                <ManageVenuePage />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/user-overview"
-            element={
-              <MainLayout>
-                <UserOverviewPage />
-              </MainLayout>
-            }
-          />
-          <Route path="*" element={<NotFoundPage />} />
-        </>
-        <>
-          <Route
-            path="/auth"
-            element={
-              <AuthLayout>
-                <RegisterLoginPage />
-              </AuthLayout>
-            }
-          />
-        </>
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <>
+            <Route
+              path="/"
+              element={
+                <MainLayout>
+                  <LandingPage />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/add-venue"
+              element={
+                <MainLayout>
+                  <AddVenuePage />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/manage-venue"
+              element={
+                <MainLayout>
+                  <ManageVenuePage />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/user-overview"
+              element={
+                <MainLayout>
+                  <UserOverviewPage />
+                </MainLayout>
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </>
+          <>
+            <Route
+              path="/auth"
+              element={
+                <AuthLayout>
+                  <RegisterLoginPage />
+                </AuthLayout>
+              }
+            />
+          </>
+        </Routes>
+      </Router>
     </LocalizationProvider>
   );
 }
