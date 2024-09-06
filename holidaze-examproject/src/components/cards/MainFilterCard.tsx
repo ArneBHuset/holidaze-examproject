@@ -8,21 +8,19 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
+  MenuItem,
+  Typography,
+  Checkbox,
 } from '@mui/material';
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useRef } from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import { useTheme } from '@mui/material/styles';
-import { useState, useEffect } from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
+import { useTheme, Theme } from '@mui/material/styles';
 import DefaultSelect from '../../styles/mui-styles/components/SelectMenu.tsx';
 
-//Temporary chip styling for menue field
+// Temporary chip styling for menu field
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -34,23 +32,10 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
+function getStyles(country: string, selectedCountries: readonly string[], theme: Theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+      selectedCountries.indexOf(country) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
   };
 }
 
@@ -59,11 +44,11 @@ type DatesType = {
   checkOutDate: Dayjs | null;
 };
 
-function MainFilterCard({onSearch}) {
+function MainFilterCard({ onSearch }) {
   const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearchInputChange = (event) => {
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
 
@@ -72,40 +57,42 @@ function MainFilterCard({onSearch}) {
     }
   };
 
-
-  //Checkbox filter is true or false
-  const [availableChecked, setAvailableChecked] = React.useState(false);
+  // Checkbox filter for availability
+  const [availableChecked, setAvailableChecked] = useState(false);
   const availabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAvailableChecked(event.target.checked);
   };
 
-  //Dropdown
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  // Dropdown for countries
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [countries, setCountries] = useState<string[]>([]);
 
-  const menuSelectChange = (event: SelectChangeEvent<typeof personName>) => {
+  const menuSelectChange = (event: SelectChangeEvent<typeof selectedCountries>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === 'string' ? value.split(',') : value);
+    setSelectedCountries(typeof value === 'string' ? value.split(',') : value);
   };
 
-  // Date selection logic
+  useEffect(() => {
+    const storedCountries = sessionStorage.getItem('countries');
+    if (storedCountries) {
+      setCountries(JSON.parse(storedCountries));
+    }
+  }, []);
+
   const [dates, setDates] = useState<DatesType>({
     checkInDate: null,
     checkOutDate: null,
   });
-
   const checkOutRef = useRef<HTMLInputElement>(null);
-
   const [checkOutOpen, setCheckOutOpen] = useState(false);
 
   const handleCheckInChange = (newDate: Dayjs | null) => {
     setDates((prevDates) => ({
       ...prevDates,
       checkInDate: newDate,
-      checkOutDate: newDate && dates.checkOutDate && newDate.isAfter(dates.checkOutDate)
-        ? null
-        : prevDates.checkOutDate,
+      checkOutDate: newDate && dates.checkOutDate && newDate.isAfter(dates.checkOutDate) ? null : prevDates.checkOutDate,
     }));
 
     if (newDate) {
@@ -133,40 +120,17 @@ function MainFilterCard({onSearch}) {
         <Grid size={{ xs: 12 }}>
           <DefaultSubTitle>Search</DefaultSubTitle>
           <DefaultInput>
-            <TextField fullWidth type="search" placeholder="Beach house in..."  value={searchTerm}
-                       onChange={handleSearchInputChange}
-                       onKeyDown={handleSearchInputChange}
-                       onBlur={handleSearchInputChange}
-                       variant="standard"></TextField>
+            <TextField
+              fullWidth
+              type="search"
+              placeholder="Beach house in..."
+              value={searchTerm}
+              onChange={handleSearchInputChange}
+              onKeyDown={handleSearchInputChange}
+              onBlur={handleSearchInputChange}
+              variant="standard"
+            />
           </DefaultInput>
-        </Grid>
-
-        <Grid size={{ xs: 12 }}>
-          <DefaultSubTitle>Check-in & check-out</DefaultSubTitle>
-          <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: 1 }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={dates.checkInDate}
-                onChange={handleCheckInChange}
-                renderInput={(params) => <TextField {...params} placeholder="Check-in" />}
-              />
-            </LocalizationProvider>
-
-            <Typography>TO</Typography>
-
-            {/* Second DatePicker (Check-out Date) */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={dates.checkOutDate}
-                onChange={handleCheckOutChange}
-                disabled={!dates.checkInDate}
-                open={checkOutOpen}
-                onClose={() => setCheckOutOpen(false)}
-                minDate={dates.checkInDate ? dayjs(dates.checkInDate).add(1, 'day') : null}
-                renderInput={(params) => <TextField {...params} inputRef={checkOutRef} placeholder="Check-out" />}
-              />
-            </LocalizationProvider>
-          </Box>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <Box marginBottom={1}>
@@ -176,7 +140,7 @@ function MainFilterCard({onSearch}) {
             <Select
               multiple
               variant="standard"
-              value={personName}
+              value={selectedCountries}
               onChange={menuSelectChange}
               fullWidth={true}
               renderValue={(selected) => (
@@ -188,13 +152,50 @@ function MainFilterCard({onSearch}) {
               )}
               MenuProps={MenuProps}
             >
-              {names.map((name) => (
-                <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-                  {name}
+              {countries.map((country) => (
+                <MenuItem key={country} value={country} style={getStyles(country, selectedCountries, theme)}>
+                  {country}
                 </MenuItem>
               ))}
             </Select>
           </DefaultSelect>
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <DefaultSubTitle>Check-in & check-out</DefaultSubTitle>
+          <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: 1 }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={dates.checkInDate}
+                onChange={handleCheckInChange}
+                slots={{ textField: TextField }}
+                slotProps={{
+                  textField: {
+                    placeholder: 'Check-in',
+                    fullWidth: true,
+                  },
+                }}
+              />
+            </LocalizationProvider>
+            <Typography>TO</Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={dates.checkOutDate}
+                onChange={handleCheckOutChange}
+                disabled={!dates.checkInDate}
+                open={checkOutOpen}
+                onClose={() => setCheckOutOpen(false)}
+                minDate={dates.checkInDate ? dayjs(dates.checkInDate).add(1, 'day') : null}
+                slots={{ textField: TextField }}
+                slotProps={{
+                  textField: {
+                    inputRef: checkOutRef,
+                    placeholder: 'Check-out',
+                    fullWidth: true,
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </Box>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <Box display="flex" alignItems="center" gap={2}>
@@ -210,7 +211,7 @@ function MainFilterCard({onSearch}) {
                 '&:hover': { color: theme.palette.secondary.main },
               }}
             />
-            <Typography>Show available venues only</Typography>
+            <Typography>Hide booked venues</Typography>
           </Box>
         </Grid>
       </Grid>

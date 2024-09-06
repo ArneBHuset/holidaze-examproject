@@ -11,8 +11,8 @@ export default function MainVenueCard({ venues }) {
   return (
     <Grid container spacing={2}>
       {venues.map((venue) => (
-        <Grid key={venue.id} xs={12} sm={4} >
-          <Card sx={{width:'250px', maxHeight: '400px'}}>
+        <Grid key={venue.id} xs={12} sm={4}>
+          <Card sx={{ width: '250px', maxHeight: '400px' }}>
             <CardMedia
               component="img"
               alt={venue.media[0]?.alt || 'Venue image'}
