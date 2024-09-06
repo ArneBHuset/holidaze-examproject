@@ -2,35 +2,39 @@ import { useEffect, useState, useCallback } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid2';
 import MainFilterCard from '../components/cards/MainFilterCard.tsx';
-import MainVenueCard from '../components/cards/MainVenueCard.tsx';
+import MainVenueCard from '../components/cards/mainVenueCard.tsx';
 import baseApiCall from '../services/api/apiMain.ts';
 import { venuesEndpoint } from '../services/api/variables/endpoints/venueEndpoint.ts';
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import debounce from '../services/utilities/debounce.ts';
-import VenueQueryParams from '../services/interfaces/api/venueQueryParams.ts';
 import VenueData from '../services/interfaces/api/venueResponse.ts';
-import availableCountries from '../services/interfaces/api/availableCountries.ts';
-
-const apiKey = import.meta.env.VITE_NOROFF_API_KEY; // Correct access to the env variable
+import VenueQueryParams from '../services/interfaces/api/venueQueryParams.ts';
+import availableCountries from '../services/interfaces/api/filtering/availableCountries.ts';
+const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
 export default function LandingPage() {
-  const [venueData, setVenueData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [venueData, setVenueData] = useState<VenueData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
   const headers = getValidatedHeader();
 
   const fetchVenueData = useCallback(
-    debounce(async (searchValue) => {
+    debounce(async (searchValue: string) => {
       try {
         setLoading(true);
-        const endpoint = venuesEndpoint({
+
+        const queryParams: VenueQueryParams = {
           search: searchValue ? searchValue : '',
           id: '',
           owner: true,
           bookings: true,
-        });
+        };
+
+        const endpoint = venuesEndpoint(queryParams);
         console.log(endpoint);
+
         const response = await baseApiCall({
           url: endpoint,
           method: 'GET',
@@ -39,32 +43,35 @@ export default function LandingPage() {
             'X-Noroff-Api-Key': apiKey,
           },
         });
-        // Update venue data state
-        setVenueData(response.data);
 
-        // Extract countries from response data (not from venueData because it's asynchronous)
-        const validCountries = Array.from(
-          new Set(
-            response.data
-              .map((venue) => venue.location.country)
-              .filter((country) => country && country.trim() !== '')
-          )
-        );
+        const getCountry = (venue: VenueData): string | undefined => {
+          return venue.location?.country;
+        };
 
-        // Store the countries in session storage
-        sessionStorage.setItem('countries', JSON.stringify(validCountries));
+        const validCountries: availableCountries = {
+          countries: Array.from(
+            new Set(
+              (response.data as VenueData[])
+                .map((venue: VenueData) => getCountry(venue) || '')
+                .filter((country) => country && country.trim() !== ''),
+            ),
+          ),
+          selectedCountries: [],
+        };
 
+        sessionStorage.setItem('countries', JSON.stringify(validCountries.countries));
+
+        setVenueData(response.data as VenueData[]);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching venue data:', error);
-        setError(error);
-        setLoading(false); // Stop loading in case of error
+        setError(error as Error);
+        setLoading(false);
       }
     }, 200),
-    [headers]
+    [headers],
   );
 
-  // Fetches data when there is a change in search
   useEffect(() => {
     fetchVenueData(searchTerm);
   }, [searchTerm]);
@@ -77,11 +84,10 @@ export default function LandingPage() {
     return <div>Error fetching data: {error.message}</div>;
   }
 
-
   return (
     <Container maxWidth="sm">
       <Grid container spacing={4} marginTop={4}>
-        <Grid xs={12}>
+        <Grid size={12}>
           <MainFilterCard onSearch={setSearchTerm} />
         </Grid>
         <Grid>

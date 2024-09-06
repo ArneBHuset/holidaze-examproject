@@ -2,16 +2,7 @@ import MainCard from '../../layout/MainCard.tsx';
 import Grid from '@mui/material/Grid2';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
-import {
-  Box,
-  Chip,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  MenuItem,
-  Typography,
-  Checkbox,
-} from '@mui/material';
+import { Box, Chip, Select, SelectChangeEvent, TextField, MenuItem, Typography, Checkbox } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
@@ -19,6 +10,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useTheme, Theme } from '@mui/material/styles';
 import DefaultSelect from '../../styles/mui-styles/components/SelectMenu.tsx';
+import availableCountries from '../../services/interfaces/api/filtering/availableCountries.ts';
+import { MainFilterCardProps } from '../../services/interfaces/api/filtering/mainFilterCardProps.ts';
 
 // Temporary chip styling for menu field
 const ITEM_HEIGHT = 48;
@@ -35,18 +28,15 @@ const MenuProps = {
 function getStyles(country: string, selectedCountries: readonly string[], theme: Theme) {
   return {
     fontWeight:
-      selectedCountries.indexOf(country) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+      selectedCountries.indexOf(country) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
   };
 }
 
-type DatesType = {
-  checkInDate: Dayjs | null;
-  checkOutDate: Dayjs | null;
-};
-
-function MainFilterCard({ onSearch }) {
+function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }) {
   const theme = useTheme();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -57,15 +47,14 @@ function MainFilterCard({ onSearch }) {
     }
   };
 
-  // Checkbox filter for availability
-  const [availableChecked, setAvailableChecked] = useState(false);
+  const [availableChecked, setAvailableChecked] = useState<boolean>(false);
   const availabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAvailableChecked(event.target.checked);
   };
 
-  // Dropdown for countries
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [countries, setCountries] = useState<string[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<availableCountries['selectedCountries']>([]);
+  console.log('countries selected for filtering', selectedCountries);
+  const [countries, setCountries] = useState<availableCountries['countries']>([]);
 
   const menuSelectChange = (event: SelectChangeEvent<typeof selectedCountries>) => {
     const {
@@ -77,7 +66,7 @@ function MainFilterCard({ onSearch }) {
   useEffect(() => {
     const storedCountries = sessionStorage.getItem('countries');
     if (storedCountries) {
-      setCountries(JSON.parse(storedCountries));
+      setCountries(JSON.parse(storedCountries) as availableCountries['countries']);
     }
   }, []);
 
@@ -85,14 +74,16 @@ function MainFilterCard({ onSearch }) {
     checkInDate: null,
     checkOutDate: null,
   });
+
   const checkOutRef = useRef<HTMLInputElement>(null);
-  const [checkOutOpen, setCheckOutOpen] = useState(false);
+  const [checkOutOpen, setCheckOutOpen] = useState<boolean>(false);
 
   const handleCheckInChange = (newDate: Dayjs | null) => {
     setDates((prevDates) => ({
       ...prevDates,
       checkInDate: newDate,
-      checkOutDate: newDate && dates.checkOutDate && newDate.isAfter(dates.checkOutDate) ? null : prevDates.checkOutDate,
+      checkOutDate:
+        newDate && dates.checkOutDate && newDate.isAfter(dates.checkOutDate) ? null : prevDates.checkOutDate,
     }));
 
     if (newDate) {
