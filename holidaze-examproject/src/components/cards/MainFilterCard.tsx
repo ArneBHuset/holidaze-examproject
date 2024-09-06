@@ -11,9 +11,9 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
 import { useRef } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material/styles';
@@ -54,6 +54,11 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
   };
 }
 
+type DatesType = {
+  checkInDate: Dayjs | null;
+  checkOutDate: Dayjs | null;
+};
+
 function MainFilterCard({onSearch}) {
   const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,28 +89,36 @@ function MainFilterCard({onSearch}) {
     setPersonName(typeof value === 'string' ? value.split(',') : value);
   };
 
-  //Date selection logic
-  const [dates, setDates] = useState({
+  // Date selection logic
+  const [dates, setDates] = useState<DatesType>({
     checkInDate: null,
     checkOutDate: null,
   });
 
-  console.log(dates)
+  const checkOutRef = useRef<HTMLInputElement>(null);
 
-  const checkOutRef = useRef(null);
+  const [checkOutOpen, setCheckOutOpen] = useState(false);
 
-  const handleCheckInChange = (newDate) => {
+  const handleCheckInChange = (newDate: Dayjs | null) => {
     setDates((prevDates) => ({
       ...prevDates,
       checkInDate: newDate,
+      checkOutDate: newDate && dates.checkOutDate && newDate.isAfter(dates.checkOutDate)
+        ? null
+        : prevDates.checkOutDate,
     }));
+
+    if (newDate) {
+      setCheckOutOpen(true);
+    }
   };
 
-  const handleCheckOutChange = (newDate) => {
+  const handleCheckOutChange = (newDate: Dayjs | null) => {
     setDates((prevDates) => ({
       ...prevDates,
       checkOutDate: newDate,
     }));
+    setCheckOutOpen(false);
   };
 
   useEffect(() => {
@@ -131,26 +144,26 @@ function MainFilterCard({onSearch}) {
         <Grid size={{ xs: 12 }}>
           <DefaultSubTitle>Check-in & check-out</DefaultSubTitle>
           <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: 1 }}>
-            <LocalizationProvider maxWidth={true} minWidth={false} dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Check-in"
                 value={dates.checkInDate}
                 onChange={handleCheckInChange}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => <TextField {...params} placeholder="Check-in" />}
               />
             </LocalizationProvider>
 
             <Typography>TO</Typography>
 
             {/* Second DatePicker (Check-out Date) */}
-            <LocalizationProvider maxWidth={true} minWidth={false} dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Check-out"
                 value={dates.checkOutDate}
                 onChange={handleCheckOutChange}
-                disabled={!dates.checkInDate} // Disable until check-in date is selected
-                minDate={dates.checkInDate ? dayjs(dates.checkInDate).add(1, 'day') : null} // Disable past check-in date
-                renderInput={(params) => <TextField {...params} inputRef={checkOutRef} />}
+                disabled={!dates.checkInDate}
+                open={checkOutOpen}
+                onClose={() => setCheckOutOpen(false)}
+                minDate={dates.checkInDate ? dayjs(dates.checkInDate).add(1, 'day') : null}
+                renderInput={(params) => <TextField {...params} inputRef={checkOutRef} placeholder="Check-out" />}
               />
             </LocalizationProvider>
           </Box>

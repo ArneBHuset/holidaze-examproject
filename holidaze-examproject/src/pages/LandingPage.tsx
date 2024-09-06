@@ -11,13 +11,12 @@ import debounce from '../services/utilities/debounce.ts';
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY; // Correct access to the env variable
 
 export default function LandingPage() {
-  const [venueData, setVenueData] = useState([]); // Venue data
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error state
-  const [searchTerm, setSearchTerm] = useState(''); // Search term, initially empty
+  const [venueData, setVenueData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const headers = getValidatedHeader();
 
-  // Debounced function to call the API
   const fetchVenueData = useCallback(
     debounce(async (searchValue) => {
       try {
@@ -39,27 +38,27 @@ export default function LandingPage() {
         });
 
         setVenueData(response.data);
-        setLoading(false); // Stop loading after data is fetched
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching venue data:', error);
         setError(error);
         setLoading(false); // Stop loading in case of error
       }
-    }, 200), // Debounce for 300ms
-    [headers] // Only recreate the function if `headers` change
+    }, 200),
+    [headers]
   );
 
-  // Fetch data when the search term changes
+  // Fetches data when the search term changes
   useEffect(() => {
-    fetchVenueData(searchTerm); // Fetch data based on search term
-  }, [searchTerm]); // Only trigger when the searchTerm changes
+    fetchVenueData(searchTerm);
+  }, [searchTerm]);
 
   if (loading) {
-    return <div>Loading...</div>; // Display a loading state
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error fetching data: {error.message}</div>; // Display error message if any
+    return <div>Error fetching data: {error.message}</div>;
   }
 
 
