@@ -18,7 +18,6 @@ const customSelectTheme = (outerTheme: Theme) =>
             ...outerTheme.typography.body1, // Apply the body1 typography styles
             color: outerTheme.palette.primary.main, // Text color
             height: '34px', // Set height
-
           },
         },
       },

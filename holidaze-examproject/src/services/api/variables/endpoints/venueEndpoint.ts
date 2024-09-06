@@ -1,9 +1,11 @@
-import VenueQueryParams from '../../../interfaces/api/venueQueryParams.ts';
-
 export const venuesEndpoint = ({ id, owner, bookings, search }: VenueQueryParams) => {
-  const baseUrl = `/auth/venues/${id}`;
+  let venueUrl = `/holidaze/venues`; // Default endpoint for venues
 
   const queryParams = new URLSearchParams();
+
+  if (id) {
+    return `${venueUrl}/${id}`; // Fetching a single venue by ID
+  }
 
   if (owner !== undefined) {
     queryParams.append('_owner', String(owner));
@@ -14,9 +16,11 @@ export const venuesEndpoint = ({ id, owner, bookings, search }: VenueQueryParams
   }
 
   if (search) {
+    // Use the /search endpoint when a search term is provided
+    venueUrl = `/holidaze/venues/search`;
     queryParams.append('q', search);
   }
 
   const queryString = queryParams.toString();
-  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
+  return queryString ? `${venueUrl}?${queryString}` : venueUrl;
 };

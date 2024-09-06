@@ -25,9 +25,9 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          REACT_APP_API_KEY: ${{ secrets.API_KEY }}
+          NOROFF_API_KEY: ${{ secrets.API_KEY }}
 
       - name: Deploy
         run: npm run deploy
         env:
-          REACT_APP_API_KEY: ${{ secrets.API_KEY }}
+          NOROFF_API_KEY: ${{ secrets.API_KEY }}
