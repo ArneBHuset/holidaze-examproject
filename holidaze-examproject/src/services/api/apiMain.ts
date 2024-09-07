@@ -19,7 +19,7 @@ async function baseApiCall({ url, method, headers, body }: ApiParameters) {
     const response = await fetch(`${baseUrl}${url}`, fetchData);
     const json = await response.json();
     //console.log('response found here', response);
-    console.log('jsondata found here:', json);
+    //console.log('jsondata found here:', json);
     return json;
   } catch (error) {
     console.log('API error', error);

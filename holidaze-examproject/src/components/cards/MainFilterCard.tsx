@@ -11,7 +11,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useTheme, Theme } from '@mui/material/styles';
 import DefaultSelect from '../../styles/mui-styles/components/SelectMenu.tsx';
 import availableCountries from '../../services/interfaces/api/filtering/availableCountries.ts';
-import { MainFilterCardProps } from '../../services/interfaces/api/filtering/mainFilterCardProps.ts';
+import { DatesType } from '../../services/interfaces/api/filtering/uiFilterParams.ts';
+import { applyFilters } from '../../services/filtering/filterLandingPage.ts';
 
 // Temporary chip styling for menu field
 const ITEM_HEIGHT = 48;
@@ -36,8 +37,9 @@ function getStyles(country: string, selectedCountries: readonly string[], theme:
 
 function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }) {
   const theme = useTheme();
-  const [searchTerm, setSearchTerm] = useState<string>('');
 
+  //Handles logic for searching
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
@@ -47,13 +49,14 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     }
   };
 
+//Handles logic for checkbox
   const [availableChecked, setAvailableChecked] = useState<boolean>(false);
   const availabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAvailableChecked(event.target.checked);
   };
 
+  //Handles logic for country selection menu
   const [selectedCountries, setSelectedCountries] = useState<availableCountries['selectedCountries']>([]);
-  console.log('countries selected for filtering', selectedCountries);
   const [countries, setCountries] = useState<availableCountries['countries']>([]);
 
   const menuSelectChange = (event: SelectChangeEvent<typeof selectedCountries>) => {
@@ -62,7 +65,6 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     } = event;
     setSelectedCountries(typeof value === 'string' ? value.split(',') : value);
   };
-
   useEffect(() => {
     const storedCountries = sessionStorage.getItem('countries');
     if (storedCountries) {
@@ -70,14 +72,14 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     }
   }, []);
 
+
+  //Handles logic for date selection
   const [dates, setDates] = useState<DatesType>({
     checkInDate: null,
     checkOutDate: null,
   });
-
   const checkOutRef = useRef<HTMLInputElement>(null);
   const [checkOutOpen, setCheckOutOpen] = useState<boolean>(false);
-
   const handleCheckInChange = (newDate: Dayjs | null) => {
     setDates((prevDates) => ({
       ...prevDates,
@@ -99,11 +101,22 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     setCheckOutOpen(false);
   };
 
+  //Passing values to filterLandingPage.ts
   useEffect(() => {
     if (dates.checkInDate && checkOutRef.current) {
       checkOutRef.current.focus();
     }
   }, [dates.checkInDate]);
+
+  useEffect(() => {
+    const filters = {
+      availableChecked,
+      selectedCountries,
+      dates,
+    };
+
+    applyFilters(filters);
+  }, [availableChecked, selectedCountries, dates]);
 
   return (
     <MainCard>
