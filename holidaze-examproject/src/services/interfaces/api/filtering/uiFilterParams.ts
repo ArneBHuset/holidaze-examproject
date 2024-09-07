@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
- export interface DatesType {
+export interface DatesType {
   checkInDate?: Dayjs | null;
   checkOutDate?: Dayjs | null;
 }

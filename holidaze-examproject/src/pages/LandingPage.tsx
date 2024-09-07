@@ -1,4 +1,3 @@
-// LandingPage.tsx
 import { useEffect, useState, useCallback } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid2';
@@ -9,14 +8,12 @@ import { venuesEndpoint } from '../services/api/variables/endpoints/venueEndpoin
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import debounce from '../services/utilities/debounce.ts';
 import VenueData from '../services/interfaces/api/venueResponse.ts';
-import VenueQueryParams from '../services/interfaces/api/venueQueryParams.ts';
-import availableCountries from '../services/interfaces/api/filtering/availableCountries.ts';
 import { processVenueData } from '../services/filtering/filterLandingPage.ts';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
-
 export default function LandingPage() {
   const [venueData, setVenueData] = useState<VenueData[]>([]);
+  const [filteredVenueData, setFilteredVenueData] = useState<VenueData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -26,73 +23,34 @@ export default function LandingPage() {
     debounce(async (searchValue: string) => {
       try {
         setLoading(true);
-
-        const queryParams: VenueQueryParams = {
-          search: searchValue ? searchValue : '',
-          id: '',
-          owner: true,
-          bookings: true,
-        };
-
+        const queryParams = { search: searchValue || '', id: '', owner: true, bookings: true };
         const endpoint = venuesEndpoint(queryParams);
-        //console.log(endpoint);
+        const response = await baseApiCall({ url: endpoint, method: 'GET', headers: { ...headers, 'X-Noroff-Api-Key': apiKey } });
 
-        const response = await baseApiCall({
-          url: endpoint,
-          method: 'GET',
-          headers: {
-            ...headers,
-            'X-Noroff-Api-Key': apiKey,
-          },
-        });
-
-        const getCountry = (venue: VenueData): string | undefined => {
-          return venue.location?.country;
-        };
-
-        const validCountries: availableCountries = {
-          countries: Array.from(
-            new Set(
-              (response.data as VenueData[])
-                .map((venue: VenueData) => getCountry(venue) || '')
-                .filter((country) => country && country.trim() !== ''),
-            ),
-          ),
-          selectedCountries: [],
-        };
-
-        sessionStorage.setItem('countries', JSON.stringify(validCountries.countries));
+        sessionStorage.setItem('countries', JSON.stringify(
+          Array.from(new Set((response.data as VenueData[])
+            .map(venue => venue.location?.country || '')
+            .filter(country => country && country.trim() !== '')))
+        ));
 
         setVenueData(response.data as VenueData[]);
+        setFilteredVenueData(response.data as VenueData[]);
+        processVenueData(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching venue data:', error);
         setError(error as Error);
         setLoading(false);
       }
     }, 200),
-    [headers],
+    [headers]
   );
-
-  // Call the processVenueData function each time venueData is updated
-  useEffect(() => {
-    if (venueData.length > 0) {
-      processVenueData(venueData);
-    }
-  }, [venueData]);
 
   useEffect(() => {
     fetchVenueData(searchTerm);
   }, [searchTerm]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error fetching data: {error.message}</div>;
-  }
-
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching data: {error.message}</div>;
   return (
     <Container maxWidth="sm">
       <Grid container spacing={4} marginTop={4}>
@@ -100,7 +58,7 @@ export default function LandingPage() {
           <MainFilterCard onSearch={setSearchTerm} />
         </Grid>
         <Grid>
-          <MainVenueCard venues={venueData} />
+          <MainVenueCard venues={filteredVenueData} />
         </Grid>
       </Grid>
     </Container>

@@ -2,7 +2,7 @@ import MainCard from '../../layout/MainCard.tsx';
 import Grid from '@mui/material/Grid2';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
-import { Box, Chip, Select, SelectChangeEvent, TextField, MenuItem, Typography, Checkbox } from '@mui/material';
+import { Box, Chip, Select, SelectChangeEvent, TextField, MenuItem, Typography, Checkbox, Button } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
@@ -13,6 +13,7 @@ import DefaultSelect from '../../styles/mui-styles/components/SelectMenu.tsx';
 import availableCountries from '../../services/interfaces/api/filtering/availableCountries.ts';
 import { DatesType } from '../../services/interfaces/api/filtering/uiFilterParams.ts';
 import { applyFilters } from '../../services/filtering/filterLandingPage.ts';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
 // Temporary chip styling for menu field
 const ITEM_HEIGHT = 48;
@@ -38,7 +39,7 @@ function getStyles(country: string, selectedCountries: readonly string[], theme:
 function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }) {
   const theme = useTheme();
 
-  //Handles logic for searching
+  // Handles logic for searching
   const [searchTerm, setSearchTerm] = useState<string>('');
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -49,22 +50,28 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     }
   };
 
-//Handles logic for checkbox
-  const [availableChecked, setAvailableChecked] = useState<boolean>(false);
-  const availabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAvailableChecked(event.target.checked);
+  // Handles logic for checkbox (detailedOnly toggle)
+  const [detailedOnly, setDetailedOnly] = useState<boolean>(false);
+  const handleDetailedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDetailedOnly(event.target.checked);
   };
 
-  //Handles logic for country selection menu
+  // Handles logic for country selection menu
   const [selectedCountries, setSelectedCountries] = useState<availableCountries['selectedCountries']>([]);
   const [countries, setCountries] = useState<availableCountries['countries']>([]);
 
-  const menuSelectChange = (event: SelectChangeEvent<typeof selectedCountries>) => {
-    const {
-      target: { value },
-    } = event;
+  const handleMenuSelectChange = (event: SelectChangeEvent<typeof selectedCountries>) => {
+    const { target: { value } } = event;
     setSelectedCountries(typeof value === 'string' ? value.split(',') : value);
   };
+
+  // Handle chip deletion
+  const handleDeleteCountry = (countryToDelete: string) => {
+    setSelectedCountries((prevSelected) =>
+      prevSelected.filter((country) => country !== countryToDelete)
+    );
+  };
+
   useEffect(() => {
     const storedCountries = sessionStorage.getItem('countries');
     if (storedCountries) {
@@ -72,14 +79,14 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     }
   }, []);
 
-
-  //Handles logic for date selection
+  // Handles logic for date selection
   const [dates, setDates] = useState<DatesType>({
     checkInDate: null,
     checkOutDate: null,
   });
   const checkOutRef = useRef<HTMLInputElement>(null);
   const [checkOutOpen, setCheckOutOpen] = useState<boolean>(false);
+
   const handleCheckInChange = (newDate: Dayjs | null) => {
     setDates((prevDates) => ({
       ...prevDates,
@@ -101,22 +108,22 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     setCheckOutOpen(false);
   };
 
-  //Passing values to filterLandingPage.ts
-  useEffect(() => {
-    if (dates.checkInDate && checkOutRef.current) {
-      checkOutRef.current.focus();
-    }
-  }, [dates.checkInDate]);
+  const handleReset = () => {
+    setSearchTerm('');
+    setDetailedOnly(false);
+    setSelectedCountries([]);
+    setDates({ checkInDate: null, checkOutDate: null });
+  };
 
   useEffect(() => {
     const filters = {
-      availableChecked,
+      detailedOnly,
       selectedCountries,
       dates,
     };
 
     applyFilters(filters);
-  }, [availableChecked, selectedCountries, dates]);
+  }, [detailedOnly, selectedCountries, dates]);
 
   return (
     <MainCard>
@@ -145,12 +152,17 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
               multiple
               variant="standard"
               value={selectedCountries}
-              onChange={menuSelectChange}
+              onChange={handleMenuSelectChange}
               fullWidth={true}
               renderValue={(selected) => (
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} sx={{ backgroundColor: theme.palette.secondary.main }} />
+                    <Chip
+                      key={value}
+                      label={value}
+                      sx={{ backgroundColor: theme.palette.secondary.main }}
+                      onDelete={() => handleDeleteCountry(value)}
+                    />
                   ))}
                 </Box>
               )}
@@ -201,11 +213,11 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
             </LocalizationProvider>
           </Box>
         </Grid>
-        <Grid size={{ xs: 12 }}>
-          <Box display="flex" alignItems="center" gap={2}>
+        <Grid size={{ xs: 8 }}>
+          <Box display="flex" alignItems="center" gap={2} marginTop={1}>
             <Checkbox
-              checked={availableChecked}
-              onChange={availabilityChange}
+              checked={detailedOnly}
+              onChange={handleDetailedChange}
               size="large"
               inputProps={{ 'aria-label': 'controlled' }}
               sx={{
@@ -215,8 +227,13 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
                 '&:hover': { color: theme.palette.secondary.main },
               }}
             />
-            <Typography>Hide booked venues</Typography>
+            <Typography>Detailed venues only</Typography>
           </Box>
+        </Grid>
+        <Grid size={{ xs: 4 }} display='flex' justifyContent="flex-end">
+          <DefaultButton>
+            <Button onClick={handleReset}>Reset</Button>
+          </DefaultButton>
         </Grid>
       </Grid>
     </MainCard>
