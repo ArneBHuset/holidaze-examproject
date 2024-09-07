@@ -25,13 +25,24 @@ export default function LandingPage() {
         setLoading(true);
         const queryParams = { search: searchValue || '', id: '', owner: true, bookings: true };
         const endpoint = venuesEndpoint(queryParams);
-        const response = await baseApiCall({ url: endpoint, method: 'GET', headers: { ...headers, 'X-Noroff-Api-Key': apiKey } });
+        const response = await baseApiCall({
+          url: endpoint,
+          method: 'GET',
+          headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
+        });
 
-        sessionStorage.setItem('countries', JSON.stringify(
-          Array.from(new Set((response.data as VenueData[])
-            .map(venue => venue.location?.country || '')
-            .filter(country => country && country.trim() !== '')))
-        ));
+        sessionStorage.setItem(
+          'countries',
+          JSON.stringify(
+            Array.from(
+              new Set(
+                (response.data as VenueData[])
+                  .map((venue) => venue.location?.country || '')
+                  .filter((country) => country && country.trim() !== ''),
+              ),
+            ),
+          ),
+        );
 
         setVenueData(response.data as VenueData[]);
         setFilteredVenueData(response.data as VenueData[]);
@@ -42,7 +53,7 @@ export default function LandingPage() {
         setLoading(false);
       }
     }, 200),
-    [headers]
+    [headers],
   );
 
   useEffect(() => {

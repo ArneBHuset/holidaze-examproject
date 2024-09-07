@@ -61,15 +61,15 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
   const [countries, setCountries] = useState<availableCountries['countries']>([]);
 
   const handleMenuSelectChange = (event: SelectChangeEvent<typeof selectedCountries>) => {
-    const { target: { value } } = event;
+    const {
+      target: { value },
+    } = event;
     setSelectedCountries(typeof value === 'string' ? value.split(',') : value);
   };
 
   // Handle chip deletion
   const handleDeleteCountry = (countryToDelete: string) => {
-    setSelectedCountries((prevSelected) =>
-      prevSelected.filter((country) => country !== countryToDelete)
-    );
+    setSelectedCountries((prevSelected) => prevSelected.filter((country) => country !== countryToDelete));
   };
 
   useEffect(() => {
@@ -230,7 +230,7 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
             <Typography>Detailed venues only</Typography>
           </Box>
         </Grid>
-        <Grid size={{ xs: 4 }} display='flex' justifyContent="flex-end">
+        <Grid size={{ xs: 4 }} display="flex" justifyContent="flex-end">
           <DefaultButton>
             <Button onClick={handleReset}>Reset</Button>
           </DefaultButton>

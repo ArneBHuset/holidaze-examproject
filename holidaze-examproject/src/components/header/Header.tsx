@@ -19,7 +19,6 @@ const pages = [
   { name: 'Manage Venue', path: '/manage-venue' },
   { name: 'User Overview', path: '/user-overview' },
 ];
-const settings = ['Profile', 'Account', 'Dashboard'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -179,7 +178,7 @@ function Header() {
                 sx={{
                   borderBottom: 0.5,
                   borderColor: theme.palette.secondary.main,
-                  pointerEvents: 'none', // Disable pointer events to make it non-clickable
+                  pointerEvents: 'none',
                   backgroundColor: theme.palette.background.paper,
                 }}
               >
