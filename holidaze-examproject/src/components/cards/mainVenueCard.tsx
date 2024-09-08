@@ -49,33 +49,34 @@ export default function MainVenueCard({ venues }) {
               }}
               style={{ padding: 0 }}
             >
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <Typography gutterBottom variant="h3" textAlign="center" sx={{marginTop: 1}}>
+              <Grid container spacing={1}>
+                <Grid size={{ xs: 12 }} >
+                  <Typography gutterBottom variant="h3" textAlign="center" sx={{marginTop: 1, marginBottom:0}}>
                     {venue.name}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 6 }}>
+                <Grid size={{ xs: 6, sm:12 }}>
                   <Typography
                     variant="body1"
-                    sx={{ marginTop: { xs: 0.5, sm: 1 }, textAlign: { xs: 'end', sm: 'start' } }}
+                    sx={{ textAlign: { xs: 'end', sm: 'start' }, paddingRight: {xs:1, sm:0 }}}
                   >
                     <strong>Price:</strong> ${venue.price}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 6 }}>
-                  <Typography variant="body2" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                    <strong>Rating:</strong> {venue.rating}
-                  </Typography>
-                </Grid>
-                <Grid>
-                  <Typography variant="body2" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+
+                <Grid size={{ xs: 6, sm:12 }}>
+                  <Typography variant="body1" sx={{paddingRight: {xs:1, sm:0 }}}>
                     <strong>Country:</strong> {venue.location.country}
                   </Typography>
                 </Grid>
-                <Grid>
-                  <Typography variant="body2" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+                <Grid size={{ xs: 6 }} >
+                  <Typography variant="body1" sx={{ }}>
                     <strong>Max Guests:</strong> {venue.maxGuests}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Typography variant="body1" sx={{ textAlign: { xs: 'start', sm: 'start' }  }}>
+                    <strong>Rating:</strong> {venue.rating}
                   </Typography>
                 </Grid>
                 <Grid sx={{display: {xs: 'none', sm: 'block'}, width:'100%', padding: 1}}>
