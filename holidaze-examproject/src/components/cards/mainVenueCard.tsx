@@ -13,7 +13,7 @@ export default function MainVenueCard({ venues }) {
   return (
     <Grid container spacing={2}>
       {venues.map((venue) => (
-        <Grid key={venue.id} size={{ xs: 12, md: 8, lg: 12 }}>
+        <Grid key={venue.id} >
           <Card
             sx={{
               display: 'flex',
@@ -24,7 +24,7 @@ export default function MainVenueCard({ venues }) {
               borderBottomRightRadius: { xs: 0, sm: 0 },
             }}
           >
-            <Box padding={{ xs: 0.5, sm: 0 }}>
+            <Box padding={{ xs: 0.5, sm: 1 }} paddingRight={{sm:0}}>
               <CardMedia
                 component="img"
                 alt={venue.media[0]?.alt || 'Venue image'}
@@ -34,7 +34,7 @@ export default function MainVenueCard({ venues }) {
                 }
                 sx={{
                   width: { xs: '100%', sm: 300 },
-                  height: { xs: 200, sm: 250 },
+                  height: { xs: 200, sm: '100%' },
                   borderRadius: { xs: '4px', sm: '8px' },
                 }}
               />
@@ -45,30 +45,25 @@ export default function MainVenueCard({ venues }) {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 width: { xs: '100%', sm: '75%' },
-                padding: { xs: 1, sm: 2 },
+                padding: { xs: 1 },
               }}
               style={{ padding: 0 }}
             >
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12 }}>
-                  <Typography gutterBottom variant="h3" textAlign="center" sx={{}}>
+                  <Typography gutterBottom variant="h3" textAlign="center" sx={{marginTop: 1}}>
                     {venue.name}
                   </Typography>
                 </Grid>
-                <Grid>
-                  <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: { xs: '0.8rem', sm: '1rem' } }}>
-                    {venue.description}
-                  </Typography>
-                </Grid>
-                <Grid>
+                <Grid size={{ xs: 6 }}>
                   <Typography
-                    variant="body2"
-                    sx={{ marginTop: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.9rem', sm: '1rem' } }}
+                    variant="body1"
+                    sx={{ marginTop: { xs: 0.5, sm: 1 }, textAlign: { xs: 'end', sm: 'start' } }}
                   >
                     <strong>Price:</strong> ${venue.price}
                   </Typography>
                 </Grid>
-                <Grid>
+                <Grid size={{ xs: 6 }}>
                   <Typography variant="body2" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                     <strong>Rating:</strong> {venue.rating}
                   </Typography>
@@ -83,16 +78,30 @@ export default function MainVenueCard({ venues }) {
                     <strong>Max Guests:</strong> {venue.maxGuests}
                   </Typography>
                 </Grid>
+                <Grid sx={{display: {xs: 'none', sm: 'block'}, width:'100%', padding: 1}}>
+                <DefaultButton >
+                  <Button
+                    sx={{
+                      width: '100%',
+                      borderBottomLeftRadius: { xs: 0, sm: 4 },
+                      borderBottomRightRadius: { xs: 0, sm: 4 },
+                      padding: { xs: 1, sm: 1.5 },
+                      fontSize: { xs: '0.9rem', sm: '1.1rem' },
+                    }}
+                  >
+                    Review and book!
+                  </Button>
+                </DefaultButton>
+                </Grid>
               </Grid>
             </CardContent>
             <CardContent
               sx={{
                 width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
                 padding: { xs: 0, sm: 1 },
                 marginBottom: { xs: 0, sm: 1 },
                 paddingBottom: { xs: 0, sm: 1 },
+                display: {xs: 'block', sm: 'none'}
               }}
               style={{ padding: 0 }}
             >
