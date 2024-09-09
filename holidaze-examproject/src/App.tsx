@@ -7,6 +7,7 @@ import AddVenuePage from './pages/AddVenuePage.tsx';
 import ManageVenuePage from './pages/ManageVenuePage.tsx';
 import UserOverviewPage from './pages/UserOverviewPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
+import VenueDetailsPage from './pages/VenueDetailsPage.tsx';
 import './index.scss';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -25,6 +26,7 @@ function App() {
                 </MainLayout>
               }
             />
+            <Route path="/venue/:id" element={<MainLayout><VenueDetailsPage /></MainLayout>} /> {/* Add dynamic route */}
             <Route
               path="/add-venue"
               element={
