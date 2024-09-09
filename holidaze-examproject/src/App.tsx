@@ -26,7 +26,15 @@ function App() {
                 </MainLayout>
               }
             />
-            <Route path="/venue/:id" element={<MainLayout><VenueDetailsPage /></MainLayout>} /> {/* Add dynamic route */}
+            <Route
+              path="/venue/:id"
+              element={
+                <MainLayout>
+                  <VenueDetailsPage />
+                </MainLayout>
+              }
+            />{' '}
+            {/* Add dynamic route */}
             <Route
               path="/add-venue"
               element={

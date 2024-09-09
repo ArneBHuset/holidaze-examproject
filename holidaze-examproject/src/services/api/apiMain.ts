@@ -1,5 +1,6 @@
 import { baseUrl } from './variables/endpoints/baseUrl.ts';
 import ApiParameters from '../interfaces/api/apiParameters.ts';
+import ApiErrors from '../error-handling/ApiErrors.tsx';
 
 /**
  * Main API call function, taking 4 parameters to make a specific API call.
@@ -22,7 +23,7 @@ async function baseApiCall({ url, method, headers, body }: ApiParameters) {
     //console.log('jsondata found here:', json);
     return json;
   } catch (error) {
-    console.log('API error', error);
+    ApiErrors(error);
   }
 }
 

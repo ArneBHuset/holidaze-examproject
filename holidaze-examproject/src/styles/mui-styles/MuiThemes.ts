@@ -4,13 +4,11 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#121212',
-      light: '#404040', //Remove?
-      dark: '#004ba0', //Remove?
+      light: '#404040',
     },
     secondary: {
       main: '#F88349',
-      light: '#49bef8', //Consider this color, which is tetradic with the secondary main orange
-      dark: '#6a0080', //Remove?
+      light: '#49BEF8', //Consider this color, which is tetradic with the secondary main orange
     },
     error: {
       main: '#e1642c',

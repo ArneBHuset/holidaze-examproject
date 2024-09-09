@@ -10,13 +10,20 @@ import DefaultSubTitle from '../titles/SubTitle.tsx';
 import PersonIcon from '@mui/icons-material/Person';
 import GradeIcon from '@mui/icons-material/Grade';
 import { useNavigate } from 'react-router-dom';
+import VenueData from '../../services/interfaces/api/venueResponse.ts';
+import MainCard from '../../layout/MainCard.tsx';
 
-export default function MainVenueCard({ venues }) {
+interface MainVenueCardProps {
+  venues: VenueData[];
+}
+
+export default function MainVenueCard({ venues }: MainVenueCardProps) {
   const navigate = useNavigate();
 
-  const handleNavigateToVenue = (id) => {
-    navigate(`/venue/${id}`);
+  const handleNavigateToVenue = (venue: VenueData) => {
+    navigate(`/venue/${venue.id}`, { state: { venue } });
   };
+
   return (
     <Grid container spacing={2}>
       {venues.map((venue) => (
@@ -29,20 +36,21 @@ export default function MainVenueCard({ venues }) {
               height: 'auto',
               borderBottomLeftRadius: { xs: 0, sm: 3 },
               borderBottomRightRadius: { xs: 0, sm: 3 },
+              boxShadow: '3px 3px 15px rgba(73, 190, 248, 0.25)',
             }}
           >
             <Box padding={{ xs: 0.5, sm: 1 }} paddingRight={{ sm: 0 }}>
               <CardMedia
                 component="img"
-                alt={venue.media[0]?.alt || 'Venue image'}
+                alt={venue.media?.[0]?.alt || 'Venue image'}
                 image={
-                  venue.media[0]?.url ||
+                  venue.media?.[0]?.url ||
                   'https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0='
                 }
                 sx={{
                   width: { xs: '100%', sm: 250 },
                   height: { xs: 200, sm: '100%' },
-                  maxHeight: {xs: 200, sm: 260 },
+                  maxHeight: { xs: 200, sm: 260 },
                   borderRadius: { xs: '4px', sm: '8px' },
                 }}
               />
@@ -56,14 +64,14 @@ export default function MainVenueCard({ venues }) {
               style={{ padding: 0 }}
             >
               <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
-                <Grid size={{ xs: 12 }} >
+                <Grid size={{ xs: 12 }}>
                   <DefaultSubTitle>
                     <Typography
                       gutterBottom
                       variant="h3"
                       textAlign={{ xs: 'center', sm: 'left' }}
-                      maxHeight={75} overflow='hidden'
-
+                      maxHeight={75}
+                      overflow="hidden"
                       sx={{ marginTop: { xs: 1, sm: 0 }, marginBottom: 0 }}
                       maxWidth={'90%'}
                     >
@@ -82,7 +90,7 @@ export default function MainVenueCard({ venues }) {
 
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography variant="body1" sx={{ paddingRight: { xs: 1, sm: 0 } }}>
-                    <strong>Country:</strong> {venue.location.country}
+                    <strong>Country:</strong> {venue.location?.country || 'N/A'}
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 4 }} display="flex" alignItems="center" gap={0.5}>
@@ -98,7 +106,7 @@ export default function MainVenueCard({ venues }) {
                     <GradeIcon />
                   </Box>
                   <Typography variant="body1" paddingRight={{ xs: 0, sm: 8 }}>
-                    {venue.rating}
+                    {venue.rating || 'No rating'}
                   </Typography>
                 </Grid>
 
@@ -115,7 +123,7 @@ export default function MainVenueCard({ venues }) {
                 >
                   <DefaultButton>
                     <Button
-                      onClick={() => handleNavigateToVenue(venue.id)}
+                      onClick={() => handleNavigateToVenue(venue)}
                       sx={{
                         width: '100%',
                         borderBottomLeftRadius: { xs: 0, sm: 4 },
@@ -142,7 +150,7 @@ export default function MainVenueCard({ venues }) {
             >
               <DefaultButton>
                 <Button
-                  onClick={() => handleNavigateToVenue(venue.id)}
+                  onClick={() => handleNavigateToVenue(venue)}
                   sx={{
                     width: '100%',
                     borderBottomLeftRadius: { xs: 0, sm: 4 },
