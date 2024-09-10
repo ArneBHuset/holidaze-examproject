@@ -84,10 +84,10 @@ const theme = createTheme({
     },
     subtitle1: {
       fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
-      fontSize: '1.2rem',
+      fontSize: '1.1rem',
       fontWeight: 300,
       lineHeight: 1.75,
-      letterSpacing: '0.05em',
+      letterSpacing: '0.08em',
     },
     subtitle2: {
       //remove?
