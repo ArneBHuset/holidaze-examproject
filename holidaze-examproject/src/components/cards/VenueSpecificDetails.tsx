@@ -5,8 +5,15 @@ import Grid from '@mui/material/Grid2'; // Use Grid2 for layout
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
+import Calendar from '../calendar/Calendar.tsx';
+import { List, ListItem, ListItemText } from '@mui/material';
 
 function VenueSpecificDetails({ venue }) {
+  const bookingEvents = venue.bookings?.map((booking) => ({
+    title: `Booked by ${booking.customer?.name || 'Guest'}`,
+    start: booking.dateFrom,
+    end: booking.dateTo,
+  }));
   return (
     <MainCard>
       <Box sx={{ padding: 1 }}>
@@ -18,54 +25,57 @@ function VenueSpecificDetails({ venue }) {
               </Typography>
             </DefaultSubTitle>
           </Grid>
-          <Grid size={{ xs: 12, sm: 12 }}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="body1">
               <strong>Price:</strong> ${venue.price}
             </Typography>
           </Grid>
-          <Grid size={{ xs: 12, sm: 12 }}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="body1">
               <strong>Rating:</strong> {venue.rating || 'No rating available'}
             </Typography>
           </Grid>
-          <Grid size={{ xs: 12, sm: 12 }}>
-            <Typography variant="body1">
-              <strong>Country:</strong> {venue.location?.country || 'Not available'}
-            </Typography>
+          <Grid size={{ xs: 6 }}>
+              <Typography variant="body1">
+                <strong>Country:</strong>
+              </Typography>
+            <Typography variant="body1">{venue.location?.country || 'Not available'}</Typography>
           </Grid>
-          <Grid size={{ xs: 12, sm: 12 }}>
+
+          <Grid size={{ xs: 6 }}>
             <Typography variant="body1">
               <strong>Max Guests:</strong> {venue.maxGuests}
             </Typography>
           </Grid>
-          <Grid size={{ xs: 12, sm: 12 }}>
-            <Typography variant="body1">
-              <strong>Features:</strong>
-              {venue.meta?.wifi && ' WiFi,'}
-              {venue.meta?.breakfast && ' Breakfast,'}
-              {venue.meta?.pets && ' Pets,'}
-              {venue.meta?.parking && ' Parking'}
-            </Typography>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <DefaultSubTitle>
+              <Typography>Facility</Typography>
+            </DefaultSubTitle>
+            <Grid container spacing={4}>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Typography>WiFi: {venue.meta?.wifi ? 'Yes' : 'No'}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Typography>Breakfast: {venue.meta?.breakfast ? 'Yes' : 'No'}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Typography>Pets Allowed: {venue.meta?.pets ? 'Yes' : 'No'}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Typography>Parking Available: {venue.meta?.parking ? 'Yes' : 'No'}</Typography>
+              </Grid>
+            </Grid>
           </Grid>
 
-          {venue.bookings?.length > 0 && (
-            <Grid size={{ xs: 12, sm: 12 }}>
-              <Typography variant="body1">
-                <strong>Bookings:</strong>
-              </Typography>
-              {venue.bookings.map((booking) => (
-                <Box key={booking.id} sx={{ marginLeft: 2 }}>
-                  <Typography variant="body2">From: {new Date(booking.dateFrom).toLocaleDateString()}</Typography>
-                  <Typography variant="body2">To: {new Date(booking.dateTo).toLocaleDateString()}</Typography>
-                </Box>
-              ))}
-            </Grid>
-          )}
-
+          <Grid size={{ xs: 12, sm: 12 }} sx={{ marginTop: 4 }}>
+            <Calendar events={bookingEvents || []} />
+          </Grid>
           <Grid size={{ xs: 12, sm: 12 }}>
+            <DefaultSubTitle>
             <Typography variant="h6" gutterBottom>
-              <strong>Owner Details:</strong>
+              Meet your host
             </Typography>
+            </DefaultSubTitle>
           </Grid>
 
           {venue.owner?.banner?.url && (
@@ -73,20 +83,25 @@ function VenueSpecificDetails({ venue }) {
               <img
                 src={venue.owner.banner.url}
                 alt={venue.owner.banner.alt || 'Owner banner'}
-                style={{ width: '100%', borderRadius: '8px', marginBottom: '1rem' }}
+                aria-label={venue.owner.banner.alt}
+                style={{ width: '100%', borderRadius: '8px', height: '90px' }}
               />
+              <Box display={'flex'} alignItems={'center'} gap={{xs:2, sm:4}} sx={{marginTop: '-45px', marginLeft: '30px'}}>
+              {venue.owner?.avatar?.url && (
+                <Avatar
+                  src={venue.owner.avatar.url}
+                  alt={venue.owner.avatar.alt || 'Owner avatar'}
+                  sx={{ width: {xs:'100px' }, height:{xs:'100px' }  }}
+                />
+              )}
+              <Typography variant='h5' sx={{paddingTop:2}}>
+                {venue.owner?.name}
+              </Typography>
+               unstyled button here named 'See host details'
+              </Box>
             </Grid>
           )}
 
-          <Grid size={{ xs: 12, sm: 12 }}>
-            {venue.owner?.avatar?.url && (
-              <Avatar
-                src={venue.owner.avatar.url}
-                alt={venue.owner.avatar.alt || 'Owner avatar'}
-                sx={{ width: 56, height: 56 }}
-              />
-            )}
-          </Grid>
           <Grid size={{ xs: 12, sm: 12 }}>
             <Typography variant="body1">
               <strong>Name:</strong> {venue.owner?.name}
