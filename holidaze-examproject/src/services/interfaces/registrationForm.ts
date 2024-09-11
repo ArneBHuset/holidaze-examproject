@@ -1,11 +1,11 @@
 export interface AvatarData {
-  url?: string;
-  alt?: string;
+  url?: string |  null;
+  alt?: string | null;
 }
 
 export interface BannerData {
-  url?: string;
-  alt?: string;
+  url?: string |  null;
+  alt?: string | null;
 }
 
 export default interface RegistrationData {

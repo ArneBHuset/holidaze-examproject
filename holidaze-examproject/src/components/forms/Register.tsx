@@ -14,7 +14,6 @@ import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
-  // Use useForm hook with Yup validation
   const {
     control,
     handleSubmit,
@@ -23,14 +22,20 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
     resolver: yupResolver<RegistrationData>(registerValidationSchema),
   });
 
-  // Handle form submission
   const onSubmit = async (data: RegistrationData) => {
-    try {
-      const response = await registrationApiCall(data);
-      console.log('Registration successful:', response);
-    } catch (error) {
-      console.error('Registration failed:', error);
-    }
+    const processedData: RegistrationData = {
+      ...data,
+      avatar: {
+        url: data.avatar?.url?.trim() ? data.avatar.url : undefined,
+        alt: data.avatar?.alt?.trim() ? data.avatar.alt : undefined,
+      },
+      banner: {
+        url: data.banner?.url?.trim() ? data.banner.url : undefined,
+        alt: data.banner?.alt?.trim() ? data.banner.alt : undefined,
+      },
+    };
+
+    await registrationApiCall(processedData, setIsRegistering);
   };
 
   return (
@@ -144,7 +149,6 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="avatar.url"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -168,7 +172,6 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="avatar.alt"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -191,7 +194,6 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="banner.url"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -214,7 +216,6 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="banner.alt"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField

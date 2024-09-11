@@ -6,12 +6,10 @@ import VenueData from '../services/interfaces/api/venueResponse.ts';
 import { Container } from '@mui/material';
 import { useState } from 'react';
 import DefaultBottomNavigation from '../styles/mui-styles/components/BottomNavigation.tsx';
-import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import BookVenueDrawer from '../components/forms/NewBooking.tsx';
 
 const VenueDetailsPage = () => {
-  const theme = useTheme();
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 

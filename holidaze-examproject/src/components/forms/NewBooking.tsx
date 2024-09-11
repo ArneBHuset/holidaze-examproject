@@ -52,7 +52,6 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
   });
 
   const checkInDate = watch('checkInDate');
-  const checkOutDate = watch('checkOutDate');
 
   const isDateUnavailable = (date: Dayjs) => {
     return venue.bookings?.some((booking) => dayjs(date).isBetween(booking.dateFrom, booking.dateTo, null, '[]'));

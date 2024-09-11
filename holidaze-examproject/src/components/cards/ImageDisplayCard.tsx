@@ -1,5 +1,4 @@
-import React from 'react';
-import { Box, ImageList, ImageListItem, ImageListItemBar, IconButton, Card } from '@mui/material';
+import { Box, ImageList, ImageListItem, ImageListItemBar, Card } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface MediaData {

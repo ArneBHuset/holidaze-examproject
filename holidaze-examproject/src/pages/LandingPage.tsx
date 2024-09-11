@@ -9,13 +9,15 @@ import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import debounce from '../services/utilities/debounce.ts';
 import VenueData from '../services/interfaces/api/venueResponse.ts';
 import { processVenueData } from '../services/filtering/filterLandingPage.ts';
+import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
+import { LinearProgress } from '@mui/material';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 export default function LandingPage() {
   const [venueData, setVenueData] = useState<VenueData[]>([]);
+  console.log('VenueData to be used for filtering from landing', venueData);
   const [filteredVenueData, setFilteredVenueData] = useState<VenueData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const headers = getValidatedHeader();
 
@@ -48,11 +50,11 @@ export default function LandingPage() {
         setFilteredVenueData(response.data as VenueData[]);
         processVenueData(response.data);
         setLoading(false);
-      } catch (error) {
-        setError(error as Error);
+      } catch (error: any) {
+        snackBarError(error.message || 'An error occurred while fetching data.');
         setLoading(false);
       }
-    }, 200),
+    }, 150),
     [headers],
   );
 
@@ -60,8 +62,8 @@ export default function LandingPage() {
     fetchVenueData(searchTerm);
   }, [searchTerm]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching data: {error.message}</div>;
+  if (loading) return <LinearProgress color="secondary"></LinearProgress>;
+
   return (
     <Container maxWidth="sm">
       <Grid container spacing={4} marginTop={4}>
