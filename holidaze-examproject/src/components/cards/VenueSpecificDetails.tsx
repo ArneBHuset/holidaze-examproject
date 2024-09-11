@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import Calendar from '../calendar/Calendar.tsx';
-import Button from '@mui/material/Button';
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PublicIcon from '@mui/icons-material/Public';
@@ -133,7 +132,6 @@ function VenueSpecificDetails({ venue }) {
                   <Accordion sx={{ boxShadow: 'none', border: 'none' }}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1-content"
                       sx={{ padding: 0, '& .MuiAccordionSummary-content': { margin: 0 } }} // Remove padding and space between icon and text
                     >
                       <Typography variant="h6" sx={{ display: 'inline' }}>
