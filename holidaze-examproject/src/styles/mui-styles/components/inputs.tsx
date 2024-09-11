@@ -75,9 +75,5 @@ const customTheme = (outerTheme: Theme) =>
 export default function DefaultInput(props: InputNode) {
   const outerTheme = useTheme();
 
-  return (
-    <ThemeProvider theme={customTheme(outerTheme)}>
-      {props.children}
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={customTheme(outerTheme)}>{props.children}</ThemeProvider>;
 }

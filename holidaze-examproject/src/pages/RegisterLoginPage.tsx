@@ -8,7 +8,6 @@ import WelcomeCard from '../components/cards/WelcomeCard.tsx';
 
 function RegisterLoginPage() {
   const [isRegistering, setIsRegistering] = useState(true);
-  console.log(isRegistering);
   return (
     <Container maxWidth="sm">
       <WelcomeCard />

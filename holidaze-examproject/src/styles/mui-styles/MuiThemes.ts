@@ -4,13 +4,11 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#121212',
-      light: '#404040',  //Remove?
-      dark: '#004ba0', //Remove?
+      light: '#404040',
     },
     secondary: {
       main: '#F88349',
-      light: '#49bef8', //Consider this color, which is tetradic with the secondary main orange
-      dark: '#6a0080', //Remove?
+      light: '#49BEF8', //Consider this color, which is tetradic with the secondary main orange
     },
     error: {
       main: '#e1642c',
@@ -86,12 +84,13 @@ const theme = createTheme({
     },
     subtitle1: {
       fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
-      fontSize: '1.2rem',
+      fontSize: '1.1rem',
       fontWeight: 300,
       lineHeight: 1.75,
-      letterSpacing: '0.05em',
+      letterSpacing: '0.08em',
     },
-    subtitle2: { //remove?
+    subtitle2: {
+      //remove?
       fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
       fontSize: '0.875rem',
       fontWeight: 300,

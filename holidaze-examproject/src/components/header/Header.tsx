@@ -12,7 +12,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { useTheme } from '@mui/material';
 
 const pages = [
@@ -20,7 +19,6 @@ const pages = [
   { name: 'Manage Venue', path: '/manage-venue' },
   { name: 'User Overview', path: '/user-overview' },
 ];
-const settings = ['Profile', 'Account', 'Dashboard'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -62,17 +60,19 @@ function Header() {
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters>
-          <Typography
-            variant="h2"
-            color={theme.palette.primary.main}
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-            }}
-          >
-            HOLIDAZE
-          </Typography>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <Typography
+              variant="h2"
+              color={theme.palette.primary.main}
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+              }}
+            >
+              HOLIDAZE
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               aria-label="account of current user"
@@ -80,7 +80,7 @@ function Header() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
             >
-              <MenuIcon sx={{fontSize: 40, color: theme.palette.primary.main}} />
+              <MenuIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -101,12 +101,16 @@ function Header() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}  sx={{
-                  borderBottom: 0.5,
-                  borderColor: theme.palette.secondary.main,
-                  py: 0,
-                }}>
-                  <Typography textAlign="center" sx={{fontFamily: theme.typography.button}}>
+                <MenuItem
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    borderBottom: 0.5,
+                    borderColor: theme.palette.secondary.main,
+                    py: 0,
+                  }}
+                >
+                  <Typography textAlign="center" sx={{ fontFamily: theme.typography.button }}>
                     <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                       {page.name}
                     </Link>
@@ -116,22 +120,27 @@ function Header() {
             </Menu>
           </Box>
 
-          <Typography
-            variant="h3"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              color: theme.palette.primary.main,
-            }}
-          >
-            HOLIDAZE
-          </Typography>
-
+          <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
+            <Typography
+              variant="h3"
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                color: theme.palette.primary.main,
+              }}
+            >
+              HOLIDAZE
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 6, gap: 2 }}>
             {pages.map((page) => (
-              <Button key={page.name} onClick={handleCloseNavMenu} sx={{ my: 2, color: theme.palette.primary.main, fontFamily: theme.typography.button, display: 'block' }}>
+              <Button
+                key={page.name}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: theme.palette.primary.main, fontFamily: theme.typography.button, display: 'block' }}
+              >
                 <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                   {page.name}
                 </Link>
@@ -140,10 +149,10 @@ function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings" >
+            <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
-                  sx={{width:'50px', height:'50px'}}
+                  sx={{ width: '50px', height: '50px' }}
                   alt={JSON.parse(localStorage.getItem('profileData')).avatar.alt}
                   src={JSON.parse(localStorage.getItem('profileData')).avatar.url}
                 />
@@ -169,7 +178,7 @@ function Header() {
                 sx={{
                   borderBottom: 0.5,
                   borderColor: theme.palette.secondary.main,
-                  pointerEvents: 'none',  // Disable pointer events to make it non-clickable
+                  pointerEvents: 'none',
                   backgroundColor: theme.palette.background.paper,
                 }}
               >
@@ -177,18 +186,17 @@ function Header() {
                   {JSON.parse(localStorage.getItem('profileData')).name}
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu} sx={{fontFamily:theme.typography.button}} >
+              <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
                 <Typography textAlign="center">View Profile</Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu} sx={{fontFamily:theme.typography.button}} >
+              <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
                 <Typography textAlign="center">See Bookings</Typography>
               </MenuItem>
-              <MenuItem onClick={handleLogout} sx={{fontFamily:theme.typography.button}} >
+              <MenuItem onClick={handleLogout} sx={{ fontFamily: theme.typography.button }}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>
           </Box>
-
         </Toolbar>
       </Container>
     </AppBar>

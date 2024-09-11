@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormControl from '@mui/material/FormControl';
 import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import FormCard from '../../layout/FormCard';
+import MainCard from '../../layout/MainCard.tsx';
 import SubTitle from '../titles/SubTitle';
 import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch';
 import RegistrationData from '../../services/interfaces/registrationForm.ts';
@@ -34,7 +34,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
   };
 
   return (
-    <FormCard>
+    <MainCard>
       <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
           <Grid size={{ xs: 12 }}>
@@ -56,14 +56,14 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    placeholder="Mr. Anderson"
-                    variant="standard"
-                    {...field}
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      placeholder="Mr. Anderson"
+                      variant="standard"
+                      {...field}
+                      error={!!errors.name}
+                      helperText={errors.name?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -78,15 +78,15 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    type="email"
-                    placeholder="anderson@noroff.no"
-                    variant="standard"
-                    {...field}
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      type="email"
+                      placeholder="anderson@noroff.no"
+                      variant="standard"
+                      {...field}
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -101,14 +101,14 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    type="password"
-                    variant="standard"
-                    {...field}
-                    error={!!errors.password}
-                    helperText={errors.password?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      type="password"
+                      variant="standard"
+                      {...field}
+                      error={!!errors.password}
+                      helperText={errors.password?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -123,16 +123,16 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={3}
-                    placeholder="Adventurer by heart, and..."
-                    variant="standard"
-                    {...field}
-                    error={!!errors.bio}
-                    helperText={errors.bio?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={3}
+                      placeholder="Adventurer by heart, and..."
+                      variant="standard"
+                      {...field}
+                      error={!!errors.bio}
+                      helperText={errors.bio?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -147,15 +147,15 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    type="url"
-                    placeholder="Profile picture URL"
-                    variant="standard"
-                    {...field}
-                    error={!!errors.avatar?.url}
-                    helperText={errors.avatar?.url?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      type="url"
+                      placeholder="Profile picture URL"
+                      variant="standard"
+                      {...field}
+                      error={!!errors.avatar?.url}
+                      helperText={errors.avatar?.url?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -171,15 +171,15 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    placeholder="Me at my 24th birthday"
-                    variant="standard"
-                    {...field}
-                    error={!!errors.avatar?.alt}
-                    helperText={errors.avatar?.alt?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      type="text"
+                      placeholder="Me at my 24th birthday"
+                      variant="standard"
+                      {...field}
+                      error={!!errors.avatar?.alt}
+                      helperText={errors.avatar?.alt?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -194,15 +194,15 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    type="url"
-                    placeholder="Banner picture URL"
-                    variant="standard"
-                    {...field}
-                    error={!!errors.banner?.url}
-                    helperText={errors.banner?.url?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      type="url"
+                      placeholder="Banner picture URL"
+                      variant="standard"
+                      {...field}
+                      error={!!errors.banner?.url}
+                      helperText={errors.banner?.url?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -217,15 +217,15 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                 defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    placeholder="My favorite view"
-                    variant="standard"
-                    {...field}
-                    error={!!errors.banner?.alt}
-                    helperText={errors.banner?.alt?.message}
-                  />
+                    <TextField
+                      fullWidth
+                      type="text"
+                      placeholder="My favorite view"
+                      variant="standard"
+                      {...field}
+                      error={!!errors.banner?.alt}
+                      helperText={errors.banner?.alt?.message}
+                    />
                   </DefaultInput>
                 )}
               />
@@ -233,21 +233,21 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
           </Grid>
           <Grid size={{ xs: 6 }}>
             <DefaultButton>
-            <Button onClick={() => setIsRegistering(true)} fullWidth={true}>
-              Back to Login
-            </Button>
+              <Button onClick={() => setIsRegistering(true)} fullWidth={true}>
+                Back to Login
+              </Button>
             </DefaultButton>
           </Grid>
           <Grid size={{ xs: 6 }}>
             <DefaultButton>
-            <Button type="submit" fullWidth={true} >
-              Submit
-            </Button>
-          </DefaultButton>
+              <Button type="submit" fullWidth={true}>
+                Submit
+              </Button>
+            </DefaultButton>
           </Grid>
         </Grid>
       </FormControl>
-    </FormCard>
+    </MainCard>
   );
 }
 

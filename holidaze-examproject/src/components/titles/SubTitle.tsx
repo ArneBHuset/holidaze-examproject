@@ -6,7 +6,7 @@ import TitleProps from '../../services/interfaces/react-nodes/titleNode.ts';
 function DefaultSubTitle(props: TitleProps) {
   return (
     <Box sx={{ borderBottom: 1, borderColor: theme.palette.primary.main, paddingY: 1 }}>
-      <Typography variant='subtitle1'>{props.children}</Typography>
+      <Typography variant="subtitle1">{props.children}</Typography>
     </Box>
   );
 }

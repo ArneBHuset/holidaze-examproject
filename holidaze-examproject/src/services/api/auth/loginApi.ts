@@ -1,5 +1,5 @@
 import baseApiCall from '../apiMain';
-import { loginEnpoint } from '../variables/ApiEndpoints';
+import { loginEnpoint } from '../variables/endpoints/authEndpoint.ts';
 import { unValidatedHeader } from '../variables/headers';
 import LoginData from '../../interfaces/LoginForm.ts';
 

@@ -18,7 +18,6 @@ const GlobalStyles = () => (
         color: theme.palette.text.primary,
         fontFamily: theme.typography.fontFamily,
       },
-
     }}
   />
 );
