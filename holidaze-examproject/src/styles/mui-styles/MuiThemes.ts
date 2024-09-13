@@ -11,7 +11,7 @@ const theme = createTheme({
       light: '#49BEF8', //Consider this color, which is tetradic with the secondary main orange
     },
     error: {
-      main: '#e1642c',
+      main: '#ac1b00',
     },
     info: {
       main: '#49bef8',

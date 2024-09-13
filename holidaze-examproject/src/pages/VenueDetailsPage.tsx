@@ -6,17 +6,16 @@ import VenueData from '../services/interfaces/api/venueResponse.ts';
 import { Container } from '@mui/material';
 import { useState } from 'react';
 import DefaultBottomNavigation from '../styles/mui-styles/components/BottomNavigation.tsx';
-import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import BookVenueDrawer from '../components/forms/NewBooking.tsx';
 
 const VenueDetailsPage = () => {
-  const theme = useTheme();
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer =
-    (anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    (_anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
         ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
@@ -32,7 +31,7 @@ const VenueDetailsPage = () => {
     <Container maxWidth={'sm'}>
       <Grid container spacing={2} maxWidth={'sm'}>
         <Grid size={12} marginBottom={2}>
-          <ImageDisplayCard venueMedia={venue.media} />
+          <ImageDisplayCard venueMedia={venue.media || [{ url: 'https://shorturl.at/MBljW', alt: 'Image missing' }]} />
         </Grid>
         <Grid size={12}>
           <VenueSpecificDetails venue={venue} />

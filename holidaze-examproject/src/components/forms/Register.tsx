@@ -14,7 +14,6 @@ import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
-  // Use useForm hook with Yup validation
   const {
     control,
     handleSubmit,
@@ -22,15 +21,15 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
   } = useForm<RegistrationData>({
     resolver: yupResolver<RegistrationData>(registerValidationSchema),
   });
-
-  // Handle form submission
   const onSubmit = async (data: RegistrationData) => {
-    try {
-      const response = await registrationApiCall(data);
-      console.log('Registration successful:', response);
-    } catch (error) {
-      console.error('Registration failed:', error);
-    }
+    const processedData: RegistrationData = {
+      ...data,
+      avatar: data.avatar?.url?.trim() ? data.avatar : undefined,
+      banner: data.banner?.url?.trim() ? data.banner : undefined,
+    };
+
+    console.log('Processed Registration Data:', processedData);
+    await registrationApiCall(processedData, setIsRegistering);
   };
 
   return (
@@ -47,6 +46,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Name</SubTitle>
@@ -69,6 +69,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Email</SubTitle>
@@ -92,6 +93,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Password</SubTitle>
@@ -114,6 +116,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Bio</SubTitle>
@@ -138,13 +141,13 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Avatar picture</SubTitle>
               <Controller
                 name="avatar.url"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -161,14 +164,13 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Avatar description</SubTitle>
-
               <Controller
                 name="avatar.alt"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -185,13 +187,13 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Banner picture</SubTitle>
               <Controller
                 name="banner.url"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -208,13 +210,13 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Banner description</SubTitle>
               <Controller
                 name="banner.alt"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -231,6 +233,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 6 }}>
             <DefaultButton>
               <Button onClick={() => setIsRegistering(true)} fullWidth={true}>
@@ -238,6 +241,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               </Button>
             </DefaultButton>
           </Grid>
+
           <Grid size={{ xs: 6 }}>
             <DefaultButton>
               <Button type="submit" fullWidth={true}>

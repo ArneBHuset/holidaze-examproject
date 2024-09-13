@@ -33,9 +33,6 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
     const response = await loginApiCall(data);
     if (response.success) {
       navigate('/');
-      console.error('Login successful, but accessToken is not set!');
-    } else {
-      console.log('Login failed:', response.message);
     }
   };
 

@@ -11,11 +11,15 @@ import VenueDetailsPage from './pages/VenueDetailsPage.tsx';
 import './index.scss';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import SnackBarError from './services/snackbar/SnackBarError.tsx';
+import SnackBarSuccess from './services/snackbar/SnackBarSuccess';
 
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
+        <SnackBarError />
+        <SnackBarSuccess />
         <Routes>
           <>
             <Route

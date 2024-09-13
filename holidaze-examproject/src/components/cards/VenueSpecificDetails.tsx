@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import MainCard from '../../layout/MainCard.tsx';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2'; // Use Grid2 for layout
@@ -17,10 +16,12 @@ import FreeBreakfastIcon from '@mui/icons-material/FreeBreakfast';
 import PetsIcon from '@mui/icons-material/Pets';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { useTheme } from '@mui/material/styles';
+import { BookingData } from '../../services/interfaces/api/venueResponse.ts';
+import { VenueSpecificDetailsProps } from '../../services/interfaces/api/venueResponse.ts';
 
-function VenueSpecificDetails({ venue }) {
+function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
   const theme = useTheme();
-  const bookingEvents = venue.bookings?.map((booking) => ({
+  const bookingEvents = venue.bookings?.map((booking: BookingData) => ({
     title: `Booked by ${booking.customer?.name || 'Guest'}`,
     start: booking.dateFrom,
     end: booking.dateTo,
@@ -31,11 +32,7 @@ function VenueSpecificDetails({ venue }) {
       <Box sx={{ padding: 1 }}>
         <Grid container spacing={2}>
           <Grid size={12} textAlign="center">
-            <DefaultSubTitle>
-              <Typography variant="h4" gutterBottom>
-                {venue.name}
-              </Typography>
-            </DefaultSubTitle>
+            <DefaultSubTitle>{venue.name}</DefaultSubTitle>
           </Grid>
           {/* Price */}
           <Grid size={{ xs: 7, sm: 4, md: 6 }} marginLeft={{ xs: '20px', sm: '100px', md: '80px' }}>
@@ -99,11 +96,7 @@ function VenueSpecificDetails({ venue }) {
           </Grid>
 
           <Grid size={{ xs: 12, sm: 12 }}>
-            <DefaultSubTitle>
-              <Typography variant="h6" gutterBottom>
-                Meet your host
-              </Typography>
-            </DefaultSubTitle>
+            <DefaultSubTitle>Meet your host</DefaultSubTitle>
           </Grid>
 
           {venue.owner?.banner?.url && (

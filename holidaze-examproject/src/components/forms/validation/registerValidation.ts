@@ -18,14 +18,14 @@ export const registerValidationSchema = yup.object().shape({
     .object()
     .shape({
       url: yup.string().url('Avatar URL must be a valid URL').optional(),
-      alt: yup.string().max(120, 'Avatar alt text must be less than 120 characters').optional(),
+      alt: yup.string().max(180, 'Avatar alt text must be less than 120 characters').optional(),
     })
     .optional(),
   banner: yup
     .object()
     .shape({
       url: yup.string().url('Banner URL must be a valid URL').optional(),
-      alt: yup.string().max(120, 'Banner alt text must be less than 120 characters').optional(),
+      alt: yup.string().max(180, 'Banner alt text must be less than 120 characters').optional(),
     })
     .optional(),
 });

@@ -46,6 +46,10 @@ export interface BookingData {
   customer?: CustomerData;
 }
 
+export interface VenueSpecificDetailsProps {
+  venue: VenueData;
+}
+
 export default interface VenueData {
   id: string;
   name: string;

@@ -11,7 +11,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import GradeIcon from '@mui/icons-material/Grade';
 import { useNavigate } from 'react-router-dom';
 import VenueData from '../../services/interfaces/api/venueResponse.ts';
-import MainCard from '../../layout/MainCard.tsx';
 
 interface MainVenueCardProps {
   venues: VenueData[];
@@ -68,7 +67,6 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                   <DefaultSubTitle>
                     <Typography
                       gutterBottom
-                      variant="h3"
                       textAlign={{ xs: 'center', sm: 'left' }}
                       maxHeight={75}
                       overflow="hidden"
