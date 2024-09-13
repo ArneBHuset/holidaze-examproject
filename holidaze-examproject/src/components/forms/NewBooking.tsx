@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Grid from '@mui/material/Grid2';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import FormControl from '@mui/material/FormControl';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -13,28 +13,27 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { getValidatedHeader } from '../../services/api/variables/headers.ts';
 import { bookingEndpoint } from '../../services/api/variables/endpoints/bookingEndpoint.ts';
 import baseApiCall from '../../services/api/apiMain.ts';
-import VenueData from '../../services/interfaces/api/venueResponse.ts';
 import dayjs, { Dayjs } from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { newBookingValidation } from './validation/newBookingValidation.ts';
+import { FormValues } from '../../services/interfaces/newBookingForm.ts';
+import { DrawerComponentProps } from '../../services/interfaces/newBookingForm.ts';
+import { snackBarError } from '../../services/snackbar/SnackBarError.tsx';
+import Person4Icon from '@mui/icons-material/Person4';
+import { useNavigate } from 'react-router-dom';
+import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
+import { snackBarSuccess } from '../../services/snackbar/SnackBarSuccess.tsx';
+import { ApiError } from '../../services/interfaces/error/catchError.ts';
+
+dayjs.extend(isBetween);
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
-
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
-
-interface FormValues {
-  checkInDate: Dayjs | null;
-  checkOutDate: Dayjs | null;
-  guests: number;
-}
-
-interface DrawerComponentProps {
-  open: boolean;
-  toggleDrawer: (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => void;
-  venue: VenueData;
-}
+type Anchor = 'bottom';
 
 const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, venue }) => {
+  const [success, setSuccess] = useState(false);
   const anchor: Anchor = 'bottom';
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -43,7 +42,7 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
     watch,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: yupResolver(newBookingValidation),
+    resolver: yupResolver(newBookingValidation(venue.maxGuests)),
     defaultValues: {
       checkInDate: null,
       checkOutDate: null,
@@ -54,7 +53,9 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
   const checkInDate = watch('checkInDate');
 
   const isDateUnavailable = (date: Dayjs) => {
-    return venue.bookings?.some((booking) => dayjs(date).isBetween(booking.dateFrom, booking.dateTo, null, '[]'));
+    return venue.bookings
+      ? venue.bookings.some((booking) => dayjs(date).isBetween(booking.dateFrom, booking.dateTo, null, '[]'))
+      : false;
   };
 
   const onSubmit = async (data: FormValues) => {
@@ -67,17 +68,22 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
 
     try {
       const headers = getValidatedHeader();
-      console.log(apiKey);
-      const response = await baseApiCall({
+      await baseApiCall({
         url: bookingEndpoint,
         method: 'POST',
         headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
         body: JSON.stringify(bookingData),
       });
-      console.log('Booking successful:', response);
+      snackBarSuccess('Booking successful!');
+      setSuccess(true);
     } catch (error) {
-      console.error('Error creating booking:', error);
+      const apiError = error as ApiError;
+      snackBarError(apiError.message || 'Error creating booking. Please try again.');
     }
+  };
+
+  const handleViewBookings = () => {
+    navigate('/view-bookings'); // Adjust route as necessary
   };
 
   return (
@@ -89,12 +95,7 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
         keepMounted: true,
       }}
     >
-      <Box
-        sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 300 }}
-        role="presentation"
-        display="flex"
-        justifyContent="center"
-      >
+      <Box sx={{ width: 'auto' }} role="presentation" display="flex" justifyContent="center" padding={4}>
         <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={4} maxWidth="sm" justifyContent="center">
             <Grid size={6}>
@@ -155,33 +156,51 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
               </LocalizationProvider>
             </Grid>
 
-            <Grid size={12}>
+            <Grid size={6} justifyContent="left">
               <DefaultSubTitle>Guests</DefaultSubTitle>
-              <Controller
-                name="guests"
-                control={control}
-                defaultValue={1}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    type="number"
-                    placeholder="Number of guests"
-                    variant="standard"
-                    error={!!errors.guests}
-                    helperText={errors.guests ? errors.guests.message : ''}
-                  />
-                )}
-              />
+              <DefaultInput>
+                <Controller
+                  name="guests"
+                  control={control}
+                  defaultValue={1}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      type="number"
+                      placeholder="Number of guests"
+                      variant="standard"
+                      error={!!errors.guests}
+                      helperText={errors.guests ? errors.guests.message : ''}
+                    />
+                  )}
+                />
+              </DefaultInput>
             </Grid>
+            <Grid size={4}>
+              <DefaultSubTitle>Max guests</DefaultSubTitle>
+              <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 2 }}>
+                <Person4Icon sx={{ color: 'secondary.main', fontSize: 28 }} />
+                {venue.maxGuests}
+              </Typography>
+            </Grid>
+              <Grid size={success ? 8 : 12}>
+                <DefaultButton>
+                  <Button fullWidth onClick={handleSubmit(onSubmit)}>
+                    BOOK
+                  </Button>
+                </DefaultButton>
+              </Grid>
+              {success && (
+                <Grid size={4}>
+                  <DefaultButton>
+                    <Button fullWidth onClick={handleViewBookings}>
+                      VIEW BOOKINGS
+                    </Button>
+                  </DefaultButton>
+                </Grid>
+              )}
 
-            <Grid size={12}>
-              <DefaultButton>
-                <Button fullWidth={true} onClick={handleSubmit(onSubmit)}>
-                  BOOK
-                </Button>
-              </DefaultButton>
-            </Grid>
           </Grid>
         </FormControl>
       </Box>

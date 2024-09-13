@@ -14,7 +14,11 @@ import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const { control, handleSubmit, formState: { errors } } = useForm<RegistrationData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegistrationData>({
     resolver: yupResolver<RegistrationData>(registerValidationSchema),
   });
   const onSubmit = async (data: RegistrationData) => {

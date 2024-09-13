@@ -44,9 +44,11 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
+  };
 
-    if ((event.key === 'Enter' || event.type === 'blur') && value.trim()) {
-      onSearch(value);
+  const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && searchTerm.trim()) {
+      onSearch(searchTerm); // Trigger search when Enter is pressed
     }
   };
 
@@ -136,9 +138,8 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
               type="search"
               placeholder="Beach house in..."
               value={searchTerm}
-              onChange={handleSearchInputChange}
-              onKeyDown={handleSearchInputChange}
-              onBlur={handleSearchInputChange}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleSearchInputChange(event)}
+              onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => handleSearchKeyDown(event)}
               variant="standard"
             />
           </DefaultInput>
@@ -200,7 +201,7 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
                 disabled={!dates.checkInDate}
                 open={checkOutOpen}
                 onClose={() => setCheckOutOpen(false)}
-                minDate={dates.checkInDate ? dayjs(dates.checkInDate).add(1, 'day') : null}
+                minDate={dates.checkInDate ? dayjs(dates.checkInDate).add(1, 'day') : undefined}
                 slots={{ textField: TextField }}
                 slotProps={{
                   textField: {

@@ -6,7 +6,7 @@ export interface DatesType {
 }
 
 export default interface FilterParams {
-  availableChecked: boolean;
+  detailedOnly: boolean;
   selectedCountries: string[];
   dates: DatesType;
 }

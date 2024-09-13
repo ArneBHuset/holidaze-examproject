@@ -25,7 +25,7 @@ const DefaultBottomNavigation: React.FC<ReusableBottomNavigationProps> = ({ chil
       }}
       elevation={3}
     >
-      <BottomNavigation sx={{ backgroundColor: theme.palette.secondary.main, width: '100%' }} showLabels>
+      <BottomNavigation sx={{ backgroundColor: theme.palette.secondary.main, width: '100%' }}>
         {children}
       </BottomNavigation>
     </Paper>

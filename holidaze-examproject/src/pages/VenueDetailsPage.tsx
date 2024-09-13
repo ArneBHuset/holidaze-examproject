@@ -14,7 +14,8 @@ const VenueDetailsPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer =
-    (_anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    (_anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
         ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')

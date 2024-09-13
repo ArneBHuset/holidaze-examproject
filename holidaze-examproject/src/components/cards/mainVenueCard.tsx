@@ -67,7 +67,6 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                   <DefaultSubTitle>
                     <Typography
                       gutterBottom
-                      variant="h3"
                       textAlign={{ xs: 'center', sm: 'left' }}
                       maxHeight={75}
                       overflow="hidden"
