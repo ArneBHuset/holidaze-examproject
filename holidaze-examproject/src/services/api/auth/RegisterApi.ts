@@ -4,6 +4,7 @@ import { unValidatedHeader } from '../variables/headers.ts';
 import RegistrationData from '../../interfaces/registrationForm.ts';
 import { snackBarError } from '../../snackbar/SnackBarError.tsx';
 import { snackBarSuccess } from '../../snackbar/SnackBarSuccess.tsx';
+import { ApiError } from '../../interfaces/error/catchError.ts';
 
 /**
  * Function for user registration
@@ -12,7 +13,7 @@ import { snackBarSuccess } from '../../snackbar/SnackBarSuccess.tsx';
  */
 export async function registrationApiCall(
   registrationFormData: RegistrationData,
-  setIsRegistering: React.Dispatch<React.SetStateAction<boolean>>
+  setIsRegistering: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   try {
     const registrationResponse = await baseApiCall({
@@ -22,14 +23,15 @@ export async function registrationApiCall(
       body: JSON.stringify(registrationFormData),
     });
 
-    if (registrationResponse && registrationResponse.success) {
+    if (registrationResponse && registrationResponse.data) {
       snackBarSuccess('Registration successful! Please log in.');
       setIsRegistering(true);
-    } else {
-      const errorMessage = registrationResponse?.errors?.[0]?.message || 'Registration failed. Please try again.';
+    } else if (registrationResponse?.errors?.length) {
+      const errorMessage = registrationResponse.errors[0].message;
       snackBarError(errorMessage);
     }
-  } catch (error: any) {
-    snackBarError(error.message || 'An error occurred with registering');
+  } catch (error) {
+    const apiError = error as ApiError;
+    snackBarError(apiError.message || 'An error occurred with registering');
   }
 }

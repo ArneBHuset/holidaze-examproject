@@ -1,9 +1,10 @@
 import baseApiCall from '../apiMain';
-import { loginEnpoint } from '../variables/endpoints/authEndpoint.ts';
+import { loginEndpoint } from '../variables/endpoints/authEndpoint.ts';
 import { unValidatedHeader } from '../variables/headers';
 import LoginData from '../../interfaces/LoginForm.ts';
 import { snackBarError } from '../../snackbar/SnackBarError.tsx';
 import { snackBarSuccess } from '../../snackbar/SnackBarSuccess.tsx';
+import { ApiError } from '../../interfaces/error/catchError.ts';
 
 /**
  * Function for login authentication. If successful,
@@ -12,11 +13,11 @@ import { snackBarSuccess } from '../../snackbar/SnackBarSuccess.tsx';
  * @returns {Promise<{ success: boolean; message?: string }>} - Result of the API call with success status and optional message.
  */
 export async function loginApiCall(loginFormData: LoginData): Promise<{ success: boolean; message?: string }> {
-  console.log('Used for LOGIN call', loginEnpoint, 'POST', unValidatedHeader, loginFormData);
+  console.log('Used for LOGIN call', loginEndpoint, 'POST', unValidatedHeader, loginFormData);
 
   try {
     const loginResponse = await baseApiCall({
-      url: loginEnpoint,
+      url: loginEndpoint,
       method: 'POST',
       headers: unValidatedHeader,
       body: JSON.stringify(loginFormData),
@@ -30,8 +31,9 @@ export async function loginApiCall(loginFormData: LoginData): Promise<{ success:
       const errorMessage = loginResponse.errors?.[0]?.message || 'Wrong password';
       return { success: false, message: errorMessage };
     }
-  } catch (error: any) {
-    snackBarError(error.message || 'An error occurred with logging in');
+  } catch (error) {
+    const apiError = error as ApiError;
+    snackBarError(apiError.message || 'An error occurred with logging in');
     return { success: false, message: 'An error occurred. Please try again later.' };
   }
 }

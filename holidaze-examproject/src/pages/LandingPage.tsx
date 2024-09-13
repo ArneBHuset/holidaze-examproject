@@ -11,6 +11,7 @@ import VenueData from '../services/interfaces/api/venueResponse.ts';
 import { processVenueData } from '../services/filtering/filterLandingPage.ts';
 import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
 import { LinearProgress } from '@mui/material';
+import { ApiError } from '../services/interfaces/error/catchError.ts';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 export default function LandingPage() {
@@ -50,8 +51,9 @@ export default function LandingPage() {
         setFilteredVenueData(response.data as VenueData[]);
         processVenueData(response.data);
         setLoading(false);
-      } catch (error: any) {
-        snackBarError(error.message || 'An error occurred while fetching data.');
+      } catch (error) {
+        const apiError = error as ApiError;
+        snackBarError(apiError.message || 'An error occurred while fetching data.');
         setLoading(false);
       }
     }, 150),

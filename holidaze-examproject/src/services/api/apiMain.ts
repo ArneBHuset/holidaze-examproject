@@ -1,6 +1,7 @@
 import { baseUrl } from './variables/endpoints/baseUrl.ts';
 import ApiParameters from '../interfaces/api/apiParameters.ts';
 import { snackBarError } from '../snackbar/SnackBarError.tsx';
+import { ApiError } from '../interfaces/error/catchError.ts';
 
 /**
  * Main API call function, taking 4 parameters to make a specific API call.
@@ -17,18 +18,22 @@ async function baseApiCall({ url, method, headers, body }: ApiParameters) {
       headers: headers,
       body: body,
     };
+
     const response = await fetch(`${baseUrl}${url}`, fetchData);
 
     if (!response.ok) {
       const errorResponse = await response.json();
-      const errorMessage = errorResponse.message || 'Failed to fetch data';
+      const errorMessage = errorResponse.message ||
+        (errorResponse.errors ? errorResponse.errors.map((e: any) => e.message).join(', ') : 'Failed to fetch data');
       snackBarError(errorMessage);
       return undefined;
     }
 
     return await response.json();
-  } catch (error: any) {
-    snackBarError(error.message || 'An unknown error occurred');
+  } catch (error) {
+    const apiError = error as ApiError;
+    const errorMessage = apiError.message || 'An unknown error occurred';
+    snackBarError(errorMessage);
     return undefined;
   }
 }

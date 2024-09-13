@@ -14,7 +14,7 @@ const VenueDetailsPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer =
-    (anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    (_anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
         ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
@@ -30,7 +30,7 @@ const VenueDetailsPage = () => {
     <Container maxWidth={'sm'}>
       <Grid container spacing={2} maxWidth={'sm'}>
         <Grid size={12} marginBottom={2}>
-          <ImageDisplayCard venueMedia={venue.media} />
+          <ImageDisplayCard venueMedia={venue.media || [{ url: 'https://shorturl.at/MBljW', alt: 'Image missing' }]} />
         </Grid>
         <Grid size={12}>
           <VenueSpecificDetails venue={venue} />
