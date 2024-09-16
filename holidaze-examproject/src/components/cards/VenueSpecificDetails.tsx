@@ -18,6 +18,7 @@ import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { useTheme } from '@mui/material/styles';
 import { BookingData } from '../../services/interfaces/api/venueResponse.ts';
 import { VenueSpecificDetailsProps } from '../../services/interfaces/api/venueResponse.ts';
+import HostDetails from '../profile/ProfileDisplay.tsx';
 
 function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
   const theme = useTheme();
@@ -99,49 +100,22 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
             <DefaultSubTitle>Meet your host</DefaultSubTitle>
           </Grid>
 
-          {venue.owner?.banner?.url && (
-            <Grid size={{ xs: 12, sm: 12 }}>
-              <img
-                src={venue.owner.banner.url}
-                alt={venue.owner.banner.alt || 'Owner banner'}
-                aria-label={venue.owner.banner.alt}
-                style={{ width: '100%', borderRadius: '8px', height: '90px' }}
-              />
-              <Box
-                display={'flex'}
-                alignItems={'center'}
-                gap={{ xs: 2, sm: 4 }}
-                sx={{ marginTop: '-45px', marginLeft: '1vw' }}
-              >
-                {venue.owner?.avatar?.url && (
-                  <Avatar
-                    src={venue.owner.avatar.url}
-                    alt={venue.owner.avatar.alt || 'Owner avatar'}
-                    sx={{ width: { xs: '100px' }, height: { xs: '100px' } }}
-                  />
-                )}
-                <Box paddingTop={6}>
-                  <Typography variant="h4">{venue.owner?.name}</Typography>
-                  <Accordion sx={{ boxShadow: 'none', border: 'none' }}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      sx={{ padding: 0, '& .MuiAccordionSummary-content': { margin: 0 } }} // Remove padding and space between icon and text
-                    >
-                      <Typography variant="h6" sx={{ display: 'inline' }}>
-                        See host details
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ padding: 0 }}>
-                      <Typography variant="body2">Email: {venue.owner?.email}</Typography>
-                      <Typography variant="body2">
-                        <strong>Bio:</strong> {venue.owner?.bio || 'No bio available'}
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                </Box>
-              </Box>
-            </Grid>
-          )}
+          <Grid size={{ xs: 12, sm: 12 }}>
+            <HostDetails  data={{
+              name: venue.owner?.name || '',
+              email: venue.owner?.email || '',
+              bio: venue.owner?.bio || '',
+              avatar: {
+                url: venue.owner?.avatar?.url || '',
+                alt: venue.owner?.avatar?.alt || 'Profile avatar',
+              },
+              banner: {
+                url: venue.owner?.banner?.url || '',
+                alt: venue.owner?.banner?.alt || 'Host banner',
+              },
+            }}
+            />
+          </Grid>
           <Grid size={{ xs: 12 }} sx={{ opacity: 0.7 }}>
             <Typography variant="body2" sx={{ marginTop: 4 }}>
               <strong>Last Updated:</strong>{' '}

@@ -187,7 +187,9 @@ function Header() {
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
-                <Typography textAlign="center">View Profile</Typography>
+                <Link to="/user-overview" style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
+                  <Typography textAlign="center">View Profile</Typography>
+                </Link>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
                 <Typography textAlign="center">See Bookings</Typography>
