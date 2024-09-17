@@ -11,8 +11,8 @@ import DefaultButton from '../../styles/mui-styles/components/defaultBtn';
 import baseApiCall from '../../services/api/apiMain.ts';
 import { profileEndpoint } from '../../services/api/variables/endpoints/profileEndpoints.ts';
 import { getValidatedHeader } from '../../services/api/variables/headers.ts';
-import { EditProfileFormData} from '../../services/interfaces/api/updateProfile.ts';
-import { EditProfileProps} from '../../services/interfaces/api/updateProfile.ts';
+import { EditProfileFormData } from '../../services/interfaces/api/updateProfile.ts';
+import { EditProfileProps } from '../../services/interfaces/api/updateProfile.ts';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -98,11 +98,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ onClose, currentProfile, onPr
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      sx={{ width: '100%', padding: 2 }}
-    >
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: '100%', padding: 2 }}>
       <Typography variant="h6" gutterBottom>
         Edit Your Profile
       </Typography>

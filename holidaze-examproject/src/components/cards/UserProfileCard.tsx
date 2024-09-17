@@ -1,5 +1,3 @@
-// src/components/UserProfileCard.tsx
-
 import React, { useEffect, useState } from 'react';
 import HostDetails from '../profile/ProfileDisplay.tsx';
 import Typography from '@mui/material/Typography';
@@ -92,11 +90,7 @@ const UserProfileCard: React.FC = () => {
 
       {isEditing && (
         <Box sx={{ padding: 4, borderTop: '1px solid #e0e0e0' }}>
-          <EditProfile
-            onClose={handleFormClose}
-            currentProfile={profile}
-            onProfileUpdate={handleProfileUpdate}
-          />
+          <EditProfile onClose={handleFormClose} currentProfile={profile} onProfileUpdate={handleProfileUpdate} />
         </Box>
       )}
     </MainCard>
