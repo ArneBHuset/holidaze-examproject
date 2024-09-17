@@ -7,14 +7,13 @@ import Grid from '@mui/material/Grid2';
 
 function UserOverviewPage() {
   return (
-    <Container maxWidth='sm' >
-    <Grid container spacing={4} marginTop={4} width={'100%'}>
-      <Grid size={12}>
-          <UserProfileCard/>
+    <Container maxWidth="sm">
+      <Grid container spacing={4} marginTop={4} width={'100%'}>
+        <Grid size={12}>
+          <UserProfileCard />
+        </Grid>
+        <Grid size={12}></Grid>
       </Grid>
-      <Grid size={12}>
-      </Grid>
-    </Grid>
     </Container>
   );
 }

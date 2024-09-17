@@ -101,19 +101,20 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
           </Grid>
 
           <Grid size={{ xs: 12, sm: 12 }}>
-            <HostDetails  data={{
-              name: venue.owner?.name || '',
-              email: venue.owner?.email || '',
-              bio: venue.owner?.bio || '',
-              avatar: {
-                url: venue.owner?.avatar?.url || '',
-                alt: venue.owner?.avatar?.alt || 'Profile avatar',
-              },
-              banner: {
-                url: venue.owner?.banner?.url || '',
-                alt: venue.owner?.banner?.alt || 'Host banner',
-              },
-            }}
+            <HostDetails
+              data={{
+                name: venue.owner?.name || '',
+                email: venue.owner?.email || '',
+                bio: venue.owner?.bio || '',
+                avatar: {
+                  url: venue.owner?.avatar?.url || '',
+                  alt: venue.owner?.avatar?.alt || 'Profile avatar',
+                },
+                banner: {
+                  url: venue.owner?.banner?.url || '',
+                  alt: venue.owner?.banner?.alt || 'Host banner',
+                },
+              }}
             />
           </Grid>
           <Grid size={{ xs: 12 }} sx={{ opacity: 0.7 }}>

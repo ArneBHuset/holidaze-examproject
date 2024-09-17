@@ -1,17 +1,19 @@
-// src/components/ProfileDisplay.tsx
+// src/components/UserProfileCard.tsx
 
 import React, { useEffect, useState } from 'react';
 import HostDetails from '../profile/ProfileDisplay.tsx';
-import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import { HostData } from '../../services/interfaces/api/profileDisplay';
 import MainCard from '../../layout/MainCard.tsx';
-import { Container } from '@mui/material';
+import { Box } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
-import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn';
+import Button from '@mui/material/Button';
+import EditProfile from '../forms/UpdateProfile.tsx';
 
 const UserProfileCard: React.FC = () => {
   const [profile, setProfile] = useState<HostData | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem('profileData');
@@ -23,14 +25,13 @@ const UserProfileCard: React.FC = () => {
           email: parsedProfile.email,
           bio: parsedProfile.bio,
           avatar: {
-            url: parsedProfile.avatar.url,
-            alt: parsedProfile.avatar.alt,
+            url: parsedProfile.avatar?.url || '',
+            alt: parsedProfile.avatar?.alt || '',
           },
           banner: {
-            url: parsedProfile.banner.url,
-            alt: parsedProfile.banner.alt,
+            url: parsedProfile.banner?.url || '',
+            alt: parsedProfile.banner?.alt || '',
           },
-          // `venueManager` and `_count` are optional and can be omitted
         };
         setProfile(hostData);
       } catch (error) {
@@ -41,25 +42,63 @@ const UserProfileCard: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const updatedProfile = localStorage.getItem('profileData');
+      if (updatedProfile) {
+        setProfile(JSON.parse(updatedProfile));
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleFormClose = () => {
+    setIsEditing(false);
+  };
+
+  const handleProfileUpdate = (updatedProfile: HostData) => {
+    setProfile(updatedProfile);
+  };
+
   if (!profile) {
     return (
       <Typography variant="h5" align="center" sx={{ mt: 4 }}>
-        No profile found, please log out and in again
+        No profile found, please log out and log in again.
       </Typography>
     );
   }
 
   return (
-      <MainCard>
-        <CardContent sx={{marginTop:4}}>
-      <HostDetails data={profile} />
-        </CardContent>
-        <CardContent>
-          <DefaultButton>
-            hellu
-          </DefaultButton>
-        </CardContent>
+    <MainCard>
+      <CardContent sx={{ marginTop: 4 }}>
+        <HostDetails data={profile} />
+      </CardContent>
+      <CardContent sx={{ display: 'flex', justifyContent: 'end', marginTop: 4 }}>
+        <DefaultButton>
+          <Button variant="contained" onClick={handleEditClick}>
+            EDIT PROFILE
+          </Button>
+        </DefaultButton>
+      </CardContent>
 
+      {isEditing && (
+        <Box sx={{ padding: 4, borderTop: '1px solid #e0e0e0' }}>
+          <EditProfile
+            onClose={handleFormClose}
+            currentProfile={profile}
+            onProfileUpdate={handleProfileUpdate}
+          />
+        </Box>
+      )}
     </MainCard>
   );
 };
