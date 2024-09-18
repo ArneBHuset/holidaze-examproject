@@ -7,18 +7,18 @@ const customTheme = (outerTheme: Theme) =>
       MuiButton: {
         styleOverrides: {
           root: {
-            backgroundColor: outerTheme.palette.secondary.main,
-            color: outerTheme.palette.primary.main, // Text color is primary.main
+            backgroundColor: 'transparent',
+            color: outerTheme.palette.primary.main,
             padding: '8px 14px',
-            fontSize: '1.1rem',
-            fontWeight: 500,
+            fontSize: '1rem',
+            fontWeight: 300,
             lineHeight: 1.75,
             letterSpacing: '0.05em',
-            border: 'none', // Remove borders
+            border: `2px solid ${outerTheme.palette.secondary.light}`,
             fontFamily: outerTheme.typography.button.fontFamily,
 
             '&:hover': {
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)', // Mild drop shadow on hover
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
             },
 
             '&.Mui-disabled': {
@@ -31,7 +31,7 @@ const customTheme = (outerTheme: Theme) =>
     },
   });
 
-export default function DefaultButton(props: ButtonNode) {
+export default function SecondaryButton(props: ButtonNode) {
   const outerTheme = useTheme();
   return <ThemeProvider theme={customTheme(outerTheme)}>{props.children}</ThemeProvider>;
 }

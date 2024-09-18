@@ -8,7 +8,7 @@ const theme = createTheme({
     },
     secondary: {
       main: '#F88349',
-      light: '#49BEF8', //Consider this color, which is tetradic with the secondary main orange
+      light: '#49BEF8',
     },
     error: {
       main: '#ac1b00',

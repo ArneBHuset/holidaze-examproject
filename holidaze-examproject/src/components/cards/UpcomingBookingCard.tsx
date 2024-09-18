@@ -9,9 +9,13 @@ import Box from '@mui/material/Box';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import UpdateBooking from '../forms/UpdateBooking.tsx';
+import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { useTheme } from '@mui/material/styles';
 
 export default function UpcomingBookingCard({ bookings = [] }) {
   const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const theme = useTheme()
 
   return (
     <Grid container spacing={2}>
@@ -20,6 +24,9 @@ export default function UpcomingBookingCard({ bookings = [] }) {
         const isUpdating = selectedBookingId === booking.id;
 
         if (!venue) return null;
+        const dateFrom = new Date(booking.dateFrom);
+        const dateTo = new Date(booking.dateTo);
+        const duration = Math.ceil((dateTo - dateFrom) / (1000 * 60 * 60 * 24));
 
         return (
           <Grid key={venue.id} size={12}>
@@ -32,8 +39,8 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                 borderBottomLeftRadius: { xs: 0, sm: 3 },
                 borderBottomRightRadius: { xs: 0, sm: 3 },
                 boxShadow: isUpdating
-                  ? '10px 10px 35px rgba(73, 190, 248, 0.5)'
-                  : '3px 3px 15px rgba(73, 190, 248, 0.25)',
+                  ? '8px 8px 6px rgba(73, 190, 248, 0.6)'
+                  : '3px 3px 10px rgba(73, 190, 248, 0.25)',
               }}
             >
               <Box padding={{ xs: 0.5, sm: 1 }} paddingRight={{ sm: 0 }}>
@@ -64,48 +71,61 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                 <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
                   <Grid size={12}>
                     <DefaultSubTitle>
-                      <Typography
-                        gutterBottom
-                        textAlign={{ xs: 'center', sm: 'left' }}
-                        maxHeight={75}
-                        overflow="hidden"
-                        sx={{ marginTop: { xs: 1, sm: 0 }, marginBottom: 0 }}
-                        maxWidth={'90%'}
-                      >
                         {venue.name}
-                      </Typography>
                     </DefaultSubTitle>
                   </Grid>
 
-                  <Grid size={12} display="flex" justifyContent="space-between" marginTop={2}>
-                    <Typography variant="body2">
-                      <strong>Date From:</strong> {new Date(booking.dateFrom).toLocaleDateString()}
+                  <Grid size={{xs:12, md:7}} display="flex" gap={2} alignItems='center' justifyContent='center'  marginTop={2} >
+                    <Typography variant="h4">
+                    {new Date(booking.dateFrom).toLocaleDateString()}
                     </Typography>
-                    <Typography variant="body2">
-                      <strong>Date To:</strong> {new Date(booking.dateTo).toLocaleDateString()}
+                    <ArrowCircleRightIcon sx={{color: theme.palette.secondary.main, fontSize:'2rem'}}/>
+                    <Typography variant="h4">
+                      {new Date(booking.dateTo).toLocaleDateString()}
                     </Typography>
                   </Grid>
+                  <Grid size={{xs:12, md:4}} sx={{display:'flex', justifyContent:'center', alignItems:'center', pt:{xs:1, md:2}}}>
+                    <Box >
+                    <Typography variant="h4" >
+                      {duration} {duration === 1 ? 'day' : 'days'}
+                    </Typography>
+                    </Box>
+                  </Grid>
+
 
                   <Grid size={12} display="flex" justifyContent="space-between" marginTop={2}>
                     <Typography variant="body2">
                       <strong>Last Updated:</strong> {new Date(booking.updated).toLocaleString()}
                     </Typography>
                   </Grid>
+                  <Grid size={6}>
 
+                    <SecondaryButton>
+                      <Button
+                        onClick={() => setSelectedBookingId(booking.id)}
+                        sx={{
+                          borderBottomLeftRadius: { xs: 0, sm: 4 },
+                          borderBottomRightRadius: { xs: 0, sm: 4 },
+                          padding: { xs: 1, sm: 1.5 },
+                        }}
+                      >
+                        Update booking
+                      </Button>
+                  </SecondaryButton>
+                  </Grid>
                   {!isUpdating && (
-                    <Grid size={12}>
+                    <Grid size={6}>
+
                       <DefaultButton>
                         <Button
-                          fullWidth
                           onClick={() => setSelectedBookingId(booking.id)}
                           sx={{
-                            width: '100%',
                             borderBottomLeftRadius: { xs: 0, sm: 4 },
                             borderBottomRightRadius: { xs: 0, sm: 4 },
                             padding: { xs: 1, sm: 1.5 },
                           }}
                         >
-                          Review and book!
+                          Update booking
                         </Button>
                       </DefaultButton>
                     </Grid>
@@ -122,7 +142,7 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                   height: 'auto',
                   borderBottomLeftRadius: { xs: 0, sm: 3 },
                   borderBottomRightRadius: { xs: 0, sm: 3 },
-                  boxShadow: '6px 6px 30px rgba(73, 190, 248, 0.4)', // Increase box shadow for the update form card
+                  boxShadow: '6px 6px 30px rgba(73, 190, 248, 0.4)',
                   marginTop: 2,
                 }}
               >
