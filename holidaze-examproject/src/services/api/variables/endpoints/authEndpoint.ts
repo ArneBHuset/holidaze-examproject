@@ -3,9 +3,9 @@
  */
 export const registerEndpoint = '/auth/register';
 /**
- * Endpoints for logging in user
+ * Endpoints for logging in user. Holidaze=true adds venueManager status to local storage
  */
-export const loginEndpoint = '/auth/login';
+export const loginEndpoint = '/auth/login?_holidaze=true';
 /**
  * Endpoints for creating an api-eky
  */

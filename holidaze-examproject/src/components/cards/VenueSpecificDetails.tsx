@@ -2,11 +2,8 @@ import MainCard from '../../layout/MainCard.tsx';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2'; // Use Grid2 for layout
 import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import Calendar from '../calendar/Calendar.tsx';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PublicIcon from '@mui/icons-material/Public';
 import StarIcon from '@mui/icons-material/Star';
 import EuroIcon from '@mui/icons-material/Euro';

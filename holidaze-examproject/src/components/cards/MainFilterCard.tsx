@@ -15,7 +15,6 @@ import { DatesType } from '../../services/interfaces/api/filtering/uiFilterParam
 import { applyFilters } from '../../services/filtering/filterLandingPage.ts';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
-// Temporary chip styling for menu field
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {

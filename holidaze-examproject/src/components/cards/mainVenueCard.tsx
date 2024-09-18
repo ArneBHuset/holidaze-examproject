@@ -64,9 +64,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
             >
               <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
                 <Grid size={{ xs: 12 }}>
-                  <DefaultSubTitle>
-                      {venue.name}
-                  </DefaultSubTitle>
+                  <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -15,7 +16,8 @@ import { useTheme } from '@mui/material/styles';
 
 export default function UpcomingBookingCard({ bookings = [] }) {
   const [selectedBookingId, setSelectedBookingId] = useState(null);
-  const theme = useTheme()
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Grid container spacing={2}>
@@ -38,9 +40,7 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                 height: 'auto',
                 borderBottomLeftRadius: { xs: 0, sm: 3 },
                 borderBottomRightRadius: { xs: 0, sm: 3 },
-                boxShadow: isUpdating
-                  ? '8px 8px 6px rgba(73, 190, 248, 0.6)'
-                  : '3px 3px 10px rgba(73, 190, 248, 0.25)',
+                boxShadow: isUpdating ? '8px 8px 6px rgba(73, 190, 248, 0.6)' : '3px 3px 10px rgba(73, 190, 248, 0.25)',
               }}
             >
               <Box padding={{ xs: 0.5, sm: 1 }} paddingRight={{ sm: 0 }}>
@@ -70,28 +70,31 @@ export default function UpcomingBookingCard({ bookings = [] }) {
               >
                 <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
                   <Grid size={12}>
-                    <DefaultSubTitle>
-                        {venue.name}
-                    </DefaultSubTitle>
+                    <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                   </Grid>
 
-                  <Grid size={{xs:12, md:7}} display="flex" gap={2} alignItems='center' justifyContent='center'  marginTop={2} >
-                    <Typography variant="h4">
-                    {new Date(booking.dateFrom).toLocaleDateString()}
-                    </Typography>
-                    <ArrowCircleRightIcon sx={{color: theme.palette.secondary.main, fontSize:'2rem'}}/>
-                    <Typography variant="h4">
-                      {new Date(booking.dateTo).toLocaleDateString()}
-                    </Typography>
+                  <Grid
+                    size={{ xs: 12, md: 7 }}
+                    display="flex"
+                    gap={2}
+                    alignItems="center"
+                    justifyContent="center"
+                    marginTop={2}
+                  >
+                    <Typography variant="h4">{new Date(booking.dateFrom).toLocaleDateString()}</Typography>
+                    <ArrowCircleRightIcon sx={{ color: theme.palette.secondary.main, fontSize: '2rem' }} />
+                    <Typography variant="h4">{new Date(booking.dateTo).toLocaleDateString()}</Typography>
                   </Grid>
-                  <Grid size={{xs:12, md:4}} sx={{display:'flex', justifyContent:'center', alignItems:'center', pt:{xs:1, md:2}}}>
-                    <Box >
-                    <Typography variant="h4" >
-                      {duration} {duration === 1 ? 'day' : 'days'}
-                    </Typography>
+                  <Grid
+                    size={{ xs: 12, md: 4 }}
+                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', pt: { xs: 1, md: 2 } }}
+                  >
+                    <Box>
+                      <Typography variant="h4">
+                        {duration} {duration === 1 ? 'day' : 'days'}
+                      </Typography>
                     </Box>
                   </Grid>
-
 
                   <Grid size={12} display="flex" justifyContent="space-between" marginTop={2}>
                     <Typography variant="body2">
@@ -99,7 +102,6 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                     </Typography>
                   </Grid>
                   <Grid size={6}>
-
                     <SecondaryButton>
                       <Button
                         onClick={() => setSelectedBookingId(booking.id)}
@@ -111,21 +113,20 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                       >
                         Update booking
                       </Button>
-                  </SecondaryButton>
+                    </SecondaryButton>
                   </Grid>
                   {!isUpdating && (
                     <Grid size={6}>
-
                       <DefaultButton>
                         <Button
-                          onClick={() => setSelectedBookingId(booking.id)}
+                          onClick={() => navigate(`/venue/${venue.id}`)}
                           sx={{
                             borderBottomLeftRadius: { xs: 0, sm: 4 },
                             borderBottomRightRadius: { xs: 0, sm: 4 },
                             padding: { xs: 1, sm: 1.5 },
                           }}
                         >
-                          Update booking
+                          See booking details
                         </Button>
                       </DefaultButton>
                     </Grid>
@@ -133,6 +134,7 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                 </Grid>
               </CardContent>
             </Card>
+
             {isUpdating && (
               <Card
                 sx={{

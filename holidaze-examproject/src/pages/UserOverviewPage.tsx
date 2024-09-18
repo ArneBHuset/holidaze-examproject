@@ -8,6 +8,7 @@ import { profileEndpoint } from '../services/api/variables/endpoints/profileEndp
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import { LinearProgress } from '@mui/material';
 import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
+import { ApiError } from '../services/interfaces/error/catchError.ts';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -35,7 +36,8 @@ export default function UserOverviewPage() {
       setBookings(response.data);
       setLoading(false);
     } catch (error) {
-      snackBarError('Error fetching bookings.');
+      const apiError = error as ApiError;
+      snackBarError(apiError.message || 'Unknown error');
       setLoading(false);
     }
   };
