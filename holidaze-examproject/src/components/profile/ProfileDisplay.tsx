@@ -5,6 +5,7 @@ import { Avatar, Box, Typography, Accordion, AccordionSummary, AccordionDetails 
 import Grid from '@mui/material/Grid2';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { HostDetailsProps } from '../../services/interfaces/api/profileDisplay.ts';
+import { Link } from 'react-router-dom';
 
 const HostDetails: React.FC<HostDetailsProps> = ({ data }) => {
   if (!data) {
@@ -23,28 +24,33 @@ const HostDetails: React.FC<HostDetailsProps> = ({ data }) => {
           />
         ) : (
           <img
-            src="https://th.bing.com/th/id/R.1ca9e48aad02c7d87505c37a1d8775ec?rik=83c%2f9USow5x8lA&pid=ImgRaw&r=0"
+            src="https://th.bing.com/th/id/R.7c679658c9a587ffd6b0e66c9ab0d0fe?rik=mNvwy15NYRD0KA&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f08%2fFree-black-background-wallpaper.jpg&ehk=ILvp4NQzbBLVX8qQSyjksYYm60Ksy%2fllfcW5aOQo3A8%3d&risl=&pid=ImgRaw&r=0"
             alt="Default banner"
             style={{ width: '100%', borderRadius: '8px', height: '90px', objectFit: 'cover' }}
           />
         )}
 
         <Box display="flex" alignItems="center" gap={{ xs: 2, sm: 4 }} sx={{ marginTop: '-45px', marginLeft: '1vw' }}>
-          {data?.avatar?.url ? (
-            <Avatar
-              src={data.avatar.url}
-              alt={data.avatar.alt || 'Owner avatar'}
-              sx={{ width: { xs: '100px' }, height: { xs: '100px' }, border: '3px solid white' }}
-            />
-          ) : (
-            <Avatar
-              alt="Default avatar"
-              sx={{ width: { xs: '100px' }, height: { xs: '100px' }, border: '3px solid white' }}
-            />
-          )}
-
+          <Link to={`/hostpage/${data?.name || ''}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            {data?.avatar?.url ? (
+              <Avatar
+                src={data.avatar.url}
+                alt={data.avatar.alt || 'Owner avatar'}
+                sx={{ width: { xs: '100px' }, height: { xs: '100px' }, border: '3px solid white' }}
+              />
+            ) : (
+              <Avatar
+                alt="Default avatar"
+                sx={{ width: { xs: '100px' }, height: { xs: '100px' }, border: '3px solid white' }}
+              />
+            )}
+          </Link>
           <Box paddingTop={6}>
-            <Typography variant="h4">{data?.name || 'Unknown User'}</Typography>
+            <Typography variant="h4">
+              <Link to={`/hostpage/${data?.name || ''}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                {data?.name || 'Unknown User'}
+              </Link>
+            </Typography>
             <Accordion sx={{ boxShadow: 'none', border: 'none' }}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}

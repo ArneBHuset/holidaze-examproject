@@ -28,11 +28,13 @@ export default function UserOverviewPage() {
 
     try {
       setLoading(true);
+
       const response = await baseApiCall({
-        url: `${profileEndpoint}${profileName}/bookings?_venue=true`,
+        url: `${profileEndpoint}${profileName}/bookings?_venue=true&sort=dateFrom&sortOrder=asc`, // Sorted by dateFrom ascending
         method: 'GET',
         headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
       });
+
       setBookings(response.data);
       setLoading(false);
     } catch (error) {

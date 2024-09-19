@@ -150,7 +150,14 @@ export default function UpdateBooking({ booking, onCancel }) {
             {venue.maxGuests}
           </Typography>
         </Grid>
-        <Grid size={6}>
+        <Grid size={4}>
+          <DefaultButton>
+            <Button fullWidth onClick={runDeleteBooking}>
+              Delete booking
+            </Button>
+          </DefaultButton>
+        </Grid>
+        <Grid size={4}>
           <DefaultButton>
             <Button fullWidth onClick={handleSubmit(handleUpdateBooking)}>
               Save Changes
@@ -158,7 +165,7 @@ export default function UpdateBooking({ booking, onCancel }) {
           </DefaultButton>
         </Grid>
 
-        <Grid size={6}>
+        <Grid size={4}>
           <DefaultButton>
             <Button fullWidth onClick={onCancel}>
               Cancel

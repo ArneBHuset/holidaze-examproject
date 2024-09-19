@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs'; // Import dayjs
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -11,7 +12,8 @@ import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import UpdateBooking from '../forms/UpdateBooking.tsx';
 import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useTheme } from '@mui/material/styles';
 
 export default function UpcomingBookingCard({ bookings = [] }) {
@@ -26,9 +28,12 @@ export default function UpcomingBookingCard({ bookings = [] }) {
         const isUpdating = selectedBookingId === booking.id;
 
         if (!venue) return null;
-        const dateFrom = new Date(booking.dateFrom);
-        const dateTo = new Date(booking.dateTo);
-        const duration = Math.ceil((dateTo - dateFrom) / (1000 * 60 * 60 * 24));
+
+        const dateFrom = dayjs(booking.dateFrom);
+        const dateTo = dayjs(booking.dateTo);
+        const duration = dateTo.diff(dateFrom, 'day'); // Calculate duration in days
+        const daysUntilCheckIn = dateFrom.diff(dayjs(), 'day'); // Days until check-in
+        const totalCost = venue.price * duration; // Calculate total cost
 
         return (
           <Grid key={venue.id} size={12}>
@@ -73,6 +78,13 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                     <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                   </Grid>
 
+                  {/* Days Until Check-in */}
+                  <Grid size={12}>
+                    <Typography>{`Your booking at ${venue.location?.city || 'N/A'}, ${
+                      venue.location?.country || 'N/A'
+                    } is only ${daysUntilCheckIn} ${daysUntilCheckIn === 1 ? 'day' : 'days'} away.`}</Typography>
+                  </Grid>
+
                   <Grid
                     size={{ xs: 12, md: 7 }}
                     display="flex"
@@ -81,56 +93,63 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                     justifyContent="center"
                     marginTop={2}
                   >
-                    <Typography variant="h4">{new Date(booking.dateFrom).toLocaleDateString()}</Typography>
-                    <ArrowCircleRightIcon sx={{ color: theme.palette.secondary.main, fontSize: '2rem' }} />
-                    <Typography variant="h4">{new Date(booking.dateTo).toLocaleDateString()}</Typography>
+                    <Typography variant="h4">{dateFrom.format('DD/MM/YYYY')}</Typography>
+                    <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontSize: '1.8rem' }} />
+                    <Typography variant="h4">{dateTo.format('DD/MM/YYYY')}</Typography>
                   </Grid>
+
                   <Grid
                     size={{ xs: 12, md: 4 }}
                     sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', pt: { xs: 1, md: 2 } }}
                   >
                     <Box>
-                      <Typography variant="h4">
+                      <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <AccessTimeIcon sx={{ fontSize: '2rem', color: theme.palette.secondary.main, pb: 0.5 }} />
                         {duration} {duration === 1 ? 'day' : 'days'}
+                      </Typography>
+                      <Typography variant="h5" sx={{ marginTop: 1 }}>
+                        <strong>Total Cost:</strong> ${totalCost.toFixed(2)}
                       </Typography>
                     </Box>
                   </Grid>
 
-                  <Grid size={12} display="flex" justifyContent="space-between" marginTop={2}>
-                    <Typography variant="body2">
-                      <strong>Last Updated:</strong> {new Date(booking.updated).toLocaleString()}
-                    </Typography>
-                  </Grid>
                   <Grid size={6}>
-                    <SecondaryButton>
-                      <Button
-                        onClick={() => setSelectedBookingId(booking.id)}
-                        sx={{
-                          borderBottomLeftRadius: { xs: 0, sm: 4 },
-                          borderBottomRightRadius: { xs: 0, sm: 4 },
-                          padding: { xs: 1, sm: 1.5 },
-                        }}
-                      >
-                        Update booking
-                      </Button>
-                    </SecondaryButton>
-                  </Grid>
-                  {!isUpdating && (
-                    <Grid size={6}>
-                      <DefaultButton>
+                    {!isUpdating && (
+                      <SecondaryButton>
                         <Button
-                          onClick={() => navigate(`/venue/${venue.id}`)}
+                          onClick={() => setSelectedBookingId(booking.id)}
                           sx={{
                             borderBottomLeftRadius: { xs: 0, sm: 4 },
                             borderBottomRightRadius: { xs: 0, sm: 4 },
                             padding: { xs: 1, sm: 1.5 },
                           }}
                         >
-                          See booking details
+                          Update booking
                         </Button>
-                      </DefaultButton>
-                    </Grid>
-                  )}
+                      </SecondaryButton>
+                    )}
+                  </Grid>
+
+                  <Grid size={6}>
+                    <DefaultButton>
+                      <Button
+                        onClick={() => navigate(`/venue/${venue.id}`)}
+                        sx={{
+                          borderBottomLeftRadius: { xs: 0, sm: 4 },
+                          borderBottomRightRadius: { xs: 0, sm: 4 },
+                          padding: { xs: 1, sm: 1.5 },
+                        }}
+                      >
+                        See booking details
+                      </Button>
+                    </DefaultButton>
+                  </Grid>
+
+                  <Grid size={12} display="flex" justifyContent="space-between" marginTop={2}>
+                    <Typography variant="body2">
+                      <strong>Last Updated:</strong> {dayjs(booking.updated).format('DD/MM/YYYY, h:mm A')}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </CardContent>
             </Card>

@@ -14,6 +14,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import SnackBarError from './services/snackbar/SnackBarError.tsx';
 import SnackBarSuccess from './services/snackbar/SnackBarSuccess';
 import { UserProvider } from './services/utilities/UserTypeContext.tsx';
+import AllHostsPage from './pages/AllHostsPage.tsx';
 
 function App() {
   return (
@@ -62,6 +63,14 @@ function App() {
                 element={
                   <MainLayout>
                     <UserOverviewPage />
+                  </MainLayout>
+                }
+              />
+              <Route
+                path="/hostpage/:name"
+                element={
+                  <MainLayout>
+                    <AllHostsPage />
                   </MainLayout>
                 }
               />
