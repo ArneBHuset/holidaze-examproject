@@ -41,26 +41,35 @@ export default function UpdateBooking({ booking, onCancel }) {
 
   const checkInDate = watch('checkInDate');
 
-  const handleUpdateBooking = async (data) => {
-    const bookingData = {
-      dateFrom: data.checkInDate?.toISOString(),
-      dateTo: data.checkOutDate?.toISOString(),
-      guests: data.guests,
-    };
+  const makeApiCall = async (method, data = null) => {
+    const bookingData = data
+      ? {
+        dateFrom: data.checkInDate?.toISOString(),
+        dateTo: data.checkOutDate?.toISOString(),
+        guests: data.guests,
+      }
+      : null;
 
     try {
       const headers = getValidatedHeader();
       await baseApiCall({
         url: `/holidaze/bookings/${booking.id}`,
-        method: 'PUT',
+        method,
         headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
-        body: JSON.stringify(bookingData),
+        body: bookingData ? JSON.stringify(bookingData) : null,
       });
-      snackBarSuccess('Booking updated successfully!');
-      setSuccess(true);
+
+      if (method === 'DELETE') {
+        snackBarSuccess('Booking deleted successfully!');
+        onCancel();
+      } else {
+        snackBarSuccess('Booking updated successfully!');
+        setSuccess(true);
+      }
     } catch (error) {
       const apiError = error as ApiError;
-      snackBarError(apiError.message || 'Error updating booking. Please try again.');
+      const errorMessage = method === 'DELETE' ? 'Error deleting booking' : 'Error updating booking';
+      snackBarError(apiError.message || `${errorMessage}. Please try again.`);
     }
   };
 
@@ -152,14 +161,14 @@ export default function UpdateBooking({ booking, onCancel }) {
         </Grid>
         <Grid size={4}>
           <DefaultButton>
-            <Button fullWidth onClick={runDeleteBooking}>
+            <Button fullWidth onClick={() => makeApiCall('DELETE')}>
               Delete booking
             </Button>
           </DefaultButton>
         </Grid>
         <Grid size={4}>
           <DefaultButton>
-            <Button fullWidth onClick={handleSubmit(handleUpdateBooking)}>
+            <Button fullWidth onClick={handleSubmit((data) => makeApiCall('PUT', data))}>
               Save Changes
             </Button>
           </DefaultButton>

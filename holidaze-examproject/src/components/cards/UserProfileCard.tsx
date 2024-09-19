@@ -76,8 +76,8 @@ const UserProfileCard: React.FC = () => {
   }
 
   return (
-    <MainCard>
-      <CardContent sx={{ marginTop: 4 }}>
+    <MainCard >
+      <CardContent sx={{ margin: 0, padding:0 }}>
         <HostDetails data={profile} />
       </CardContent>
       <CardContent sx={{ display: 'flex', justifyContent: 'end', marginTop: 4 }}>
