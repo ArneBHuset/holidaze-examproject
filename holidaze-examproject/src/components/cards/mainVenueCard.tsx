@@ -64,18 +64,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
             >
               <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
                 <Grid size={{ xs: 12 }}>
-                  <DefaultSubTitle>
-                    <Typography
-                      gutterBottom
-                      textAlign={{ xs: 'center', sm: 'left' }}
-                      maxHeight={75}
-                      overflow="hidden"
-                      sx={{ marginTop: { xs: 1, sm: 0 }, marginBottom: 0 }}
-                      maxWidth={'90%'}
-                    >
-                      {venue.name}
-                    </Typography>
-                  </DefaultSubTitle>
+                  <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography

@@ -7,7 +7,7 @@ let showSnackBar: (message: string) => void = () => {};
 export default function SnackBarError() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>('');
-  const theme = useTheme(); // Access the theme
+  const theme = useTheme();
 
   useEffect(() => {
     showSnackBar = (msg: string) => {

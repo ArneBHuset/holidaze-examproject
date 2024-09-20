@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material';
+import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 
 const pages = [
   { name: 'Add Venue', path: '/add-venue' },
@@ -25,6 +26,8 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
   const navigate = useNavigate();
+  const user = useUser();
+  console.log('user type', user);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -187,7 +190,9 @@ function Header() {
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
-                <Typography textAlign="center">View Profile</Typography>
+                <Link to="/user-overview" style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
+                  <Typography textAlign="center">View Profile</Typography>
+                </Link>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
                 <Typography textAlign="center">See Bookings</Typography>

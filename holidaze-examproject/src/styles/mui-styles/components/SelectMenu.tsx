@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider, Theme, useTheme } from '@mui/material/styles';
+import InputNode from '../../../services/interfaces/react-nodes/inputNode.ts';
 
-// Custom theme to ensure consistency for Select components
 const customSelectTheme = (outerTheme: Theme) =>
   createTheme({
     components: {
@@ -13,21 +13,19 @@ const customSelectTheme = (outerTheme: Theme) =>
             '--Select-errorBorderColor': outerTheme.palette.error.main,
           },
           select: {
-            // Apply padding directly to the select element
-            padding: '5px 12px', // Customize the padding as needed
-            ...outerTheme.typography.body1, // Apply the body1 typography styles
-            color: outerTheme.palette.primary.main, // Text color
-            height: '34px', // Set height
+            padding: '5px 12px',
+            ...outerTheme.typography.body1,
+            color: outerTheme.palette.primary.main,
+            height: '34px',
           },
         },
       },
       MuiInput: {
         styleOverrides: {
           root: {
-            // This controls the bottom border via the `::before` and `::after` pseudo-elements.
             '&::before': {
-              borderBottom: `1px solid var(--Select-brandBorderColor)`, // Default bottom border
-              borderBottomLeftRadius: '5px', // Apply the border radius for the bottom-left corner
+              borderBottom: `1px solid var(--Select-brandBorderColor)`,
+              borderBottomLeftRadius: '5px',
               content: '""',
               position: 'absolute',
               bottom: 0,
@@ -35,7 +33,7 @@ const customSelectTheme = (outerTheme: Theme) =>
               right: 0,
             },
             '&:hover:not(.Mui-disabled, .Mui-error)::before': {
-              borderBottom: `2px solid var(--Select-brandBorderHoverColor)`, // Bottom border hover color
+              borderBottom: `2px solid var(--Select-brandBorderHoverColor)`,
               borderBottomLeftRadius: '5px',
             },
             '&::after': {
@@ -48,11 +46,11 @@ const customSelectTheme = (outerTheme: Theme) =>
               right: 0,
             },
             '&.Mui-focused::before': {
-              borderBottom: `2px solid var(--Select-brandBorderFocusedColor)`, // Focused bottom border color
+              borderBottom: `2px solid var(--Select-brandBorderFocusedColor)`,
               borderBottomLeftRadius: '5px',
             },
             '&.Mui-error::before': {
-              borderBottom: `2px solid var(--Select-errorBorderColor)`, // Error bottom border color
+              borderBottom: `2px solid var(--Select-errorBorderColor)`,
               borderBottomLeftRadius: '5px',
             },
           },
@@ -61,9 +59,9 @@ const customSelectTheme = (outerTheme: Theme) =>
       MuiInputBase: {
         styleOverrides: {
           root: {
-            position: 'relative', // Ensure positioning is correct
+            position: 'relative',
             '&::before': {
-              borderLeft: `1px solid var(--Select-brandBorderColor)`, // Default left border
+              borderLeft: `1px solid var(--Select-brandBorderColor)`,
               content: '""',
               position: 'absolute',
               height: '100%', // Ensure it covers the entire height
@@ -71,13 +69,13 @@ const customSelectTheme = (outerTheme: Theme) =>
               left: 0,
             },
             '&:hover:not(.Mui-disabled, .Mui-error)::before': {
-              borderLeft: `2px solid var(--Select-brandBorderHoverColor)`, // Left border hover color
+              borderLeft: `2px solid var(--Select-brandBorderHoverColor)`,
             },
             '&.Mui-focused::before': {
-              borderLeft: `2px solid var(--Select-brandBorderFocusedColor)`, // Focused left border color
+              borderLeft: `2px solid var(--Select-brandBorderFocusedColor)`,
             },
             '&.Mui-error::before': {
-              borderLeft: `2px solid var(--Select-errorBorderColor)`, // Error left border color
+              borderLeft: `2px solid var(--Select-errorBorderColor)`,
             },
             input: {
               ...outerTheme.typography.body1,
@@ -91,7 +89,6 @@ const customSelectTheme = (outerTheme: Theme) =>
     },
   });
 
-// Usage of ThemeProvider
 export default function DefaultSelect(props: InputNode) {
   const outerTheme = useTheme();
   return <ThemeProvider theme={customSelectTheme(outerTheme)}>{props.children}</ThemeProvider>;

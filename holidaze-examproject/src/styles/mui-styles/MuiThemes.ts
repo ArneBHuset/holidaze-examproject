@@ -8,7 +8,7 @@ const theme = createTheme({
     },
     secondary: {
       main: '#F88349',
-      light: '#49BEF8', //Consider this color, which is tetradic with the secondary main orange
+      light: '#49BEF8',
     },
     error: {
       main: '#ac1b00',
@@ -84,18 +84,17 @@ const theme = createTheme({
     },
     subtitle1: {
       fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
-      fontSize: '1.1rem',
-      fontWeight: 300,
+      fontSize: '1.5rem',
+      fontWeight: 500,
       lineHeight: 1.75,
       letterSpacing: '0.08em',
     },
     subtitle2: {
-      //remove?
       fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
-      fontSize: '0.875rem',
-      fontWeight: 300,
-      lineHeight: 1.57,
-      letterSpacing: '0.00714em',
+      fontSize: '1.2rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+      letterSpacing: '0.025em',
     },
     body1: {
       fontFamily: '"Lora", "Helvetica", "Arial", sans-serif',

@@ -15,7 +15,6 @@ import { DatesType } from '../../services/interfaces/api/filtering/uiFilterParam
 import { applyFilters } from '../../services/filtering/filterLandingPage.ts';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
-// Temporary chip styling for menu field
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -129,7 +128,7 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
 
   return (
     <MainCard>
-      <Grid container rowSpacing={2} columnSpacing={1}>
+      <Grid container maxWidth="sm" rowSpacing={2} columnSpacing={1} padding={2} m="auto">
         <Grid size={{ xs: 12 }}>
           <DefaultSubTitle>Search</DefaultSubTitle>
           <DefaultInput>

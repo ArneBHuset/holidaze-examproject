@@ -184,23 +184,22 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
                 {venue.maxGuests}
               </Typography>
             </Grid>
-              <Grid size={success ? 8 : 12}>
+            <Grid size={success ? 8 : 12}>
+              <DefaultButton>
+                <Button fullWidth onClick={handleSubmit(onSubmit)}>
+                  BOOK
+                </Button>
+              </DefaultButton>
+            </Grid>
+            {success && (
+              <Grid size={4}>
                 <DefaultButton>
-                  <Button fullWidth onClick={handleSubmit(onSubmit)}>
-                    BOOK
+                  <Button fullWidth onClick={handleViewBookings}>
+                    VIEW BOOKINGS
                   </Button>
                 </DefaultButton>
               </Grid>
-              {success && (
-                <Grid size={4}>
-                  <DefaultButton>
-                    <Button fullWidth onClick={handleViewBookings}>
-                      VIEW BOOKINGS
-                    </Button>
-                  </DefaultButton>
-                </Grid>
-              )}
-
+            )}
           </Grid>
         </FormControl>
       </Box>
