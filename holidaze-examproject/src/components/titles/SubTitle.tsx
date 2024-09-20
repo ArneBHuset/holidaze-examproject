@@ -7,7 +7,9 @@ function DefaultSubTitle(props: TitleProps) {
   const theme = useTheme();
   return (
     <Box sx={{ borderBottom: 1, borderColor: theme.palette.primary.main, paddingY: 1 }}>
-      <Typography variant="subtitle1">{props.children}</Typography>
+      <Typography variant="subtitle1" textTransform="uppercase">
+        {props.children}
+      </Typography>
     </Box>
   );
 }

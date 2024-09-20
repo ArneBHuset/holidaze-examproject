@@ -15,19 +15,13 @@ import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material';
 import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 
-const pages = [
-  { name: 'Add Venue', path: '/add-venue' },
-  { name: 'Manage Venue', path: '/manage-venue' },
-  { name: 'User Overview', path: '/user-overview' },
-];
-
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
   const navigate = useNavigate();
-  const user = useUser();
-  console.log('user type', user);
+  const { isVenueManager } = useUser();
+  console.log('current user type', isVenueManager);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,9 +42,19 @@ function Header() {
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('profileData');
-    navigate('/auth'); //TODO: consider /navigate or simple reload depending on routing setup
+    navigate('/auth');
     window.location.reload();
   };
+  const menuItems = isVenueManager
+    ? [
+        { name: 'Manage Venues', path: '/manage-venue' },
+        { name: 'Add Venue', path: '/newvenue' },
+        { name: 'About', path: '/about' },
+      ]
+    : [
+        { name: 'My Bookings', path: '/user-overview' },
+        { name: 'About', path: '/about' },
+      ];
 
   return (
     <AppBar
@@ -73,16 +77,11 @@ function Header() {
                 display: { xs: 'none', md: 'flex' },
               }}
             >
-              HOLIDAZE
+              {isVenueManager ? 'HOLIDAZEmanage' : 'HOLIDAZE'}
             </Typography>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-            >
+            <IconButton aria-label="menu" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu}>
               <MenuIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
             </IconButton>
             <Menu
@@ -103,17 +102,9 @@ function Header() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    borderBottom: 0.5,
-                    borderColor: theme.palette.secondary.main,
-                    py: 0,
-                  }}
-                >
-                  <Typography textAlign="center" sx={{ fontFamily: theme.typography.button }}>
+              {menuItems.map((page) => (
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">
                     <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                       {page.name}
                     </Link>
@@ -127,22 +118,18 @@ function Header() {
             <Typography
               variant="h3"
               noWrap
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                color: theme.palette.primary.main,
-              }}
+              sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, color: theme.palette.primary.main }}
             >
-              HOLIDAZE
+              {isVenueManager ? 'HOLIDAZEmanage' : 'HOLIDAZE'}
             </Typography>
           </Link>
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 6, gap: 2 }}>
-            {pages.map((page) => (
+            {menuItems.map((page) => (
               <Button
                 key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: theme.palette.primary.main, fontFamily: theme.typography.button, display: 'block' }}
+                sx={{ my: 2, color: theme.palette.primary.main, display: 'block' }}
               >
                 <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                   {page.name}
@@ -189,15 +176,12 @@ function Header() {
                   {JSON.parse(localStorage.getItem('profileData')).name}
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
+              <MenuItem onClick={handleCloseUserMenu}>
                 <Link to="/user-overview" style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
-                  <Typography textAlign="center">View Profile</Typography>
+                  <Typography textAlign="center">{isVenueManager ? 'Manage Venues' : 'My Bookings'}</Typography>
                 </Link>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu} sx={{ fontFamily: theme.typography.button }}>
-                <Typography textAlign="center">See Bookings</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleLogout} sx={{ fontFamily: theme.typography.button }}>
+              <MenuItem onClick={handleLogout}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>

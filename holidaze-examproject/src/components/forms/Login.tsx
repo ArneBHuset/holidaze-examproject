@@ -14,6 +14,7 @@ import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 import LoginIcon from '@mui/icons-material/Login';
 import '../../styles/scss/component-specific/input.scss';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
+import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 
 /**
  * React component for login form
@@ -21,6 +22,10 @@ import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
  */
 function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
   const navigate = useNavigate();
+
+  // Retrieve the updateVenueManagerStatus function from the UserContext
+  const { updateVenueManagerStatus } = useUser();
+
   const {
     control,
     handleSubmit,
@@ -30,7 +35,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
   });
 
   const onSubmit = async (data: LoginData) => {
-    const response = await loginApiCall(data);
+    const response = await loginApiCall(data, updateVenueManagerStatus); // Pass the updateVenueManagerStatus function
     if (response.success) {
       navigate('/');
     }
@@ -75,7 +80,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
                     <TextField
                       fullWidth
                       type="password"
-                      placeholder="df"
+                      placeholder="Password"
                       variant="standard"
                       {...field}
                       error={!!errors.password}
@@ -89,7 +94,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
           <Grid size={{ xs: 6 }}>
             <DefaultButton>
               <Button onClick={() => setIsRegistering(false)} fullWidth={true}>
-                Register ?{' '}
+                Register ?
               </Button>
             </DefaultButton>
           </Grid>

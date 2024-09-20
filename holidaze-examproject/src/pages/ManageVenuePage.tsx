@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 
 function ManageVenuePage() {
-  return <Box>Hello</Box>;
+  return <Box> arne bjarne</Box>;
 }
 
 export default ManageVenuePage;

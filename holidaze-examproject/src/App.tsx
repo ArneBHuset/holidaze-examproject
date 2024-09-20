@@ -16,6 +16,9 @@ import SnackBarSuccess from './services/snackbar/SnackBarSuccess';
 import { UserProvider } from './services/utilities/UserTypeContext.tsx';
 import AllHostsPage from './pages/AllHostsPage.tsx';
 
+import AboutPage from './pages/About.tsx';
+import NewVenuePage from './pages/NewVenuePage.tsx';
+
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,8 +43,7 @@ function App() {
                     <VenueDetailsPage />
                   </MainLayout>
                 }
-              />{' '}
-              {/* Add dynamic route */}
+              />
               <Route
                 path="/add-venue"
                 element={
@@ -55,6 +57,22 @@ function App() {
                 element={
                   <MainLayout>
                     <ManageVenuePage />
+                  </MainLayout>
+                }
+              />
+              <Route
+                path="/newvenue"
+                element={
+                  <MainLayout>
+                    <NewVenuePage />
+                  </MainLayout>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <MainLayout>
+                    <AboutPage />
                   </MainLayout>
                 }
               />

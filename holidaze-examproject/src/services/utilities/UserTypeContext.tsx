@@ -1,19 +1,27 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-const UserContext = createContext(null);
+interface UserContextType {
+  isVenueManager: boolean;
+  updateVenueManagerStatus: (status: boolean) => void;
+}
 
-export const useUser = () => useContext(UserContext);
+// Provide default context value to avoid null
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider = ({ children }) => {
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
+};
+
+export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [isVenueManager, setIsVenueManager] = useState(false);
 
-  useEffect(() => {
-    const profile = localStorage.getItem('profileData');
-    if (profile) {
-      const parsedProfile = JSON.parse(profile);
-      setIsVenueManager(parsedProfile.venueManager);
-    }
-  }, []);
+  const updateVenueManagerStatus = (venueManagerStatus: boolean) => {
+    setIsVenueManager(venueManagerStatus);
+  };
 
-  return <UserContext.Provider value={isVenueManager}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ isVenueManager, updateVenueManagerStatus }}>{children}</UserContext.Provider>;
 };
