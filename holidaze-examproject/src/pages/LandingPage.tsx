@@ -67,7 +67,7 @@ export default function LandingPage() {
   if (loading) return <LinearProgress color="secondary"></LinearProgress>;
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <Grid container spacing={4} marginTop={4}>
         <Grid size={12}>
           <MainFilterCard onSearch={setSearchTerm} />

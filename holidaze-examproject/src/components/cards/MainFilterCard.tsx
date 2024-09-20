@@ -128,7 +128,7 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
 
   return (
     <MainCard>
-      <Grid container rowSpacing={2} columnSpacing={1}>
+      <Grid container maxWidth="sm" rowSpacing={2} columnSpacing={1} padding={2} m="auto">
         <Grid size={{ xs: 12 }}>
           <DefaultSubTitle>Search</DefaultSubTitle>
           <DefaultInput>

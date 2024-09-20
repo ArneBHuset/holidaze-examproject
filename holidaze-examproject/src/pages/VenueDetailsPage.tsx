@@ -53,7 +53,7 @@ export default function VenueDetailsPage() {
           } else {
             throw new Error('Unexpected response structure');
           }
-        } catch (error: any) {
+        } catch (error) {
           const apiError = error as ApiError;
           snackBarError(apiError.message || 'Unknown error');
         } finally {

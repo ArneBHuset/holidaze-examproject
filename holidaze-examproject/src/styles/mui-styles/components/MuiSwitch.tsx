@@ -13,16 +13,16 @@ export const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     '&.Mui-checked': {
       transform: `translateX(calc(350px - 187px))`,
       '& .MuiSwitch-thumb:before': {
-        content: '"Managing venue"', // Toggle to "Managing venue" on thumb
-        color: theme.palette.primary.main, // Full opacity and primary.main color for thumb text
+        content: '"Managing venue"',
+        color: theme.palette.primary.main,
         fontWeight: 'bold',
         fontSize: '14px',
-        opacity: 1, // Full opacity when selected
+        opacity: 1,
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.secondary.main, // Thumb background remains unchanged
+    backgroundColor: theme.palette.secondary.main,
     width: '185px',
     height: '55px',
     borderRadius: '10px',
@@ -31,32 +31,32 @@ export const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     alignItems: 'center',
     position: 'relative',
     '&::before': {
-      content: '"Looking for venue"', // Default text in the thumb
-      color: theme.palette.primary.main, // Full opacity and primary.main color for thumb text
+      content: '"Looking for venue"',
+      color: theme.palette.primary.main,
       fontWeight: 'bold',
       fontSize: '14px',
-      opacity: 1, // Always full opacity for thumb text
+      opacity: 1,
     },
   },
   '& .MuiSwitch-track': {
     opacity: 1,
     width: '100%',
-    backgroundColor: theme.palette.background.default, // Background remains unchanged
+    backgroundColor: theme.palette.background.default,
     borderRadius: 20 / 2,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '0 10px',
     '&::before': {
-      content: '"Managing venue"', // Default text in the track
-      color: theme.palette.primary.main, // Track text uses primary.main color
+      content: '"Managing venue"',
+      color: theme.palette.primary.main,
       fontWeight: 'bold',
       fontSize: '14px',
-      opacity: 1, // Lower opacity when not selected
+      opacity: 1,
     },
     '& .Mui-checked + &::before': {
-      content: '"Looking for venue"', // Toggle to "Looking for venue" when checked
-      opacity: 0.5, // Lower opacity when selected
+      content: '"Looking for venue"',
+      opacity: 0.5,
     },
   },
 }));

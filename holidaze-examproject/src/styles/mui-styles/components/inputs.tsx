@@ -63,8 +63,8 @@ const customTheme = (outerTheme: Theme) =>
             height: '40px',
 
             '&.Mui-disabled': {
-              color: outerTheme.palette.text.disabled, // Text color when disabled
-              backgroundColor: outerTheme.palette.action.disabledBackground, // Background color when disabled
+              color: outerTheme.palette.text.disabled,
+              backgroundColor: outerTheme.palette.action.disabledBackground,
             },
           },
         },

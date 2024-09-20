@@ -13,11 +13,15 @@ import DefaultSubTitle from '../titles/SubTitle.tsx';
 import UpdateBooking from '../forms/UpdateBooking.tsx';
 import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useTheme } from '@mui/material/styles';
+import { BookingData } from '../../services/interfaces/api/bookingsData.ts';
+import PersonIcon from '@mui/icons-material/Person';
+import EditIcon from '@mui/icons-material/Edit';
 
-export default function UpcomingBookingCard({ bookings = [] }) {
-  const [selectedBookingId, setSelectedBookingId] = useState(null);
+export default function UpcomingBookingCard({ bookings = [] }: { bookings: BookingData[] }) {
+  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -36,7 +40,7 @@ export default function UpcomingBookingCard({ bookings = [] }) {
         const totalCost = venue.price * duration; // Calculate total cost
 
         return (
-          <Grid key={venue.id} size={12}>
+          <Grid container spacing={0} key={venue.id} size={12}>
             <Card
               sx={{
                 display: 'flex',
@@ -57,9 +61,9 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                     'https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0='
                   }
                   sx={{
-                    width: { xs: '100%', sm: 250 },
+                    width: { xs: '100%', sm: 300, md: 350 },
                     height: { xs: 200, sm: '100%' },
-                    maxHeight: { xs: 200, sm: 260 },
+                    maxHeight: { xs: 200, sm: 350 },
                     borderRadius: { xs: '4px', sm: '8px' },
                   }}
                 />
@@ -73,47 +77,69 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                 }}
                 style={{ padding: 0 }}
               >
-                <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
-                  <Grid size={12}>
+                <Grid container padding={1} spacing={0} sx={{ height: '100%' }}>
+                  <Grid size={12} textAlign={{ xs: 'center', sm: 'left' }}>
                     <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                   </Grid>
 
                   {/* Days Until Check-in */}
-                  <Grid size={12}>
-                    <Typography>{`Your booking at ${venue.location?.city || 'N/A'}, ${
-                      venue.location?.country || 'N/A'
-                    } is only ${daysUntilCheckIn} ${daysUntilCheckIn === 1 ? 'day' : 'days'} away.`}</Typography>
+                  <Grid size={12} textAlign={{ xs: 'center', sm: 'left' }} marginTop={2}>
+                    <Typography variant="subtitle2">
+                      {`Your booking in ${venue.location?.city || 'N/A'}, ${venue.location?.country || 'N/A'} is only `}
+                      <span style={{ color: theme.palette.secondary.main }}>
+                        {`${daysUntilCheckIn} ${daysUntilCheckIn === 1 ? 'day' : 'days'}`}
+                      </span>
+                      {` away!`}
+                    </Typography>
                   </Grid>
 
                   <Grid
-                    size={{ xs: 12, md: 7 }}
+                    size={12}
                     display="flex"
                     gap={2}
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent={{ xs: 'center', sm: 'left' }}
                     marginTop={2}
                   >
-                    <Typography variant="h4">{dateFrom.format('DD/MM/YYYY')}</Typography>
+                    <Typography variant="h5">{dateFrom.format('DD/MM/YYYY')}</Typography>
                     <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontSize: '1.8rem' }} />
-                    <Typography variant="h4">{dateTo.format('DD/MM/YYYY')}</Typography>
+                    <Typography variant="h5">{dateTo.format('DD/MM/YYYY')}</Typography>
                   </Grid>
 
                   <Grid
-                    size={{ xs: 12, md: 4 }}
-                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', pt: { xs: 1, md: 2 } }}
+                    size={12}
+                    justifyContent={{ xs: 'center', sm: 'left' }}
+                    gap={{ xs: 6, sm: 8 }}
+                    sx={{ display: 'flex', alignItems: 'center', pt: { xs: 1, md: 2 } }}
                   >
-                    <Box>
-                      <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <AccessTimeIcon sx={{ fontSize: '2rem', color: theme.palette.secondary.main, pb: 0.5 }} />
-                        {duration} {duration === 1 ? 'day' : 'days'}
-                      </Typography>
-                      <Typography variant="h5" sx={{ marginTop: 1 }}>
-                        <strong>Total Cost:</strong> ${totalCost.toFixed(2)}
-                      </Typography>
-                    </Box>
+                    <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <AccessTimeIcon sx={{ fontSize: '2rem', color: theme.palette.secondary.main, pb: 0.5 }} />
+                      {duration} {duration === 1 ? 'day' : 'days'}
+                    </Typography>
+                    <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <PersonIcon sx={{ fontSize: '2rem', color: theme.palette.secondary.main, pb: 0.5 }} />
+                      {booking.guests}/{venue.maxGuests}
+                    </Typography>
                   </Grid>
-
-                  <Grid size={6}>
+                  <Grid size={12} mb={4}>
+                    <Typography
+                      textAlign={{ xs: 'center', sm: 'left' }}
+                      variant="h4"
+                      sx={{ marginTop: 1, textDecoration: 'underline' }}
+                    >
+                      Total Cost: ${totalCost.toFixed(2)}
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 0, sm: 3 }} display="flex" alignItems="end">
+                    <Typography
+                      variant="body2"
+                      style={{ opacity: 0.7 }}
+                      display={{ xs: 'none', sm: 'block', width: '100%' }}
+                    >
+                      Updated: {dayjs(booking.updated).format('DD/MM/YYYY')}
+                    </Typography>
+                  </Grid>
+                  <Grid size={4}>
                     {!isUpdating && (
                       <SecondaryButton>
                         <Button
@@ -122,15 +148,18 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                             borderBottomLeftRadius: { xs: 0, sm: 4 },
                             borderBottomRightRadius: { xs: 0, sm: 4 },
                             padding: { xs: 1, sm: 1.5 },
+                            gap: 2,
+                            alignItems: 'center',
+                            width: '100%',
                           }}
                         >
-                          Update booking
+                          <EditIcon sx={{ fontSize: '1.2rem' }} /> Edit
                         </Button>
                       </SecondaryButton>
                     )}
                   </Grid>
 
-                  <Grid size={6}>
+                  <Grid size={5}>
                     <DefaultButton>
                       <Button
                         onClick={() => navigate(`/venue/${venue.id}`)}
@@ -138,17 +167,12 @@ export default function UpcomingBookingCard({ bookings = [] }) {
                           borderBottomLeftRadius: { xs: 0, sm: 4 },
                           borderBottomRightRadius: { xs: 0, sm: 4 },
                           padding: { xs: 1, sm: 1.5 },
+                          width: '100%',
                         }}
                       >
-                        See booking details
+                        Venue details <ArrowForwardIosIcon />
                       </Button>
                     </DefaultButton>
-                  </Grid>
-
-                  <Grid size={12} display="flex" justifyContent="space-between" marginTop={2}>
-                    <Typography variant="body2">
-                      <strong>Last Updated:</strong> {dayjs(booking.updated).format('DD/MM/YYYY, h:mm A')}
-                    </Typography>
                   </Grid>
                 </Grid>
               </CardContent>

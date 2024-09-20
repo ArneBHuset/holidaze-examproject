@@ -76,11 +76,11 @@ const UserProfileCard: React.FC = () => {
   }
 
   return (
-    <MainCard >
-      <CardContent sx={{ margin: 0, padding:0 }}>
+    <MainCard>
+      <CardContent sx={{ margin: 0, padding: 0 }}>
         <HostDetails data={profile} />
       </CardContent>
-      <CardContent sx={{ display: 'flex', justifyContent: 'end', marginTop: 4 }}>
+      <CardContent sx={{ display: 'flex', justifyContent: 'end', marginTop: 4, paddingBottom: 0 }}>
         <DefaultButton>
           <Button variant="contained" onClick={handleEditClick}>
             EDIT PROFILE

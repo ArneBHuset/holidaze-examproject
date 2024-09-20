@@ -17,6 +17,11 @@ import Person4Icon from '@mui/icons-material/Person4';
 import { snackBarError } from '../../services/snackbar/SnackBarError.tsx';
 import { snackBarSuccess } from '../../services/snackbar/SnackBarSuccess.tsx';
 import { ApiError } from '../../services/interfaces/error/catchError.ts';
+import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
+import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -44,10 +49,10 @@ export default function UpdateBooking({ booking, onCancel }) {
   const makeApiCall = async (method, data = null) => {
     const bookingData = data
       ? {
-        dateFrom: data.checkInDate?.toISOString(),
-        dateTo: data.checkOutDate?.toISOString(),
-        guests: data.guests,
-      }
+          dateFrom: data.checkInDate?.toISOString(),
+          dateTo: data.checkOutDate?.toISOString(),
+          guests: data.guests,
+        }
       : null;
 
     try {
@@ -75,7 +80,7 @@ export default function UpdateBooking({ booking, onCancel }) {
 
   return (
     <FormControl component="fieldset" sx={{ width: '100%' }}>
-      <Grid container spacing={4} maxWidth="md" justifyContent="center">
+      <Grid container spacing={2} maxWidth="sm" margin={'auto'} padding={2}>
         <Grid size={6}>
           <DefaultSubTitle>Check-in Date</DefaultSubTitle>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -138,15 +143,17 @@ export default function UpdateBooking({ booking, onCancel }) {
               name="guests"
               control={control}
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  type="number"
-                  placeholder="Number of guests"
-                  variant="outlined"
-                  error={!!errors.guests}
-                  helperText={errors.guests ? errors.guests.message : ''}
-                />
+                <DefaultInput>
+                  <TextField
+                    {...field}
+                    fullWidth
+                    type="number"
+                    placeholder="Number of guests"
+                    variant="standard"
+                    error={!!errors.guests}
+                    helperText={errors.guests ? errors.guests.message : ''}
+                  />
+                </DefaultInput>
               )}
             />
           </FormControl>
@@ -159,29 +166,29 @@ export default function UpdateBooking({ booking, onCancel }) {
             {venue.maxGuests}
           </Typography>
         </Grid>
-        <Grid size={4}>
-          <DefaultButton>
-            <Button fullWidth onClick={() => makeApiCall('DELETE')}>
-              Delete booking
+        <Grid size={6}>
+          <SecondaryButton>
+            <Button fullWidth onClick={() => makeApiCall('DELETE')} sx={{ gap: 1 }}>
+              <DeleteOutlineIcon /> Delete booking
             </Button>
-          </DefaultButton>
-        </Grid>
-        <Grid size={4}>
-          <DefaultButton>
-            <Button fullWidth onClick={handleSubmit((data) => makeApiCall('PUT', data))}>
-              Save Changes
-            </Button>
-          </DefaultButton>
+          </SecondaryButton>
         </Grid>
 
-        <Grid size={4}>
-          <DefaultButton>
-            <Button fullWidth onClick={onCancel}>
-              Cancel
+        <Grid size={6}>
+          <SecondaryButton>
+            <Button fullWidth onClick={handleSubmit((data) => makeApiCall('PUT', data))} sx={{ gap: 1 }}>
+              <SaveIcon />
+              Save Changes
             </Button>
-          </DefaultButton>
+          </SecondaryButton>
         </Grid>
       </Grid>
+      <DefaultButton>
+        <Button fullWidth onClick={onCancel}>
+          Cancel
+          <KeyboardArrowUpIcon />
+        </Button>
+      </DefaultButton>
     </FormControl>
   );
 }

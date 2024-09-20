@@ -10,15 +10,16 @@ const customTheme = (outerTheme: Theme) =>
             backgroundColor: 'transparent',
             color: outerTheme.palette.primary.main,
             padding: '8px 14px',
-            fontSize: '1rem',
+            fontSize: '1.1rem',
             fontWeight: 300,
             lineHeight: 1.75,
             letterSpacing: '0.05em',
-            border: `2px solid ${outerTheme.palette.secondary.light}`,
+            borderBottom: `2px solid ${outerTheme.palette.secondary.main}`,
+            borderRadius: '0px',
             fontFamily: outerTheme.typography.button.fontFamily,
 
             '&:hover': {
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+              textDecoration: 'underline',
             },
 
             '&.Mui-disabled': {

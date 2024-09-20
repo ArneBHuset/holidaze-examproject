@@ -90,12 +90,11 @@ const theme = createTheme({
       letterSpacing: '0.08em',
     },
     subtitle2: {
-      //remove?
       fontFamily: '"Cinzel", "Lora", "Arial", sans-serif',
-      fontSize: '0.875rem',
-      fontWeight: 300,
-      lineHeight: 1.57,
-      letterSpacing: '0.00714em',
+      fontSize: '1.2rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+      letterSpacing: '0.025em',
     },
     body1: {
       fontFamily: '"Lora", "Helvetica", "Arial", sans-serif',
