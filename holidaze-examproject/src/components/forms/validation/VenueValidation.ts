@@ -16,7 +16,7 @@ export const venueValidationSchema = yup.object().shape({
     yup.object().shape({
       url: yup.string().url('Must be a valid URL').required('Image URL is required'),
       alt: yup.string(),
-    })
+    }),
   ),
   meta: yup.object().shape({
     wifi: yup.boolean(),

@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import FormControl from '@mui/material/FormControl';
 import { TextField, Button, Box, Checkbox, Typography, Rating, ImageList, ImageListItem } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import MainCard from '../../layout/MainCard.tsx';
-import SubTitle from '../titles/SubTitle.tsx';
-import { venueValidationSchema } from './validation/NewVenueValidation.ts';
-import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
+import FormControl from '@mui/material/FormControl';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
+import SubTitle from '../titles/SubTitle.tsx';
+import { venueValidationSchema } from './validation/VenueValidation.ts';
 import CardContent from '@mui/material/CardContent';
-import DefaultSubTitle from '../titles/SubTitle.tsx';
+import MainCard from '../../layout/MainCard.tsx';
+import { ManageVenue } from '../../services/interfaces/api/manageVenues.ts';
 
-function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [hoverRating, setHoverRating] = useState<number | null>(0);
+interface VenueFormProps {
+  initialValues?: Partial<ManageVenue>;
+  onSubmit: (formData: ManageVenue) => void;
+  submitLabel?: string;
+}
+
+function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' }: VenueFormProps) {
+  const [imageUrls, setImageUrls] = useState<string[]>(initialValues?.media?.map((item) => item.url) || []);
+  const [hoverRating, setHoverRating] = useState<number | null>(initialValues?.rating || 0);
 
   const {
     control,
@@ -22,31 +27,8 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(venueValidationSchema),
+    defaultValues: initialValues,
   });
-
-  const onFormSubmit = (data: any) => {
-    const venueData = {
-      name: data.name,
-      description: data.description,
-      media: imageUrls.map((url) => ({ url, alt: '' })),
-      price: Number(data.price),
-      maxGuests: data.maxGuests,
-      rating: data.rating || 0,
-      meta: {
-        wifi: data.meta?.wifi || false,
-        parking: data.meta?.parking || false,
-        breakfast: data.meta?.breakfast || false,
-        pets: data.meta?.pets || false,
-      },
-      location: {
-        address: data.location.address,
-        city: data.location.city,
-        zip: data.location.zip,
-        country: data.location.country,
-      },
-    };
-    onSubmit(venueData);
-  };
 
   const handleAddImageUrl = (url: string) => {
     if (url.trim()) {
@@ -69,23 +51,31 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
     event.currentTarget.value = '';
   };
 
+  const onFormSubmit = (data: ManageVenue) => {
+    const venueData: ManageVenue = {
+      ...data,
+      media: imageUrls.map((url) => ({ url, alt: '' })),
+      rating: data.rating || 0,
+    };
+    onSubmit(venueData);
+  };
+
   return (
     <MainCard>
-      <CardContent>
+      <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
         <FormControl component="form" onSubmit={handleSubmit(onFormSubmit)}>
-          <Grid container spacing={4}>
+          <Grid container spacing={4} maxWidth="sm">
             <Grid size={{ xs: 12 }}>
               <Box>
                 <SubTitle>Venue name</SubTitle>
                 <Controller
                   name="name"
                   control={control}
-                  defaultValue=""
                   render={({ field }) => (
                     <DefaultInput>
                       <TextField
                         fullWidth
-                        placeholder="Villa exellence"
+                        placeholder="Venue Name"
                         variant="standard"
                         {...field}
                         error={!!errors.name}
@@ -96,13 +86,103 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
                 />
               </Box>
             </Grid>
+
             <Grid size={{ xs: 12 }}>
               <Box>
-                <SubTitle>Location</SubTitle>
+                <SubTitle>Description</SubTitle>
+                <Controller
+                  name="description"
+                  control={control}
+                  render={({ field }) => (
+                    <DefaultInput>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={4}
+                        placeholder="Description"
+                        variant="standard"
+                        {...field}
+                        error={!!errors.description}
+                        helperText={errors.description?.message}
+                      />
+                    </DefaultInput>
+                  )}
+                />
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
+              <Box>
+                <SubTitle>Address</SubTitle>
+                <Controller
+                  name="location.address"
+                  control={control}
+                  render={({ field }) => (
+                    <DefaultInput>
+                      <TextField
+                        fullWidth
+                        placeholder="Address"
+                        variant="standard"
+                        {...field}
+                        error={!!errors.location?.address}
+                        helperText={errors.location?.address?.message}
+                      />
+                    </DefaultInput>
+                  )}
+                />
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
+              <Box>
+                <SubTitle>City</SubTitle>
+                <Controller
+                  name="location.city"
+                  control={control}
+                  render={({ field }) => (
+                    <DefaultInput>
+                      <TextField
+                        fullWidth
+                        placeholder="City"
+                        variant="standard"
+                        {...field}
+                        error={!!errors.location?.city}
+                        helperText={errors.location?.city?.message}
+                      />
+                    </DefaultInput>
+                  )}
+                />
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
+              <Box>
+                <SubTitle>Zip Code</SubTitle>
+                <Controller
+                  name="location.zip"
+                  control={control}
+                  render={({ field }) => (
+                    <DefaultInput>
+                      <TextField
+                        fullWidth
+                        placeholder="Zip Code"
+                        variant="standard"
+                        {...field}
+                        error={!!errors.location?.zip}
+                        helperText={errors.location?.zip?.message}
+                      />
+                    </DefaultInput>
+                  )}
+                />
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
+              <Box>
+                <SubTitle>Country</SubTitle>
                 <Controller
                   name="location.country"
                   control={control}
-                  defaultValue=""
                   render={({ field }) => (
                     <DefaultInput>
                       <TextField
@@ -118,74 +198,10 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
                 />
               </Box>
             </Grid>
-            <Grid size={{ xs: 6 }}>
-              <Box>
-                <Controller
-                  name="location.city"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <DefaultInput>
-                      <TextField
-                        fullWidth
-                        placeholder="City"
-                        variant="standard"
-                        {...field}
-                        error={!!errors.location?.city}
-                        helperText={errors.location?.city?.message}
-                        autoComplete="address-level2"
-                      />
-                    </DefaultInput>
-                  )}
-                />
-              </Box>
-            </Grid>
-            <Grid size={{ xs: 6 }}>
-              <Box>
-                <Controller
-                  name="location.zip"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <DefaultInput>
-                      <TextField
-                        fullWidth
-                        placeholder="Zip"
-                        variant="standard"
-                        {...field}
-                        error={!!errors.location?.zip}
-                        helperText={errors.location?.zip?.message}
-                      />
-                    </DefaultInput>
-                  )}
-                />
-              </Box>
-            </Grid>
+
             <Grid size={{ xs: 12 }}>
               <Box>
-                <Controller
-                  name="location.address"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <DefaultInput>
-                      <TextField
-                        fullWidth
-                        autoComplete="address-line1"
-                        placeholder="Address"
-                        variant="standard"
-                        {...field}
-                        error={!!errors.location?.address}
-                        helperText={errors.location?.address?.message}
-                      />
-                    </DefaultInput>
-                  )}
-                />
-              </Box>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <Box>
-                <SubTitle>Price per night</SubTitle>
+                <SubTitle>Price per Night</SubTitle>
                 <Controller
                   name="price"
                   control={control}
@@ -193,37 +209,32 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
                     <DefaultInput>
                       <TextField
                         fullWidth
-                        placeholder="Price"
+                        placeholder="Price per Night"
                         variant="standard"
                         type="number"
                         {...field}
                         error={!!errors.price}
                         helperText={errors.price?.message}
-                        slotProps={{
-                          htmlInput: {
-                            min: 0,
-                          },
-                        }}
                       />
                     </DefaultInput>
                   )}
                 />
               </Box>
             </Grid>
+
             <Grid size={{ xs: 12 }}>
               <Box>
                 <SubTitle>Max Guests</SubTitle>
                 <Controller
                   name="maxGuests"
                   control={control}
-                  defaultValue={0}
                   render={({ field }) => (
                     <DefaultInput>
                       <TextField
                         fullWidth
-                        type="number"
                         placeholder="Max Guests"
                         variant="standard"
+                        type="number"
                         {...field}
                         error={!!errors.maxGuests}
                         helperText={errors.maxGuests?.message}
@@ -233,32 +244,35 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
                 />
               </Box>
             </Grid>
+
             <Grid size={{ xs: 12 }}>
               <Box>
-                <SubTitle>Description</SubTitle>
+                <SubTitle>Rating</SubTitle>
                 <Controller
-                  name="description"
+                  name="rating"
                   control={control}
-                  defaultValue=""
                   render={({ field }) => (
-                    <DefaultInput>
-                      <TextField
-                        fullWidth
-                        multiline
-                        rows={4}
-                        placeholder="Venue Description"
-                        variant="standard"
+                    <Box display="flex" alignItems="center" gap={2}>
+                      <Rating
                         {...field}
-                        error={!!errors.description}
-                        helperText={errors.description?.message}
+                        max={5}
+                        value={field.value}
+                        onChange={(_, newValue) => {
+                          field.onChange(newValue);
+                        }}
+                        onChangeActive={(_, hoverValue) => {
+                          setHoverRating(hoverValue !== -1 ? hoverValue : field.value);
+                        }}
+                        sx={{ color: 'secondary.main' }}
                       />
-                    </DefaultInput>
+                      <Typography variant="h5">{hoverRating !== null ? hoverRating : field.value}</Typography>
+                    </Box>
                   )}
                 />
               </Box>
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <DefaultSubTitle>FACILITY DETAILS</DefaultSubTitle>
+              <Typography variant="h6">Facility Details</Typography>
             </Grid>
             {['wifi', 'parking', 'breakfast', 'pets'].map((metaItem) => (
               <Grid size={6} key={metaItem}>
@@ -269,7 +283,7 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
                     defaultValue={false}
                     render={({ field }) => (
                       <Checkbox
-                        size='large'
+                        size="large"
                         {...field}
                         sx={{
                           color: 'primary.main',
@@ -286,37 +300,6 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
             ))}
             <Grid size={{ xs: 12 }}>
               <Box>
-                <SubTitle>Rating</SubTitle>
-                <Controller
-                  name="rating"
-                  control={control}
-                  defaultValue={0}
-                  render={({ field }) => (
-                    <Box sx={{ display: 'flex', alignItems: 'center', pt: 4, pl: 1, gap: 2 }} justifyContent={{ xs: 'center', sm: 'flex-start' }}>
-                      <Rating
-                        {...field}
-                        max={5}
-                        size="large"
-                        precision={1}
-                        value={field.value}
-                        onChange={(_, newValue) => {
-                          field.onChange(newValue);
-                        }}
-                        onChangeActive={(_, hoverValue) => {
-                          setHoverRating(hoverValue !== -1 ? hoverValue : field.value);
-                        }}
-                        sx={{ color: 'secondary.main' }}
-                      />
-                      <Typography variant="h5" ml={4}>
-                        {hoverRating !== null ? hoverRating : field.value}
-                      </Typography>
-                    </Box>
-                  )}
-                />
-              </Box>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <Box>
                 <SubTitle>Upload Images</SubTitle>
                 <Controller
                   name="imageUpload"
@@ -326,7 +309,7 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
                       <TextField
                         {...field}
                         fullWidth
-                        placeholder="Paste image URL"
+                        placeholder="Paste Image URL"
                         variant="standard"
                         onKeyDown={handleKeyDown}
                         onBlur={handleBlur}
@@ -334,7 +317,7 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
                     </DefaultInput>
                   )}
                 />
-                <ImageList cols={3} rowHeight={164} sx={{ mt: 2 }}>
+                <ImageList cols={3} rowHeight={164}>
                   {imageUrls.map((url, index) => (
                     <ImageListItem key={index}>
                       <img src={url} alt={`Uploaded ${index}`} loading="lazy" />
@@ -344,11 +327,9 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
               </Box>
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <DefaultButton>
-                <Button type="submit" fullWidth={true}>
-                  Submit Venue
-                </Button>
-              </DefaultButton>
+              <Button type="submit" variant="contained" fullWidth>
+                {submitLabel}
+              </Button>
             </Grid>
           </Grid>
         </FormControl>
@@ -357,4 +338,4 @@ function AddVenue({ onSubmit }: { onSubmit: (formData: any) => void }) {
   );
 }
 
-export default AddVenue;
+export default VenueForm;

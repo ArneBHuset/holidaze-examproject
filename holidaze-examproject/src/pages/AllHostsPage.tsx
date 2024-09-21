@@ -74,7 +74,7 @@ function AllHostsPage() {
   }
 
   return (
-    <Container maxWidth='md'>
+    <Container maxWidth="md">
       <MainCard>
         <CardContent>{hostData ? <HostDetails data={hostData} /> : <p>No host data found</p>}</CardContent>
       </MainCard>

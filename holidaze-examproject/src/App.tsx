@@ -3,7 +3,6 @@ import RegisterLoginPage from './pages/RegisterLoginPage.tsx';
 import MainLayout from './layout/MainLayout.tsx';
 import AuthLayout from './layout/AuthLayout.tsx';
 import LandingPage from './pages/LandingPage.tsx';
-import AddVenuePage from './pages/AddVenuePage.tsx';
 import ManageVenuePage from './pages/ManageVenuePage.tsx';
 import UserOverviewPage from './pages/UserOverviewPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
@@ -41,14 +40,6 @@ function App() {
                 element={
                   <MainLayout>
                     <VenueDetailsPage />
-                  </MainLayout>
-                }
-              />
-              <Route
-                path="/add-venue"
-                element={
-                  <MainLayout>
-                    <AddVenuePage />
                   </MainLayout>
                 }
               />
