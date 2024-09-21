@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs'; // Import dayjs
+import dayjs from 'dayjs';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -35,9 +35,9 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
 
         const dateFrom = dayjs(booking.dateFrom);
         const dateTo = dayjs(booking.dateTo);
-        const duration = dateTo.diff(dateFrom, 'day'); // Calculate duration in days
-        const daysUntilCheckIn = dateFrom.diff(dayjs(), 'day'); // Days until check-in
-        const totalCost = venue.price * duration; // Calculate total cost
+        const duration = dateTo.diff(dateFrom, 'day');
+        const daysUntilCheckIn = dateFrom.diff(dayjs(), 'day');
+        const totalCost = venue.price * duration;
 
         return (
           <Grid container spacing={0} key={venue.id} size={12}>

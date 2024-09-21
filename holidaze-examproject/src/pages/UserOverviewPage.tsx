@@ -30,7 +30,7 @@ export default function UserOverviewPage() {
       setLoading(true);
 
       const response = await baseApiCall({
-        url: `${profileEndpoint}${profileName}/bookings?_venue=true&sort=dateFrom&sortOrder=asc`, // Sorted by dateFrom ascending
+        url: `${profileEndpoint}${profileName}/bookings?_venue=true&sort=dateFrom&sortOrder=asc`,
         method: 'GET',
         headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
       });
