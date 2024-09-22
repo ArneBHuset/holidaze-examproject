@@ -19,11 +19,16 @@ import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 /**
  * React component for login form
  * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
+ * @param onLoginSuccess Parameter called to trigger checkAuthStatus, ensuring authentication and navigation to landing page
  */
-function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
+function Login({
+  setIsRegistering,
+  onLoginSuccess,
+}: {
+  setIsRegistering: React.Dispatch<React.SetStateAction<boolean>>;
+  onLoginSuccess: () => void;
+}) {
   const navigate = useNavigate();
-
-  // Retrieve the updateVenueManagerStatus function from the UserContext
   const { updateVenueManagerStatus } = useUser();
 
   const {
@@ -35,9 +40,15 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
   });
 
   const onSubmit = async (data: LoginData) => {
-    const response = await loginApiCall(data, updateVenueManagerStatus); // Pass the updateVenueManagerStatus function
+    const response = await loginApiCall(data, updateVenueManagerStatus);
     if (response.success) {
-      navigate('/');
+      onLoginSuccess();
+      const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+      if (profileData.venueManager) {
+        navigate('/manage-venue');
+      } else {
+        navigate('/');
+      }
     }
   };
 

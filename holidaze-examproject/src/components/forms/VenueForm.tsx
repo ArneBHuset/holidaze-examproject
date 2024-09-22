@@ -10,6 +10,7 @@ import { venueValidationSchema } from './validation/VenueValidation.ts';
 import CardContent from '@mui/material/CardContent';
 import MainCard from '../../layout/MainCard.tsx';
 import { ManageVenue } from '../../services/interfaces/api/manageVenues.ts';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
 interface VenueFormProps {
   initialValues?: Partial<ManageVenue>;
@@ -110,29 +111,27 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
                 />
               </Box>
             </Grid>
-
             <Grid size={{ xs: 6 }}>
               <Box>
-                <SubTitle>Address</SubTitle>
+                <SubTitle>Country</SubTitle>
                 <Controller
-                  name="location.address"
+                  name="location.country"
                   control={control}
                   render={({ field }) => (
                     <DefaultInput>
                       <TextField
                         fullWidth
-                        placeholder="Address"
+                        placeholder="Country"
                         variant="standard"
                         {...field}
-                        error={!!errors.location?.address}
-                        helperText={errors.location?.address?.message}
+                        error={!!errors.location?.country}
+                        helperText={errors.location?.country?.message}
                       />
                     </DefaultInput>
                   )}
                 />
               </Box>
             </Grid>
-
             <Grid size={{ xs: 6 }}>
               <Box>
                 <SubTitle>City</SubTitle>
@@ -179,19 +178,19 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
 
             <Grid size={{ xs: 6 }}>
               <Box>
-                <SubTitle>Country</SubTitle>
+                <SubTitle>STREET</SubTitle>
                 <Controller
-                  name="location.country"
+                  name="location.address"
                   control={control}
                   render={({ field }) => (
                     <DefaultInput>
                       <TextField
                         fullWidth
-                        placeholder="Country"
+                        placeholder="Address"
                         variant="standard"
                         {...field}
-                        error={!!errors.location?.country}
-                        helperText={errors.location?.country?.message}
+                        error={!!errors.location?.address}
+                        helperText={errors.location?.address?.message}
                       />
                     </DefaultInput>
                   )}
@@ -199,9 +198,9 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               </Box>
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 6 }}>
               <Box>
-                <SubTitle>Price per Night</SubTitle>
+                <SubTitle>Price</SubTitle>
                 <Controller
                   name="price"
                   control={control}
@@ -222,7 +221,7 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               </Box>
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 6 }}>
               <Box>
                 <SubTitle>Max Guests</SubTitle>
                 <Controller
@@ -252,10 +251,11 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
                   name="rating"
                   control={control}
                   render={({ field }) => (
-                    <Box display="flex" alignItems="center" gap={2}>
+                    <Box display="flex" alignItems="center" gap={3} mt={2} ml={1}>
                       <Rating
                         {...field}
                         max={5}
+                        size="large"
                         value={field.value}
                         onChange={(_, newValue) => {
                           field.onChange(newValue);
@@ -272,7 +272,7 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               </Box>
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <Typography variant="h6">Facility Details</Typography>
+              <SubTitle>FACILITY DETAILS</SubTitle>
             </Grid>
             {['wifi', 'parking', 'breakfast', 'pets'].map((metaItem) => (
               <Grid size={6} key={metaItem}>
@@ -327,9 +327,11 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               </Box>
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <Button type="submit" variant="contained" fullWidth>
-                {submitLabel}
-              </Button>
+              <DefaultButton>
+                <Button type="submit" variant="contained" fullWidth>
+                  {submitLabel}
+                </Button>
+              </DefaultButton>
             </Grid>
           </Grid>
         </FormControl>

@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material';
 import { useUser } from '../../services/utilities/UserTypeContext.tsx';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -65,15 +66,15 @@ function Header() {
         boxShadow: `0 2px 2px rgba(0, 0, 0, 0.2)`,
       }}
     >
-      <Container maxWidth="lg">
-        <Toolbar disableGutters>
+      <Container maxWidth="md">
+        <Toolbar disableGutters sx={{ mx: 1 }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
             <Typography
               variant="h2"
               color={theme.palette.primary.main}
               noWrap
               sx={{
-                mr: 2,
+                mr: 0,
                 display: { xs: 'none', md: 'flex' },
               }}
             >
@@ -104,7 +105,7 @@ function Header() {
             >
               {menuItems.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
+                  <Typography textAlign="left">
                     <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                       {page.name}
                     </Link>
@@ -113,7 +114,6 @@ function Header() {
               ))}
             </Menu>
           </Box>
-
           <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
             <Typography
               variant="h3"
@@ -149,7 +149,7 @@ function Header() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: '50px', padding: 4 }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -176,13 +176,11 @@ function Header() {
                   {JSON.parse(localStorage.getItem('profileData')).name}
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Link to="/user-overview" style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
-                  <Typography textAlign="center">{isVenueManager ? 'Manage Venues' : 'My Bookings'}</Typography>
-                </Link>
-              </MenuItem>
               <MenuItem onClick={handleLogout}>
-                <Typography textAlign="center">Logout</Typography>
+                <Typography width="100%" display="flex" alignItems="center" justifyContent="space-between">
+                  Logout
+                  <ExitToAppIcon />
+                </Typography>
               </MenuItem>
             </Menu>
           </Box>

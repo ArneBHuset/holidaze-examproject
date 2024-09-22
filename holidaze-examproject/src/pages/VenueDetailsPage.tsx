@@ -14,6 +14,7 @@ import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
 import { LinearProgress } from '@mui/material';
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import { ApiError } from '../services/interfaces/error/catchError.ts';
+import { useUser } from '../services/utilities/UserTypeContext.tsx';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -24,6 +25,7 @@ export default function VenueDetailsPage() {
   const [venue, setVenue] = useState<VenueData | null>(state?.venue || null);
   const [loading, setLoading] = useState(false);
   const headers = getValidatedHeader();
+  const { isVenueManager } = useUser();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toggleDrawer =
@@ -80,11 +82,13 @@ export default function VenueDetailsPage() {
           <VenueSpecificDetails venue={venue} />
         </Grid>
       </Grid>
-      <DefaultBottomNavigation>
-        <Button sx={{ width: '100%' }} onClick={toggleDrawer('bottom', true)}>
-          BOOK VENUE
-        </Button>
-      </DefaultBottomNavigation>
+      {!isVenueManager && (
+        <DefaultBottomNavigation>
+          <Button sx={{ width: '100%' }} onClick={toggleDrawer('bottom', true)}>
+            BOOK VENUE
+          </Button>
+        </DefaultBottomNavigation>
+      )}
       <BookVenueDrawer open={drawerOpen} toggleDrawer={toggleDrawer} venue={venue} />
     </Container>
   );

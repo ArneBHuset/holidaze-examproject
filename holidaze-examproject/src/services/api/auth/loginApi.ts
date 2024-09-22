@@ -5,7 +5,6 @@ import LoginData from '../../interfaces/LoginForm.ts';
 import { snackBarError } from '../../snackbar/SnackBarError.tsx';
 import { snackBarSuccess } from '../../snackbar/SnackBarSuccess.tsx';
 import { ApiError } from '../../interfaces/error/catchError.ts';
-import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 
 /**
  * Function for login authentication. If successful,
@@ -19,7 +18,6 @@ export async function loginApiCall(
   updateVenueManagerStatus: (status: boolean) => void,
 ): Promise<{ success: boolean; message?: string }> {
   console.log('Used for LOGIN call', loginEndpoint, 'POST', unValidatedHeader, loginFormData);
-
   try {
     const loginResponse = await baseApiCall({
       url: loginEndpoint,
@@ -32,6 +30,7 @@ export async function loginApiCall(
       localStorage.setItem('accessToken', loginResponse.data.accessToken);
       localStorage.setItem('profileData', JSON.stringify(loginResponse.data));
       updateVenueManagerStatus(loginResponse.data.venueManager);
+      console.log(loginResponse);
       return { success: true };
     } else {
       const errorMessage = loginResponse.errors?.[0]?.message || 'Wrong password';
