@@ -1,8 +1,13 @@
 import VenueQueryParams from '../../../interfaces/api/venueQueryParams.ts';
 
-export const venuesEndpoint = ({ id, owner, bookings, search }: VenueQueryParams) => {
+export const venuesEndpoint = (params?: VenueQueryParams) => {
   let venueUrl = `/holidaze/venues`;
 
+  if (!params) {
+    return venueUrl;
+  }
+
+  const { id, owner, bookings, search } = params;
   const queryParams = new URLSearchParams();
 
   if (search) {

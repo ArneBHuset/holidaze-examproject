@@ -14,13 +14,23 @@ import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 import LoginIcon from '@mui/icons-material/Login';
 import '../../styles/scss/component-specific/input.scss';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
+import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 
 /**
  * React component for login form
  * @param {boolean} setIsRegistering - Boolean to toggle between registration and login
+ * @param onLoginSuccess Parameter called to trigger checkAuthStatus, ensuring authentication and navigation to landing page
  */
-function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
+function Login({
+  setIsRegistering,
+  onLoginSuccess,
+}: {
+  setIsRegistering: React.Dispatch<React.SetStateAction<boolean>>;
+  onLoginSuccess: () => void;
+}) {
   const navigate = useNavigate();
+  const { updateVenueManagerStatus } = useUser();
+
   const {
     control,
     handleSubmit,
@@ -30,9 +40,15 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
   });
 
   const onSubmit = async (data: LoginData) => {
-    const response = await loginApiCall(data);
+    const response = await loginApiCall(data, updateVenueManagerStatus);
     if (response.success) {
-      navigate('/');
+      onLoginSuccess();
+      const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+      if (profileData.venueManager) {
+        navigate('/manage-venue');
+      } else {
+        navigate('/');
+      }
     }
   };
 
@@ -75,7 +91,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
                     <TextField
                       fullWidth
                       type="password"
-                      placeholder="df"
+                      placeholder="Password"
                       variant="standard"
                       {...field}
                       error={!!errors.password}
@@ -89,7 +105,7 @@ function Login({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.Se
           <Grid size={{ xs: 6 }}>
             <DefaultButton>
               <Button onClick={() => setIsRegistering(false)} fullWidth={true}>
-                Register ?{' '}
+                Register ?
               </Button>
             </DefaultButton>
           </Grid>

@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 interface CalendarProps {
-  events: { title: string; start: string; end?: string }[]; // Events format for FullCalendar
+  events: { title: string; start: string; end?: string }[];
 }
 
 const Calendar: React.FC<CalendarProps> = ({ events }) => {

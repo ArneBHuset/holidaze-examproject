@@ -3,7 +3,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid2'; // Use Grid2 for layout
+import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import DefaultSubTitle from '../titles/SubTitle.tsx';

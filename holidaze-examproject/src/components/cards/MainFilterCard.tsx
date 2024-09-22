@@ -38,7 +38,6 @@ function getStyles(country: string, selectedCountries: readonly string[], theme:
 function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }) {
   const theme = useTheme();
 
-  // Handles logic for searching
   const [searchTerm, setSearchTerm] = useState<string>('');
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -47,17 +46,14 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
 
   const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim()) {
-      onSearch(searchTerm); // Trigger search when Enter is pressed
+      onSearch(searchTerm);
     }
   };
 
-  // Handles logic for checkbox (detailedOnly toggle)
   const [detailedOnly, setDetailedOnly] = useState<boolean>(false);
   const handleDetailedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDetailedOnly(event.target.checked);
   };
-
-  // Handles logic for country selection menu
   const [selectedCountries, setSelectedCountries] = useState<availableCountries['selectedCountries']>([]);
   const [countries, setCountries] = useState<availableCountries['countries']>([]);
 
@@ -68,7 +64,6 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     setSelectedCountries(typeof value === 'string' ? value.split(',') : value);
   };
 
-  // Handle chip deletion
   const handleDeleteCountry = (countryToDelete: string) => {
     setSelectedCountries((prevSelected) => prevSelected.filter((country) => country !== countryToDelete));
   };
@@ -80,7 +75,6 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
     }
   }, []);
 
-  // Handles logic for date selection
   const [dates, setDates] = useState<DatesType>({
     checkInDate: null,
     checkOutDate: null,

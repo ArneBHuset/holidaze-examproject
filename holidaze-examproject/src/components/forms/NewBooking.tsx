@@ -83,7 +83,7 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
   };
 
   const handleViewBookings = () => {
-    navigate('/view-bookings'); // Adjust route as necessary
+    navigate('/view-bookings');
   };
 
   return (
