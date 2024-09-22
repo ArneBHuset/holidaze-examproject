@@ -8,9 +8,9 @@ function NotFoundPage() {
 
   const handleRedirect = () => {
     if (accessToken) {
-      navigate('/'); // Redirect to LandingPage if accessToken is available
+      navigate('/');
     } else {
-      navigate('/auth'); // Redirect to RegisterLoginPage if no accessToken
+      navigate('/auth');
     }
   };
 

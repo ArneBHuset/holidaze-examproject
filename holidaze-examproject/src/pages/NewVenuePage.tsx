@@ -14,6 +14,7 @@ import DefaultButton from '../styles/mui-styles/components/defaultBtn.tsx';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import { ManageVenue } from '../services/interfaces/api/manageVenues.ts';
+import { ApiError } from '../services/interfaces/error/catchError.ts';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -36,7 +37,9 @@ function NewVenuePage() {
         navigate(`/venue/${venueId}`);
       }
     } catch (error) {
-      snackBarError('Failed to create venue. Please try again.');
+      const apiError = error as ApiError;
+      const errorMessage = apiError.message || 'An unknown error occurred';
+      snackBarError(errorMessage);
     }
   };
 

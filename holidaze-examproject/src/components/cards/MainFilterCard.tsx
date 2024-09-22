@@ -46,7 +46,7 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
 
   const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim()) {
-      onSearch(searchTerm); // Trigger search when Enter is pressed
+      onSearch(searchTerm);
     }
   };
 

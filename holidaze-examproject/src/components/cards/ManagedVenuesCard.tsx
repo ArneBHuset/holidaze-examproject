@@ -11,17 +11,19 @@ import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from '@mui/icons-material/Edit';
-import VenueData from '../../services/interfaces/api/venueResponse.ts';
 import VenueForm from '../forms/VenueForm.tsx';
 import baseApiCall from '../../services/api/apiMain.ts';
 import { getValidatedHeader } from '../../services/api/variables/headers.ts';
 import { snackBarSuccess } from '../../services/snackbar/SnackBarSuccess.tsx';
 import { snackBarError } from '../../services/snackbar/SnackBarError.tsx';
+import { ApiError } from '../../services/interfaces/error/catchError.ts';
+import { ManageVenue } from '../../services/interfaces/api/manageVenues.ts';
+import MainCard from '../../layout/MainCard.tsx';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
 interface ManagedVenuesCardProps {
-  venues: VenueData[];
+  venues: ManageVenue[];
 }
 
 export default function ManagedVenuesCard({ venues }: ManagedVenuesCardProps) {
@@ -36,7 +38,7 @@ export default function ManagedVenuesCard({ venues }: ManagedVenuesCardProps) {
     setSelectedVenueId(null);
   };
 
-  const updateVenue = async (venueData: any, venueId: string) => {
+  const updateVenue = async (venueData: ManageVenue, venueId: string) => {
     try {
       const headers = getValidatedHeader();
       await baseApiCall({
@@ -48,7 +50,9 @@ export default function ManagedVenuesCard({ venues }: ManagedVenuesCardProps) {
       snackBarSuccess('Venue updated successfully!');
       setSelectedVenueId(null);
     } catch (error) {
-      snackBarError('Failed to update venue. Please try again.');
+      const apiError = error as ApiError;
+      const errorMessage = apiError.message || 'An unknown error occurred';
+      snackBarError(errorMessage);
     }
   };
 
@@ -63,7 +67,9 @@ export default function ManagedVenuesCard({ venues }: ManagedVenuesCardProps) {
       snackBarSuccess('Venue deleted successfully!');
       setSelectedVenueId(null);
     } catch (error) {
-      snackBarError('Failed to delete venue. Please try again.');
+      const apiError = error as ApiError;
+      const errorMessage = apiError.message || 'An unknown error occurred';
+      snackBarError(errorMessage);
     }
   };
 
@@ -77,6 +83,7 @@ export default function ManagedVenuesCard({ venues }: ManagedVenuesCardProps) {
             <Card
               sx={{
                 display: 'flex',
+                my: 2,
                 flexDirection: { xs: 'column', sm: 'row' },
                 width: '100%',
                 height: 'auto',
@@ -109,7 +116,7 @@ export default function ManagedVenuesCard({ venues }: ManagedVenuesCardProps) {
                   <Grid size={6}>
                     <SecondaryButton>
                       <Button
-                        onClick={() => handleEditVenue(venue.id)}
+                        onClick={() => handleEditVenue(venue.id!)}
                         sx={{
                           width: '100%',
                         }}
@@ -136,19 +143,35 @@ export default function ManagedVenuesCard({ venues }: ManagedVenuesCardProps) {
             </Card>
 
             {isEditing && (
-              <Box mt={2}>
-                <VenueForm
-                  initialValues={venue}
-                  onSubmit={(data) => updateVenue(data, venue.id)}
-                  submitLabel="Save Changes"
-                />
-                <Button variant="outlined" color="error" fullWidth sx={{ mt: 2 }} onClick={() => deleteVenue(venue.id)}>
-                  Delete Venue
-                </Button>
-                <Button fullWidth sx={{ mt: 2 }} onClick={handleCancelUpdate}>
-                  Cancel
-                </Button>
-              </Box>
+              <MainCard>
+                <Grid container spacing={1}>
+                  <Grid size={12}>
+                    <VenueForm
+                      initialValues={venue}
+                      onSubmit={(data) => updateVenue(data, venue.id!)}
+                      submitLabel="Save Changes"
+                    />
+                  </Grid>
+                  <Grid size={6}>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      fullWidth
+                      sx={{ mt: 2 }}
+                      onClick={() => deleteVenue(venue.id!)}
+                    >
+                      Delete Venue
+                    </Button>
+                  </Grid>
+                  <Grid size={6}>
+                    <DefaultButton>
+                      <Button fullWidth sx={{ mt: 2, pb: '-16px' }} onClick={handleCancelUpdate}>
+                        Cancel
+                      </Button>
+                    </DefaultButton>
+                  </Grid>
+                </Grid>
+              </MainCard>
             )}
           </Grid>
         );

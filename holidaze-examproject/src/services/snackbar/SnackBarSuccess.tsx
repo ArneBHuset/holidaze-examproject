@@ -7,7 +7,7 @@ let showSnackBarSuccess: (message: string) => void = () => {};
 export default function SnackBarSuccess() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>('');
-  const theme = useTheme(); // Access the theme
+  const theme = useTheme();
 
   useEffect(() => {
     showSnackBarSuccess = (msg: string) => {
