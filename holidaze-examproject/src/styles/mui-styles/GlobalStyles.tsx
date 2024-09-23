@@ -4,12 +4,8 @@ import theme from './MuiThemes.ts';
 const GlobalStyles = () => (
   <MUIGlobalStyles
     styles={{
-      '@font-face': {
-        fontFamily: 'Cinzel',
-        src: `url('/src/assets/fonts/Cinzel-VariableFont_wght.ttf') format('truetype')`,
-        fontWeight: '400 700',
-        fontStyle: 'normal',
-        fontDisplay: 'swap',
+      '.MuiCardContent-root:last-child': {
+        paddingBottom: '0px !important',
       },
       body: {
         margin: 0,

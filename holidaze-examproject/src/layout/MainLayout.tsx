@@ -8,7 +8,7 @@ interface LayoutProps {
 
 function Layout(props: LayoutProps) {
   return (
-    <Container maxWidth={false} disableGutters>
+    <Container  maxWidth={false} disableGutters>
       <Box>
         <Header />
         <Box component="main">{props.children}</Box>

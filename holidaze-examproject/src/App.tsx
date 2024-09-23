@@ -14,7 +14,6 @@ import SnackBarError from './services/snackbar/SnackBarError.tsx';
 import SnackBarSuccess from './services/snackbar/SnackBarSuccess';
 import { UserProvider } from './services/utilities/UserTypeContext.tsx';
 import AllHostsPage from './pages/AllHostsPage.tsx';
-
 import AboutPage from './pages/About.tsx';
 import NewVenuePage from './pages/NewVenuePage.tsx';
 import { LinearProgress } from '@mui/material';

@@ -55,7 +55,7 @@ function Login({
   return (
     <MainCard>
       <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} p={2}>
           <Grid size={{ xs: 12 }}>
             <Box>
               <DefaultSubTitle>Email</DefaultSubTitle>
