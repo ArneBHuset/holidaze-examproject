@@ -41,8 +41,10 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
     <MainCard>
       <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={1} p={2}>
-          <Box width='100%'><SubTitle>USER TYPE</SubTitle></Box>
-          <Grid size={{xs:12, sm:6}} width='100%'>
+          <Box width="100%">
+            <SubTitle>USER TYPE</SubTitle>
+          </Box>
+          <Grid size={{ xs: 12, sm: 6 }} width="100%">
             <Box display="flex" alignItems="center">
               <Controller
                 name="venueManager"
@@ -64,14 +66,11 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                   />
                 )}
               />
-              <Typography variant='subtitle1'>CUSTOMER</Typography>
+              <Typography variant="subtitle1">CUSTOMER</Typography>
             </Box>
-
           </Grid>
-          <Grid size={{xs:12, sm:6}} width='100%'>
-
+          <Grid size={{ xs: 12, sm: 6 }} width="100%">
             <Box display="flex" alignItems="center">
-
               <Controller
                 name="venueManager"
                 control={control}
@@ -92,11 +91,11 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                   />
                 )}
               />
-              <Typography variant='subtitle1'>VENUE MANAGER</Typography>
+              <Typography variant="subtitle1">VENUE MANAGER</Typography>
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 12, sm:6 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Box>
               <SubTitle>Name</SubTitle>
               <Controller
@@ -119,7 +118,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 12, sm:6 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Box>
               <SubTitle>Email</SubTitle>
               <Controller
@@ -283,7 +282,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 6 }}  marginTop={2}>
+          <Grid size={{ xs: 6 }} marginTop={2}>
             <SecondaryButton>
               <Button onClick={() => setIsRegistering(true)} fullWidth={true}>
                 Back to Login
@@ -291,7 +290,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
             </SecondaryButton>
           </Grid>
 
-          <Grid size={{ xs: 6 }}  marginTop={2}>
+          <Grid size={{ xs: 6 }} marginTop={2}>
             <DefaultButton>
               <Button type="submit" fullWidth={true} endIcon={<ArrowForwardIosIcon />}>
                 Submit

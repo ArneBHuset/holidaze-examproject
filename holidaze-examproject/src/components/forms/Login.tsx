@@ -55,7 +55,7 @@ function Login({
   };
 
   return (
-    <Card sx={{ backgroundColor:(alpha(theme.palette.background.paper, 0.93))}}>
+    <Card sx={{ backgroundColor: alpha(theme.palette.background.paper, 0.93) }}>
       <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2} p={2}>
           <Grid size={{ xs: 12 }}>

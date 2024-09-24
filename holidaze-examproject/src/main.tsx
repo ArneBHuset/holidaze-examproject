@@ -8,7 +8,7 @@ import GlobalStyles from './styles/mui-styles/GlobalStyles.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <CssBaseline/>
+      <CssBaseline />
       <GlobalStyles />
       <App />
     </ThemeProvider>

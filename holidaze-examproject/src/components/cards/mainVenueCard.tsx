@@ -11,6 +11,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import GradeIcon from '@mui/icons-material/Grade';
 import { useNavigate } from 'react-router-dom';
 import VenueData from '../../services/interfaces/api/venueResponse.ts';
+import EuroIcon from '@mui/icons-material/Euro';
+import PublicIcon from '@mui/icons-material/Public';
+import theme from '../../styles/mui-styles/MuiThemes.ts';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 interface MainVenueCardProps {
   venues: VenueData[];
@@ -63,36 +67,52 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
               style={{ padding: 0 }}
             >
               <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
-                <Grid size={{ xs: 12 }}>
+                <Grid size={{ xs: 12 }} textAlign={{ xs: 'center', sm: 'left' }}>
                   <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography
-                    variant="body1"
-                    sx={{ textAlign: { xs: 'start', sm: 'start' }, paddingLeft: { xs: '10vw', sm: 0 } }}
+                    variant="h4"
+                    sx={{
+                      textAlign: { xs: 'center', sm: 'left' },
+                      paddingLeft: { xs: '10vw', sm: 0 },
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
                   >
-                    <strong>Price:</strong> ${venue.price}
+                    <EuroIcon sx={{ fontFamily: theme.typography.h4, mb: 0.5 }} />
+                    {venue.price} / DAY
                   </Typography>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12 }}>
-                  <Typography variant="body1" sx={{ paddingRight: { xs: 1, sm: 0 } }}>
-                    <strong>Country:</strong> {venue.location?.country || 'N/A'}
+                  <Typography
+                    variant="h4"
+                    sx={{ paddingRight: { xs: 1, sm: 0 }, display: 'flex', alignItems: 'center', gap: 1 }}
+                  >
+                    <PublicIcon />
+                    {venue.location?.city && venue.location?.country
+                      ? `${venue.location.city}, ${venue.location.country}`
+                      : venue.location?.city || venue.location?.country || 'N/A'}
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 4 }} display="flex" alignItems="center" gap={0.5}>
-                  <Box sx={{ paddingLeft: { xs: '10vw', sm: 0 } }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ textAlign: { xs: 'start', sm: 'start', display: 'flex', alignItems: 'center', gap: 2 } }}
+                  >
                     <PersonIcon />
-                  </Box>
-                  <Typography variant="body1" sx={{ textAlign: { xs: 'start', sm: 'start' } }}>
                     {venue.maxGuests}
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 8 }} display="flex" alignItems="center" gap={0.5}>
-                  <Box>
+                  <Typography
+                    variant="h4"
+                    paddingRight={{ xs: 0, sm: 8 }}
+                    sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+                  >
                     <GradeIcon />
-                  </Box>
-                  <Typography variant="body1" paddingRight={{ xs: 0, sm: 8 }}>
                     {venue.rating || 'No rating'}
                   </Typography>
                 </Grid>
@@ -116,9 +136,11 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                         borderBottomLeftRadius: { xs: 0, sm: 4 },
                         borderBottomRightRadius: { xs: 0, sm: 4 },
                         padding: { xs: 1, sm: 1.5 },
+                        gap: 4,
                       }}
                     >
-                      Review and book!
+                      See more!
+                      <ArrowForwardIosIcon />
                     </Button>
                   </DefaultButton>
                 </Grid>
@@ -143,9 +165,11 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                     borderBottomLeftRadius: { xs: 0, sm: 4 },
                     borderBottomRightRadius: { xs: 0, sm: 4 },
                     padding: { xs: 1, sm: 1.5 },
+                    gap: 4,
                   }}
                 >
-                  Review and book!
+                  See more!
+                  <ArrowForwardIosIcon />
                 </Button>
               </DefaultButton>
             </CardContent>

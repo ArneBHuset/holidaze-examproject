@@ -9,7 +9,7 @@ interface LayoutProps {
 
 function Layout(props: LayoutProps) {
   return (
-    <Container  maxWidth={false} disableGutters sx={{backgroundColor:theme.palette.primary.light}}>
+    <Container maxWidth={false} disableGutters>
       <Box>
         <Header />
         <Box component="main">{props.children}</Box>

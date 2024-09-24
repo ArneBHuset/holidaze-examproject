@@ -38,8 +38,8 @@ export default function SnackBarSuccess() {
           backgroundColor: theme.palette.secondary.light,
           color: theme.palette.background.paper,
           textAlign: 'center',
-          pl:{xs:4, sm:10},
-          overflow:'hidden',
+          pl: { xs: 4, sm: 10 },
+          overflow: 'hidden',
         }}
       >
         <Typography
@@ -47,13 +47,13 @@ export default function SnackBarSuccess() {
           sx={{
             textDecoration: 'underline',
             fontFamily: theme.typography.subtitle1,
-            width:'100%',
-            overflow:'hidden',
+            width: '100%',
+            overflow: 'hidden',
           }}
         >
           Success!
         </Typography>
-        <Typography variant="h5" align="center" sx={{ width: '100%',  overflow:'hidden', }}>
+        <Typography variant="h5" align="center" sx={{ width: '100%', overflow: 'hidden' }}>
           {message}
         </Typography>
       </Alert>

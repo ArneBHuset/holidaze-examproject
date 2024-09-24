@@ -67,12 +67,12 @@ export default function LandingPage() {
   if (loading) return <LinearProgress color="secondary"></LinearProgress>;
 
   return (
-    <Container maxWidth="md" >
-      <Grid container spacing={4} marginTop={4}>
-        <Grid size={12}>
+    <Container maxWidth="lg">
+      <Grid container spacing={1} marginTop={2}>
+        <Grid size={{ xs: 12, sm: 4 }} maxWidth={{ xs: '100%', sm: '500px' }}>
           <MainFilterCard onSearch={setSearchTerm} />
         </Grid>
-        <Grid>
+        <Grid size={{ xs: 12, sm: 8 }}>
           <MainVenueCard venues={filteredVenueData} />
         </Grid>
       </Grid>
