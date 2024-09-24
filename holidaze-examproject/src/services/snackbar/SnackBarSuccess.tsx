@@ -26,7 +26,7 @@ export default function SnackBarSuccess() {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={7000}
+      autoHideDuration={20000}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >
@@ -34,10 +34,12 @@ export default function SnackBarSuccess() {
         onClose={handleClose}
         severity="success"
         sx={{
-          width: '400px',
+          width: '500px',
           backgroundColor: theme.palette.secondary.light,
           color: theme.palette.background.paper,
           textAlign: 'center',
+          pl:{xs:4, sm:10},
+          overflow:'hidden',
         }}
       >
         <Typography
@@ -45,11 +47,13 @@ export default function SnackBarSuccess() {
           sx={{
             textDecoration: 'underline',
             fontFamily: theme.typography.subtitle1,
+            width:'100%',
+            overflow:'hidden',
           }}
         >
           Success!
         </Typography>
-        <Typography variant="body1" align="center" sx={{ width: '100%' }}>
+        <Typography variant="h5" align="center" sx={{ width: '100%',  overflow:'hidden', }}>
           {message}
         </Typography>
       </Alert>
