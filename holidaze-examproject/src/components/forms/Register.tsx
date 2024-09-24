@@ -2,16 +2,21 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormControl from '@mui/material/FormControl';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box, Checkbox } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import MainCard from '../../layout/MainCard.tsx';
 import SubTitle from '../titles/SubTitle';
-import { MaterialUISwitch } from '../../styles/mui-styles/components/MuiSwitch';
 import RegistrationData from '../../services/interfaces/registrationForm.ts';
 import { registerValidationSchema } from './validation/registerValidation.ts';
 import { registrationApiCall } from '../../services/api/auth/RegisterApi.ts';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import VillaIcon from '@mui/icons-material/Villa';
+import theme from '../../styles/mui-styles/MuiThemes.ts';
+import Typography from '@mui/material/Typography';
+import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React.SetStateAction<boolean>> }) {
   const {
@@ -27,27 +32,71 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
       avatar: data.avatar?.url?.trim() ? data.avatar : undefined,
       banner: data.banner?.url?.trim() ? data.banner : undefined,
     };
-
-    console.log('Processed Registration Data:', processedData);
     await registrationApiCall(processedData, setIsRegistering);
   };
+  const customerLabel = { inputProps: { 'aria-label': 'Customer checkbox' } };
+  const venueManagerLabel = { inputProps: { 'aria-label': 'Venue manager checkbox' } };
 
   return (
     <MainCard>
       <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={4}>
-          <Grid size={{ xs: 12 }}>
-            <Box width="100%">
+        <Grid container spacing={1} p={2}>
+          <Box width='100%'><SubTitle>USER TYPE</SubTitle></Box>
+          <Grid size={{xs:12, sm:6}} width='100%'>
+            <Box display="flex" alignItems="center">
               <Controller
                 name="venueManager"
                 control={control}
                 defaultValue={false}
-                render={({ field }) => <MaterialUISwitch checked={field.value} onChange={field.onChange} />}
+                render={({ field }) => (
+                  <Checkbox
+                    {...customerLabel}
+                    checked={field.value === false}
+                    onChange={() => field.onChange(false)}
+                    icon={<TravelExploreIcon sx={{ fontSize: 45 }} />}
+                    checkedIcon={<TravelExploreIcon sx={{ fontSize: 45 }} />}
+                    sx={{
+                      color: theme.palette.primary.light,
+                      '&.Mui-checked': {
+                        color: theme.palette.secondary.main,
+                      },
+                    }}
+                  />
+                )}
               />
+              <Typography variant='subtitle1'>CUSTOMER</Typography>
+            </Box>
+
+          </Grid>
+          <Grid size={{xs:12, sm:6}} width='100%'>
+
+            <Box display="flex" alignItems="center">
+
+              <Controller
+                name="venueManager"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <Checkbox
+                    {...venueManagerLabel}
+                    checked={field.value === true}
+                    onChange={() => field.onChange(true)}
+                    icon={<VillaIcon sx={{ fontSize: 40 }} />}
+                    checkedIcon={<VillaIcon sx={{ fontSize: 40 }} />}
+                    sx={{
+                      color: theme.palette.primary.light,
+                      '&.Mui-checked': {
+                        color: theme.palette.secondary.main,
+                      },
+                    }}
+                  />
+                )}
+              />
+              <Typography variant='subtitle1'>VENUE MANAGER</Typography>
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 12 }}>
+          <Grid size={{ xs: 12, sm:6 }}>
             <Box>
               <SubTitle>Name</SubTitle>
               <Controller
@@ -70,7 +119,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 12 }}>
+          <Grid size={{ xs: 12, sm:6 }}>
             <Box>
               <SubTitle>Email</SubTitle>
               <Controller
@@ -82,7 +131,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     <TextField
                       fullWidth
                       type="email"
-                      placeholder="anderson@noroff.no"
+                      placeholder="anderson@stud.noroff.no"
                       variant="standard"
                       {...field}
                       error={!!errors.email}
@@ -129,8 +178,8 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     <TextField
                       fullWidth
                       multiline
-                      rows={3}
-                      placeholder="Adventurer by heart, and..."
+                      rows={2}
+                      placeholder="Adventurer by heart, love fine dining and..."
                       variant="standard"
                       {...field}
                       error={!!errors.bio}
@@ -144,7 +193,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
 
           <Grid size={{ xs: 6 }}>
             <Box>
-              <SubTitle>Avatar picture</SubTitle>
+              <SubTitle>Avatar</SubTitle>
               <Controller
                 name="avatar.url"
                 control={control}
@@ -153,7 +202,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     <TextField
                       fullWidth
                       type="url"
-                      placeholder="Profile picture URL"
+                      placeholder="image url"
                       variant="standard"
                       {...field}
                       error={!!errors.avatar?.url}
@@ -167,7 +216,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
 
           <Grid size={{ xs: 6 }}>
             <Box>
-              <SubTitle>Avatar description</SubTitle>
+              <SubTitle>Avatar desription</SubTitle>
               <Controller
                 name="avatar.alt"
                 control={control}
@@ -199,7 +248,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
                     <TextField
                       fullWidth
                       type="url"
-                      placeholder="Banner picture URL"
+                      placeholder="image url"
                       variant="standard"
                       {...field}
                       error={!!errors.banner?.url}
@@ -234,17 +283,17 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 6 }}>
-            <DefaultButton>
+          <Grid size={{ xs: 6 }}  marginTop={2}>
+            <SecondaryButton>
               <Button onClick={() => setIsRegistering(true)} fullWidth={true}>
                 Back to Login
               </Button>
-            </DefaultButton>
+            </SecondaryButton>
           </Grid>
 
-          <Grid size={{ xs: 6 }}>
+          <Grid size={{ xs: 6 }}  marginTop={2}>
             <DefaultButton>
-              <Button type="submit" fullWidth={true}>
+              <Button type="submit" fullWidth={true} endIcon={<ArrowForwardIosIcon />}>
                 Submit
               </Button>
             </DefaultButton>

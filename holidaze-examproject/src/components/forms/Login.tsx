@@ -2,10 +2,9 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormControl from '@mui/material/FormControl';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box, alpha } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
-import MainCard from '../../layout/MainCard.tsx';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import LoginData from '../../services/interfaces/LoginForm.ts';
 import { loginValidationSchema } from './validation/loginValidation';
@@ -15,6 +14,9 @@ import LoginIcon from '@mui/icons-material/Login';
 import '../../styles/scss/component-specific/input.scss';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import { useUser } from '../../services/utilities/UserTypeContext.tsx';
+import Card from '@mui/material/Card';
+import theme from '../../styles/mui-styles/MuiThemes.ts';
+import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
 
 /**
  * React component for login form
@@ -53,9 +55,9 @@ function Login({
   };
 
   return (
-    <MainCard>
+    <Card sx={{ backgroundColor:(alpha(theme.palette.background.paper, 0.93))}}>
       <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={4} p={2}>
+        <Grid container spacing={2} p={2}>
           <Grid size={{ xs: 12 }}>
             <Box>
               <DefaultSubTitle>Email</DefaultSubTitle>
@@ -103,11 +105,11 @@ function Login({
             </Box>
           </Grid>
           <Grid size={{ xs: 6 }}>
-            <DefaultButton>
+            <SecondaryButton>
               <Button onClick={() => setIsRegistering(false)} fullWidth={true}>
                 Register ?
               </Button>
-            </DefaultButton>
+            </SecondaryButton>
           </Grid>
           <Grid size={{ xs: 6 }}>
             <DefaultButton>
@@ -118,7 +120,7 @@ function Login({
           </Grid>
         </Grid>
       </FormControl>
-    </MainCard>
+    </Card>
   );
 }
 

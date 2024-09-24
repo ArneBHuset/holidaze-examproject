@@ -61,8 +61,8 @@ function Header() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: theme.palette.background.default,
-        borderBottom: `1px solid ${theme.palette.primary.main}`,
+        backgroundColor: theme.palette.primary.light,
+        borderBottom: `1px solid ${theme.palette.secondary.main}`,
         boxShadow: `0 2px 2px rgba(0, 0, 0, 0.2)`,
       }}
     >
@@ -71,7 +71,7 @@ function Header() {
           <Link to="/" style={{ textDecoration: 'none' }}>
             <Typography
               variant="h2"
-              color={theme.palette.primary.main}
+              color={theme.palette.secondary.main}
               noWrap
               sx={{
                 mr: 0,
