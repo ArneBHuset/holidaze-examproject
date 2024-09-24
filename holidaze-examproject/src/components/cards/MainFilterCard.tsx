@@ -35,7 +35,7 @@ function getStyles(country: string, selectedCountries: readonly string[], theme:
   };
 }
 
-function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }) {
+function MainFilterCard({ onSearch, onFiltersChange }: { onSearch: (searchTerm: string) => void, onFiltersChange: (filters: any) => void }) {
   const theme = useTheme();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -119,6 +119,18 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
 
     applyFilters(filters);
   }, [detailedOnly, selectedCountries, dates]);
+
+  const simulatedFilters = {
+    dateFrom: dayjs('2024-12-01').toISOString(),
+    dateTo: dayjs('2024-12-15').toISOString(),
+    price: 300,
+    country: 'Norway',
+  };
+  useEffect(() => {
+    onFiltersChange(simulatedFilters);
+  }, []); // Empty array ensures this runs only once
+
+
 
   return (
     <MainCard>
@@ -221,7 +233,7 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
                 '&:hover': { color: theme.palette.secondary.main },
               }}
             />
-            <Typography>Detailed venues only</Typography>
+            <Typography>Show only top rated venues</Typography>
           </Box>
         </Grid>
         <Grid size={{ xs: 4 }} display="flex" justifyContent="flex-end">

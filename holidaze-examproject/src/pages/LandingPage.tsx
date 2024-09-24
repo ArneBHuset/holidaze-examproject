@@ -8,25 +8,41 @@ import { venuesEndpoint } from '../services/api/variables/endpoints/venueEndpoin
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import debounce from '../services/utilities/debounce.ts';
 import VenueData from '../services/interfaces/api/venueResponse.ts';
-import { processVenueData } from '../services/filtering/filterLandingPage.ts';
 import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
 import { LinearProgress } from '@mui/material';
 import { ApiError } from '../services/interfaces/error/catchError.ts';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
+
 export default function LandingPage() {
   const [venueData, setVenueData] = useState<VenueData[]>([]);
-  console.log('VenueData to be used for filtering from landing', venueData);
   const [filteredVenueData, setFilteredVenueData] = useState<VenueData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filters, setFilters] = useState<any>({
+    dateFrom: '2024-12-01',
+    dateTo: '2024-12-15',
+    price: 300,
+    country: 'Norway',
+  });
+
   const headers = getValidatedHeader();
 
   const fetchVenueData = useCallback(
-    debounce(async (searchValue: string) => {
+    debounce(async (searchValue: string, appliedFilters: any) => {
       try {
         setLoading(true);
-        const queryParams = { search: searchValue || '', id: '', owner: true, bookings: true };
+
+        const queryParams = {
+          search: searchValue || '',
+          owner: true,
+          bookings: true,
+          dateFrom: appliedFilters.dateFrom,
+          dateTo: appliedFilters.dateTo,
+          price: appliedFilters.price,
+          country: appliedFilters.country,
+        };
+
         const endpoint = venuesEndpoint(queryParams);
         const response = await baseApiCall({
           url: endpoint,
@@ -34,22 +50,8 @@ export default function LandingPage() {
           headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
         });
 
-        sessionStorage.setItem(
-          'countries',
-          JSON.stringify(
-            Array.from(
-              new Set(
-                (response.data as VenueData[])
-                  .map((venue) => venue.location?.country || '')
-                  .filter((country) => country && country.trim() !== ''),
-              ),
-            ),
-          ),
-        );
-
         setVenueData(response.data as VenueData[]);
         setFilteredVenueData(response.data as VenueData[]);
-        processVenueData(response.data);
         setLoading(false);
       } catch (error) {
         const apiError = error as ApiError;
@@ -57,20 +59,26 @@ export default function LandingPage() {
         setLoading(false);
       }
     }, 150),
-    [headers],
+    [headers]
   );
 
+  // Only refetch when searchTerm or filters change
   useEffect(() => {
-    fetchVenueData(searchTerm);
-  }, [searchTerm]);
+    fetchVenueData(searchTerm, filters);
+  }, [searchTerm, filters, fetchVenueData]);
 
-  if (loading) return <LinearProgress color="secondary"></LinearProgress>;
+  // Handle filter changes from MainFilterCard
+  const handleFiltersChange = (newFilters: any) => {
+    setFilters(newFilters);
+  };
+
+  if (loading) return <LinearProgress color="secondary" />;
 
   return (
     <Container maxWidth="lg">
       <Grid container spacing={1} marginTop={2}>
         <Grid size={{ xs: 12, sm: 4 }} maxWidth={{ xs: '100%', sm: '500px' }}>
-          <MainFilterCard onSearch={setSearchTerm} />
+          <MainFilterCard onSearch={setSearchTerm} onFiltersChange={handleFiltersChange} />
         </Grid>
         <Grid size={{ xs: 12, sm: 8 }}>
           <MainVenueCard venues={filteredVenueData} />
