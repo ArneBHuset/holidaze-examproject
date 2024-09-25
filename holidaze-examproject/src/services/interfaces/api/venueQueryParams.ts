@@ -1,10 +1,9 @@
 export default interface VenueQueryParams {
-  id: string;
+  id?: string;
   owner?: boolean;
   bookings?: boolean;
   search?: string;
-  dateFrom?: string; // ISO string for dateFrom filter
-  dateTo?: string; // ISO string for dateTo filter
-  price?: number; // Number for price filter
-  country?: string; // Country name as string for country filter
+  price?: number;
+  sort?: string;
+  sortOrder?: string;
 }

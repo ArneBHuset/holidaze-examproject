@@ -51,8 +51,8 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                   'https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0='
                 }
                 sx={{
-                  width: { xs: '100%', sm: 250 },
-                  height: { xs: 200, sm: '100%' },
+                  width: { xs: '100%', sm: 200 },
+                  height: { xs: 200, sm: '200px' },
                   maxHeight: { xs: 200, sm: 260 },
                   borderRadius: { xs: '4px', sm: '8px' },
                 }}

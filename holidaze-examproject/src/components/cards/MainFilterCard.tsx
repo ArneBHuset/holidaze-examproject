@@ -2,12 +2,18 @@ import MainCard from '../../layout/MainCard.tsx';
 import Grid from '@mui/material/Grid2';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
-import { Box, Checkbox, Typography, Button, TextField } from '@mui/material';
+import { Box, Checkbox, Typography, Button, TextField, IconButton, InputAdornment } from '@mui/material';
 import React, { useState } from 'react';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 import theme from '../../styles/mui-styles/MuiThemes.ts';
-import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SearchIcon from '@mui/icons-material/Search';
 
+/**
+ * MainFilterCard component that handles search and sort functionalities.
+ */
 function MainFilterCard({
   onSearch,
   onSortChange,
@@ -16,9 +22,9 @@ function MainFilterCard({
   onSortChange: (sort: string, sortOrder: string) => void;
 }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [submittedSearchTerm, setSubmittedSearchTerm] = useState<string>('');
   const [selectedSort, setSelectedSort] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<string>('asc');
-
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
@@ -26,8 +32,25 @@ function MainFilterCard({
 
   const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim()) {
-      onSearch(searchTerm);
+      submitSearchTerm();
     }
+  };
+
+  const handleSearchSubmit = () => {
+    if (searchTerm.trim()) {
+      submitSearchTerm();
+    }
+  };
+
+  const submitSearchTerm = () => {
+    setSubmittedSearchTerm(searchTerm);
+    onSearch(searchTerm);
+  };
+
+  const handleClearSearch = () => {
+    setSearchTerm('');
+    setSubmittedSearchTerm('');
+    onSearch('');
   };
 
   const handleSortToggle = (sortField: string) => {
@@ -45,107 +68,99 @@ function MainFilterCard({
       onSortChange(sortField, 'asc');
     } else {
       setSelectedSort('');
+      onSortChange('created', 'desc');
     }
   };
 
   return (
     <MainCard>
-      <Grid container rowSpacing={2} columnSpacing={1} padding={2} m="auto">
+      <Grid container rowSpacing={1} padding={2}>
         <Grid size={{ xs: 12 }}>
-          <DefaultSubTitle>Search</DefaultSubTitle>
+          <DefaultSubTitle>search</DefaultSubTitle>
           <DefaultInput>
             <TextField
               type="search"
-              placeholder="Search venues..."
+              placeholder="Villa..."
               variant="standard"
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
               value={searchTerm}
               onChange={handleSearchInputChange}
               onKeyDown={handleSearchKeyDown}
               style={{ width: '100%' }}
             />
           </DefaultInput>
-        </Grid>
-        <Grid size={{ xs: 12 }}>
-          <Box display="flex" flexDirection="column" gap={2}>
-            <Box display="flex" alignItems="center" gap={2} marginTop={1}>
-              <Checkbox
-                checked={selectedSort === 'price'}
-                onChange={() => handleSortCheck('price')}
-                size="large"
-                sx={{
-                  color: theme.palette.primary.main,
-                  padding: 0,
-                  '&.Mui-checked': { color: theme.palette.secondary.main },
-                  '&:hover': { color: theme.palette.secondary.main },
-                }}
-              />
-              <Typography
-                onClick={() => selectedSort === 'price' && handleSortToggle('price')}
-                sx={{
-                  cursor: selectedSort === 'price' ? 'pointer' : 'default',
-                  color: selectedSort === 'price' ? 'inherit' : 'gray',
-                }}
-              >
-                Price ({sortOrder === 'asc' && selectedSort === 'price' ? 'Low to High' : 'High to Low'})
-              </Typography>
+          {submittedSearchTerm && (
+            <Box display="flex" alignItems="center" justifyContent="space-between" mt={1} paddingX={1}>
+              <Typography variant="body1">{submittedSearchTerm}</Typography>
+              <IconButton onClick={handleClearSearch} size="small">
+                <CloseIcon />
+              </IconButton>
             </Box>
-
-            <Box display="flex" alignItems="center" gap={2}>
-              <Checkbox
-                checked={selectedSort === 'maxGuests'}
-                onChange={() => handleSortCheck('maxGuests')}
-                size="large"
-                sx={{
-                  color: theme.palette.primary.main,
-                  padding: 0,
-                  '&.Mui-checked': { color: theme.palette.secondary.main },
-                  '&:hover': { color: theme.palette.secondary.main },
-                }}
-              />
-              <Typography
-                onClick={() => selectedSort === 'maxGuests' && handleSortToggle('maxGuests')}
-                sx={{
-                  cursor: selectedSort === 'maxGuests' ? 'pointer' : 'default',
-                  color: selectedSort === 'maxGuests' ? 'inherit' : 'gray',
-                }}
+          )}
+          <Box display="flex" justifyContent="right">
+            <DefaultButton>
+              <Button
+                onClick={handleSearchSubmit}
+                disabled={!searchTerm.trim()}
+                sx={{ mt: 2, justifyContent: 'right' }}
               >
-                Max Guests ({sortOrder === 'asc' && selectedSort === 'maxGuests' ? 'Few to Many' : 'Many to Few'})
-              </Typography>
-            </Box>
-
-            <Box display="flex" alignItems="center" gap={2}>
-              <Checkbox
-                checked={selectedSort === 'rating'}
-                onChange={() => handleSortCheck('rating')}
-                size="large"
-                sx={{
-                  color: theme.palette.primary.main,
-                  padding: 0,
-                  '&.Mui-checked': { color: theme.palette.secondary.main },
-                  '&:hover': { color: theme.palette.secondary.main },
-                }}
-              />
-              <Typography
-                onClick={() => selectedSort === 'rating' && handleSortToggle('rating')}
-                sx={{
-                  cursor: selectedSort === 'rating' ? 'pointer' : 'default',
-                  color: selectedSort === 'rating' ? 'inherit' : 'gray',
-                }}
-              >
-                Rating ({sortOrder === 'asc' && selectedSort === 'rating' ? <ArrowDownward /> : <ArrowUpward />})
-              </Typography>
-            </Box>
+                Submit
+              </Button>
+            </DefaultButton>
           </Box>
         </Grid>
-
-        <Grid size={{ xs: 12 }}>
-          <DefaultButton>
-            <Button onClick={() => setSearchTerm('')}>Reset</Button>
-          </DefaultButton>
+        <Grid size={{ xs: 12 }} mb={2}>
+          <DefaultSubTitle>Sort</DefaultSubTitle>
+          <Box display="flex" flexDirection="column" gap={2}>
+            {['price', 'maxGuests', 'rating'].map((sortField) => (
+              <Box key={sortField} display="flex" alignItems="center" gap={2} marginTop={1}>
+                <Checkbox
+                  checked={selectedSort === sortField}
+                  onChange={() => handleSortCheck(sortField)}
+                  size="large"
+                  sx={{
+                    color: theme.palette.primary.light,
+                    padding: 0,
+                    '&.Mui-checked': { color: theme.palette.secondary.main },
+                    '&:hover': { color: theme.palette.secondary.main },
+                  }}
+                />
+                <Typography
+                  onClick={() => selectedSort === sortField && handleSortToggle(sortField)}
+                  variant="h5"
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: selectedSort === sortField ? 'pointer' : 'default',
+                    color: selectedSort === sortField ? 'inherit' : 'gray',
+                    borderBottom: selectedSort === sortField ? `2px solid ${theme.palette.secondary.main}` : 'none',
+                  }}
+                >
+                  {sortField.charAt(0).toUpperCase() + sortField.slice(1)}
+                  {selectedSort === sortField &&
+                    (sortOrder === 'asc' ? (
+                      <ArrowDropUpIcon sx={{ fontSize: 30 }} />
+                    ) : (
+                      <ArrowDropDownIcon sx={{ fontSize: 30 }} />
+                    ))}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         </Grid>
       </Grid>
     </MainCard>
   );
 }
 
-export default React.memo(MainFilterCard); // Use React.memo to prevent unnecessary re-renders
+export default React.memo(MainFilterCard);
