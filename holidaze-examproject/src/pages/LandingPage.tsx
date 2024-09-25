@@ -16,56 +16,49 @@ const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
 export default function LandingPage() {
   const [venueData, setVenueData] = useState<VenueData[]>([]);
-  console.log('VenueData to be used for filtering from landing', venueData);
   const [filteredVenueData, setFilteredVenueData] = useState<VenueData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [sortField, setSortField] = useState<string>('price');
+  const [sortOrder, setSortOrder] = useState<string>('asc');
   const headers = getValidatedHeader();
 
-  const hardcodedCountry = 'Norway';
-
   const fetchVenueData = useCallback(
-    debounce(async (searchValue: string) => {
+    debounce(async (searchValue: string, sortField: string, sortOrder: string) => {
       try {
-        setLoading(true);
-
-        const queryParams = { search: searchValue || '', id: '', owner: true, bookings: true, country: hardcodedCountry };
+        const queryParams = {
+          search: searchValue || '',
+          sort: sortField,
+          sortOrder: sortOrder,
+          owner: true,
+          bookings: true,
+        };
         const endpoint = venuesEndpoint(queryParams);
-  console.log(endpoint)
+        console.log(endpoint);
         const response = await baseApiCall({
           url: endpoint,
           method: 'GET',
           headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
         });
 
-        sessionStorage.setItem(
-          'countries',
-          JSON.stringify(
-            Array.from(
-              new Set(
-                (response.data as VenueData[])
-                  .map((venue) => venue.location?.country || '')
-                  .filter((country) => country && country.trim() !== ''),
-              ),
-            ),
-          ),
-        );
-
         setVenueData(response.data as VenueData[]);
         setFilteredVenueData(response.data as VenueData[]);
-        setLoading(false);
       } catch (error) {
         const apiError = error as ApiError;
         snackBarError(apiError.message || 'An error occurred while fetching data.');
-        setLoading(false);
       }
     }, 150),
-    [headers]
+    [headers],
   );
 
   useEffect(() => {
-    fetchVenueData(searchTerm);
-  }, [searchTerm]);
+    fetchVenueData(searchTerm, sortField, sortOrder);
+  }, [searchTerm, sortField, sortOrder]);
+
+  const handleSortChange = useCallback((field: string, order: string) => {
+    setSortField(field);
+    setSortOrder(order);
+  }, []);
 
   if (loading) return <LinearProgress color="secondary"></LinearProgress>;
 
@@ -73,7 +66,7 @@ export default function LandingPage() {
     <Container maxWidth="lg">
       <Grid container spacing={1} marginTop={2}>
         <Grid size={{ xs: 12, sm: 4 }} maxWidth={{ xs: '100%', sm: '500px' }}>
-          <MainFilterCard onSearch={setSearchTerm} />
+          <MainFilterCard onSearch={setSearchTerm} onSortChange={handleSortChange} />
         </Grid>
         <Grid size={{ xs: 12, sm: 8 }}>
           <MainVenueCard venues={filteredVenueData} />

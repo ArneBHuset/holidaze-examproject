@@ -10,13 +10,13 @@ export const venuesEndpoint = (params?: VenueQueryParams) => {
   const { id, owner, bookings, search, dateFrom, dateTo, country, sort, sortOrder } = params;
   const queryParams = new URLSearchParams();
 
-  if (search) {
-    venueUrl = `/holidaze/venues/search`;
-    queryParams.append('q', search);
+  if (id) {
+    return `/holidaze/venues/${id}`; // Direct venue URL if an ID is provided
   }
 
-  if (id) {
-    venueUrl = `/holidaze/venues/${id}`;
+  if (search) {
+    queryParams.append('q', search); // Search URL is used when a search term is present
+    venueUrl = `/holidaze/venues/search`;
   }
 
   if (owner !== undefined) {
@@ -48,5 +48,10 @@ export const venuesEndpoint = (params?: VenueQueryParams) => {
   }
 
   const queryString = queryParams.toString();
-  return queryString ? `${venueUrl}?${queryString}` : venueUrl;
+
+  const finalUrl = queryString ? `${venueUrl}?${queryString}` : venueUrl;
+
+  console.log('Constructed URL:', finalUrl); // Log the URL for debugging
+
+  return finalUrl;
 };
