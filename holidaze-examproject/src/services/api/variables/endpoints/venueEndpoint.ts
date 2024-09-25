@@ -7,7 +7,7 @@ export const venuesEndpoint = (params?: VenueQueryParams) => {
     return venueUrl;
   }
 
-  const { id, owner, bookings, search, dateFrom, dateTo, price, country } = params;
+  const { id, owner, bookings, search, dateFrom, dateTo, country, sort, sortOrder } = params;
   const queryParams = new URLSearchParams();
 
   if (search) {
@@ -27,7 +27,6 @@ export const venuesEndpoint = (params?: VenueQueryParams) => {
     queryParams.append('_bookings', String(bookings));
   }
 
-  // Add new query parameters
   if (dateFrom) {
     queryParams.append('dateFrom', dateFrom);
   }
@@ -36,12 +35,16 @@ export const venuesEndpoint = (params?: VenueQueryParams) => {
     queryParams.append('dateTo', dateTo);
   }
 
-  if (price !== undefined) {
-    queryParams.append('price', String(price));
-  }
-
   if (country) {
     queryParams.append('country', country);
+  }
+
+  if (sort) {
+    queryParams.append('sort', sort);
+  }
+
+  if (sortOrder) {
+    queryParams.append('sortOrder', sortOrder);
   }
 
   const queryString = queryParams.toString();

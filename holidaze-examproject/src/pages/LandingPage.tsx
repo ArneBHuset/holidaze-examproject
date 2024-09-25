@@ -16,39 +16,40 @@ const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
 export default function LandingPage() {
   const [venueData, setVenueData] = useState<VenueData[]>([]);
+  console.log('VenueData to be used for filtering from landing', venueData);
   const [filteredVenueData, setFilteredVenueData] = useState<VenueData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filters, setFilters] = useState<any>({
-    dateFrom: '2024-12-01',
-    dateTo: '2024-12-15',
-    price: 300,
-    country: 'Norway',
-  });
-
   const headers = getValidatedHeader();
 
+  const hardcodedCountry = 'Norway';
+
   const fetchVenueData = useCallback(
-    debounce(async (searchValue: string, appliedFilters: any) => {
+    debounce(async (searchValue: string) => {
       try {
         setLoading(true);
 
-        const queryParams = {
-          search: searchValue || '',
-          owner: true,
-          bookings: true,
-          dateFrom: appliedFilters.dateFrom,
-          dateTo: appliedFilters.dateTo,
-          price: appliedFilters.price,
-          country: appliedFilters.country,
-        };
-
+        const queryParams = { search: searchValue || '', id: '', owner: true, bookings: true, country: hardcodedCountry };
         const endpoint = venuesEndpoint(queryParams);
+  console.log(endpoint)
         const response = await baseApiCall({
           url: endpoint,
           method: 'GET',
           headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
         });
+
+        sessionStorage.setItem(
+          'countries',
+          JSON.stringify(
+            Array.from(
+              new Set(
+                (response.data as VenueData[])
+                  .map((venue) => venue.location?.country || '')
+                  .filter((country) => country && country.trim() !== ''),
+              ),
+            ),
+          ),
+        );
 
         setVenueData(response.data as VenueData[]);
         setFilteredVenueData(response.data as VenueData[]);
@@ -62,23 +63,17 @@ export default function LandingPage() {
     [headers]
   );
 
-  // Only refetch when searchTerm or filters change
   useEffect(() => {
-    fetchVenueData(searchTerm, filters);
-  }, [searchTerm, filters, fetchVenueData]);
+    fetchVenueData(searchTerm);
+  }, [searchTerm]);
 
-  // Handle filter changes from MainFilterCard
-  const handleFiltersChange = (newFilters: any) => {
-    setFilters(newFilters);
-  };
-
-  if (loading) return <LinearProgress color="secondary" />;
+  if (loading) return <LinearProgress color="secondary"></LinearProgress>;
 
   return (
     <Container maxWidth="lg">
       <Grid container spacing={1} marginTop={2}>
         <Grid size={{ xs: 12, sm: 4 }} maxWidth={{ xs: '100%', sm: '500px' }}>
-          <MainFilterCard onSearch={setSearchTerm} onFiltersChange={handleFiltersChange} />
+          <MainFilterCard onSearch={setSearchTerm} />
         </Grid>
         <Grid size={{ xs: 12, sm: 8 }}>
           <MainVenueCard venues={filteredVenueData} />
