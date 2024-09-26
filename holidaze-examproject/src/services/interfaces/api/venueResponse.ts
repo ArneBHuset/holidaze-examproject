@@ -1,5 +1,5 @@
 export interface MediaData {
-  url: string;
+  url?: string;
   alt?: string;
 }
 

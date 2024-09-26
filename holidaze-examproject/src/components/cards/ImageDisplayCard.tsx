@@ -8,15 +8,13 @@ import MainCard from '../../layout/MainCard.tsx';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import { MediaData } from '../../services/interfaces/api/venueResponse.ts';
 
-interface ImageDisplayCardProps {
-  venueMedia: MediaData[];
-}
+
+
+const DEFAULT_IMAGE_URL = 'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0';
 
 /**
  * ImageDisplayCard component for displaying venue media images.
  * It shows images vertically on larger screens, and as a carousel on smaller screens.
- *
- * @param {ImageDisplayCardProps} venueMedia - An array of media objects for the venue.
  */
 function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
   const theme = useTheme();
@@ -25,19 +23,32 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
   const [openModal, setOpenModal] = useState(false);
   const [modalImage, setModalImage] = useState<MediaData | null>(null);
 
+  const displayedMedia = venueMedia.length > 0 ? venueMedia : [{ url: DEFAULT_IMAGE_URL, alt: 'Default image' }];
+
   const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % venueMedia.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % displayedMedia.length);
   };
+
   const handlePrevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + venueMedia.length) % venueMedia.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + displayedMedia.length) % displayedMedia.length);
   };
+
   const handleImageClick = (media: MediaData) => {
     setModalImage(media);
     setOpenModal(true);
   };
+
   const handleCloseModal = () => {
     setOpenModal(false);
     setModalImage(null);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = DEFAULT_IMAGE_URL;
+  };
+
+  const getValidImageUrl = (media: MediaData | null) => {
+    return media?.url || DEFAULT_IMAGE_URL;
   };
 
   return (
@@ -51,16 +62,19 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
             >
               <ArrowBackIosIcon />
             </Button>
-            <img
-              src={`${venueMedia[currentImageIndex].url}?w=248&fit=crop&auto=format`}
-              srcSet={`${venueMedia[currentImageIndex].url}?w=248&fit=crop&auto=format&dpr=2 2x`}
-              alt={venueMedia[currentImageIndex].alt || 'Venue image'}
-              loading="eager"
-              style={{ width: '100%', height: 'auto' }}
-              onClick={() => handleImageClick(venueMedia[currentImageIndex])}
-            />
+            <Box maxHeight={'50px'}>
+              <img
+                src={`${getValidImageUrl(displayedMedia[currentImageIndex])}?w=248&fit=crop&auto=format`}
+                srcSet={`${getValidImageUrl(displayedMedia[currentImageIndex])}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                alt={displayedMedia[currentImageIndex]?.alt || 'Venue image'}
+                loading="eager"
+                style={{ width: '100%', height: 'auto' }}
+                onClick={() => handleImageClick(displayedMedia[currentImageIndex])}
+                onError={handleImageError}
+              />
+            </Box>
             <ImageListItemBar
-              title={venueMedia[currentImageIndex].alt || 'Venue Image'}
+              title={displayedMedia[currentImageIndex]?.alt || 'Venue Image'}
               sx={{
                 textAlign: 'center',
                 height: '25%',
@@ -79,15 +93,16 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
           </Box>
         ) : (
           <ImageList variant="masonry" cols={1} gap={4}>
-            {venueMedia.map((media) => (
+            {displayedMedia.map((media) => (
               <ImageListItem key={media.url}>
                 <img
-                  src={`${media.url}?w=248&fit=crop&auto=format`}
-                  srcSet={`${media.url}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  src={`${getValidImageUrl(media)}?w=248&fit=crop&auto=format`}
+                  srcSet={`${getValidImageUrl(media)}?w=248&fit=crop&auto=format&dpr=2 2x`}
                   alt={media.alt || 'Venue image'}
                   loading="eager"
-                  style={{ cursor: 'pointer', borderRadius: '6px' }}
+                  style={{ cursor: 'pointer', borderRadius: '6px', maxHeight: '200px' }}
                   onClick={() => handleImageClick(media)}
+                  onError={handleImageError}
                 />
                 <ImageListItemBar
                   title={media.alt || ''}
@@ -133,9 +148,10 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
             <>
               <DefaultSubTitle>{modalImage.alt || 'Venue Image'}</DefaultSubTitle>
               <img
-                src={`${modalImage.url}`}
+                src={`${getValidImageUrl(modalImage)}`}
                 alt={modalImage.alt || 'Venue image'}
                 style={{ width: '100%', height: '100%', maxHeight: '420px', marginBottom: 10 }}
+                onError={handleImageError}
               />
             </>
           )}

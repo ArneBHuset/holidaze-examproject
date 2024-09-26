@@ -84,7 +84,7 @@ const theme = createTheme({
       fontFamily: '"Cinzel-regular", "Lora", "Arial", sans-serif',
       fontSize: '1.5rem',
       fontWeight: 400,
-      lineHeight: 1.75,
+      lineHeight: 1.6,
       letterSpacing: '0.07em',
     },
     subtitle2: {

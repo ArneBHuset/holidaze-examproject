@@ -48,7 +48,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                 alt={venue.media?.[0]?.alt || 'Venue image'}
                 image={
                   venue.media?.[0]?.url ||
-                  'https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0='
+                  'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0'
                 }
                 sx={{
                   width: { xs: '100%', sm: 200 },
@@ -76,7 +76,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                 mx="auto"
                 justifyContent="center"
               >
-                <Grid size={{ xs: 12 }} textAlign={{ xs: 'center', sm: 'left' }}>
+                <Grid size={{ xs: 12 }} textAlign={{ xs: 'center', sm: 'left' }} maxHeight='40px' overflow='hidden'>
                   <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                 </Grid>
 

@@ -17,6 +17,12 @@ import { VenueSpecificDetailsProps } from '../../services/interfaces/api/venueRe
 import HostDetails from '../profile/ProfileDisplay.tsx';
 import PlaceIcon from '@mui/icons-material/Place';
 
+/**
+ * VenueSpecificDetails component displays detailed information about a specific venue,
+ * including its location, price, rating, available facilities, and a calendar showing bookings.
+ *
+ * @param {VenueSpecificDetailsProps} venue - The venue object containing all its details.
+ */
 function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
   const theme = useTheme();
   const bookingEvents = venue.bookings?.map((booking: BookingData) => ({
@@ -34,7 +40,7 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
               {venue.name}
             </Typography>
           </Grid>
-          <Grid size={{ xs: 7, sm: 6 }} marginLeft={{}}>
+          <Grid size={{ xs: 7, sm: 6 }}>
             <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <EuroIcon sx={{ color: theme.palette.primary.light }} />
               {venue.price}
@@ -45,10 +51,13 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
                   href={
                     venue.location.lat && venue.location.lng
                       ? `https://www.google.com/maps?q=${venue.location.lat},${venue.location.lng}`
-                      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.location.city}, ${venue.location.country}`)}`
+                      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        `${venue.location.city}, ${venue.location.country}`
+                      )}`
                   }
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`View ${venue.location.city}, ${venue.location.country} on Google Maps`}
                   style={{
                     textDecoration: 'none',
                     color: theme.palette.text.primary,
@@ -67,7 +76,10 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
                   {`${venue.location.city}, ${venue.location.country}`}
                 </a>
               ) : (
-                venue.location?.city || venue.location?.country || 'N/A'
+                <Box display="flex" gap={1} alignItems="center">
+                  <PlaceIcon sx={{ color: theme.palette.primary.light }} />
+                  N/A
+                </Box>
               )}
             </Typography>
           </Grid>
@@ -92,12 +104,11 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
             <Grid size={12}>
               <DefaultSubTitle>Facilities</DefaultSubTitle>
             </Grid>
-            <Grid size={{ xs: 6 }} marginLeft={{}}>
+            <Grid size={{ xs: 6 }}>
               <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <WifiIcon />
                 {venue.meta?.wifi ? 'Wifi available' : 'No wifi'}
               </Typography>
-
               <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
                 <FreeBreakfastIcon />
                 {venue.meta?.breakfast ? 'Breakfast available' : 'No breakfast'}
@@ -105,7 +116,8 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
             </Grid>
             <Grid size={{ xs: 6 }}>
               <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <PetsIcon /> {venue.meta?.pets ? 'Pets allowed' : 'No pets'}
+                <PetsIcon />
+                {venue.meta?.pets ? 'Pets allowed' : 'No pets'}
               </Typography>
               <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
                 <LocalParkingIcon />
@@ -116,11 +128,9 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
           <Grid size={{ xs: 12, sm: 12 }} sx={{ marginTop: 2 }}>
             <Calendar events={bookingEvents || []} />
           </Grid>
-
           <Grid size={{ xs: 12, sm: 12 }}>
             <DefaultSubTitle>Meet your host</DefaultSubTitle>
           </Grid>
-
           <Grid size={{ xs: 12, sm: 12 }}>
             <HostDetails
               data={{

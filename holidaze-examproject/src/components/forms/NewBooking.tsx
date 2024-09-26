@@ -28,20 +28,17 @@ import { ApiError } from '../../services/interfaces/error/catchError.ts';
 
 dayjs.extend(isBetween);
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
-type Anchor = 'bottom';
 
-const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, venue }) => {
+/**
+ * BookVenueDrawer component allows users to book a venue with check-in, check-out, and guest amount data
+ * @param {DrawerComponentProps} props - The props for the drawer including venue data and state management.
+ */
+function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
   const [success, setSuccess] = useState(false);
-  const anchor: Anchor = 'bottom';
+  const anchor: 'bottom' = 'bottom';
   const navigate = useNavigate();
 
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<FormValues>({
+  const { handleSubmit, control, setValue, watch, formState: { errors } } = useForm<FormValues>({
     resolver: yupResolver(newBookingValidation(venue.maxGuests)),
     defaultValues: {
       checkInDate: null,
@@ -49,9 +46,7 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
       guests: 1,
     },
   });
-
   const checkInDate = watch('checkInDate');
-
   const isDateUnavailable = (date: Dayjs) => {
     return venue.bookings
       ? venue.bookings.some((booking) => dayjs(date).isBetween(booking.dateFrom, booking.dateTo, null, '[]'))
@@ -81,11 +76,9 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
       snackBarError(apiError.message || 'Error creating booking. Please try again.');
     }
   };
-
   const handleViewBookings = () => {
-    navigate('/view-bookings');
+    navigate('/user-overview');
   };
-
   return (
     <Drawer
       anchor={anchor}
@@ -94,12 +87,19 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
       ModalProps={{
         keepMounted: true,
       }}
+      role="dialog"
+      aria-labelledby="booking-form-title"
     >
       <Box sx={{ width: 'auto' }} role="presentation" display="flex" justifyContent="center" padding={4}>
-        <FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={4} maxWidth="sm" justifyContent="center">
+        <FormControl component="form" onSubmit={handleSubmit(onSubmit)} aria-labelledby="booking-form-title">
+          <Grid container spacing={3} maxWidth="sm" justifyContent="center">
+            <Grid size={12} textAlign="center">
+              <DefaultSubTitle >Place booking</DefaultSubTitle>
+            </Grid>
             <Grid size={6}>
-              <DefaultSubTitle>Check-in Date</DefaultSubTitle>
+              <Box mb={1}>
+                <DefaultSubTitle>Check-in Date</DefaultSubTitle>
+              </Box>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller
                   name="checkInDate"
@@ -120,16 +120,26 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
                           fullWidth: true,
                           error: !!errors.checkInDate,
                           helperText: errors.checkInDate ? errors.checkInDate.message : '',
+                          inputProps: {
+                            'aria-invalid': !!errors.checkInDate,
+                            'aria-describedby': errors.checkInDate ? 'check-in-error' : undefined,
+                          },
                         },
                       }}
                     />
                   )}
                 />
+                {errors.checkInDate && (
+                  <Typography id="check-in-error" color="error" variant="caption">
+                    {errors.checkInDate.message}
+                  </Typography>
+                )}
               </LocalizationProvider>
             </Grid>
-
             <Grid size={6}>
-              <DefaultSubTitle>Check-out Date</DefaultSubTitle>
+              <Box mb={1}>
+                <DefaultSubTitle>Check-out Date</DefaultSubTitle>
+              </Box>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller
                   name="checkOutDate"
@@ -148,15 +158,23 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
                           fullWidth: true,
                           error: !!errors.checkOutDate,
                           helperText: errors.checkOutDate ? errors.checkOutDate.message : '',
+                          inputProps: {
+                            'aria-invalid': !!errors.checkOutDate,
+                            'aria-describedby': errors.checkOutDate ? 'check-out-error' : undefined,
+                          },
                         },
                       }}
                     />
                   )}
                 />
+                {errors.checkOutDate && (
+                  <Typography id="check-out-error" color="error" variant="caption">
+                    {errors.checkOutDate.message}
+                  </Typography>
+                )}
               </LocalizationProvider>
             </Grid>
-
-            <Grid size={6} justifyContent="left">
+            <Grid size={6}>
               <DefaultSubTitle>Guests</DefaultSubTitle>
               <DefaultInput>
                 <Controller
@@ -175,9 +193,14 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
                     />
                   )}
                 />
+                {errors.guests && (
+                  <Typography id="guests-error" color="error" variant="caption">
+                    {errors.guests.message}
+                  </Typography>
+                )}
               </DefaultInput>
             </Grid>
-            <Grid size={4}>
+            <Grid size={6}>
               <DefaultSubTitle>Max guests</DefaultSubTitle>
               <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 2 }}>
                 <Person4Icon sx={{ color: 'secondary.main', fontSize: 28 }} />
@@ -186,7 +209,7 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
             </Grid>
             <Grid size={success ? 8 : 12}>
               <DefaultButton>
-                <Button fullWidth onClick={handleSubmit(onSubmit)}>
+                <Button fullWidth onClick={handleSubmit(onSubmit)} aria-label="Book venue">
                   BOOK
                 </Button>
               </DefaultButton>
@@ -194,7 +217,7 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
             {success && (
               <Grid size={4}>
                 <DefaultButton>
-                  <Button fullWidth onClick={handleViewBookings}>
+                  <Button fullWidth onClick={handleViewBookings} aria-label="View your bookings">
                     VIEW BOOKINGS
                   </Button>
                 </DefaultButton>
@@ -205,6 +228,6 @@ const BookVenueDrawer: React.FC<DrawerComponentProps> = ({ open, toggleDrawer, v
       </Box>
     </Drawer>
   );
-};
+}
 
 export default BookVenueDrawer;

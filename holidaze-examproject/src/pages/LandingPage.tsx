@@ -9,8 +9,9 @@ import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import debounce from '../services/utilities/debounce.ts';
 import VenueData from '../services/interfaces/api/venueResponse.ts';
 import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
-import { LinearProgress, Typography } from '@mui/material';
+import { LinearProgress, Typography, useMediaQuery } from '@mui/material';
 import { ApiError } from '../services/interfaces/error/catchError.ts';
+import { useTheme } from '@mui/material/styles';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -24,6 +25,8 @@ export default function LandingPage() {
   const [sortField, setSortField] = useState<string>('created');
   const [sortOrder, setSortOrder] = useState<string>('desc');
   const headers = getValidatedHeader();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   /**
    * Fetches venue data based on search term, sort field, and sort order.
@@ -76,10 +79,18 @@ export default function LandingPage() {
   return (
     <Container maxWidth="md">
       <Grid container spacing={1} marginTop={2}>
-        <Grid size={{ xs: 12, sm: 4 }} maxWidth={{ xs: '100%', sm: '500px' }}>
+        <Grid
+          size={{xs:12, sm:4 }}
+          sx={{
+            maxWidth: { xs: '100%', sm: '500px' },
+            position: isSmallScreen ? 'static' : 'sticky',
+            top: isSmallScreen ? 'auto' : '20px',
+            alignSelf: 'flex-start',
+          }}
+        >
           <MainFilterCard onSearch={handleSearchChange} onSortChange={handleSortChange} />
         </Grid>
-        <Grid size={{ xs: 12, sm: 8 }}>
+        <Grid size={{xs:12, sm:8 }}>
           {loading ? <LinearProgress color="secondary" /> : null}
           {filteredVenueData.length === 0 && !loading ? (
             <Typography variant="h3" marginY={10} width="100%" align="center" color="primary.light">
