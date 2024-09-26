@@ -12,7 +12,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 import { useNavigate } from 'react-router-dom';
 import VenueData from '../../services/interfaces/api/venueResponse.ts';
 import EuroIcon from '@mui/icons-material/Euro';
-import PublicIcon from '@mui/icons-material/Public';
+import PlaceIcon from '@mui/icons-material/Place';
 import theme from '../../styles/mui-styles/MuiThemes.ts';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -28,7 +28,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       {venues.map((venue) => (
         <Grid key={venue.id}>
           <Card
@@ -42,7 +42,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
               boxShadow: '3px 3px 15px rgba(73, 190, 248, 0.25)',
             }}
           >
-            <Box padding={{ xs: 0.5, sm: 1 }} paddingRight={{ sm: 0 }}>
+            <Box padding={{ xs: 0.5, sm: 0.5 }} paddingRight={{ sm: 0 }}>
               <CardMedia
                 component="img"
                 alt={venue.media?.[0]?.alt || 'Venue image'}
@@ -54,7 +54,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                   width: { xs: '100%', sm: 200 },
                   height: { xs: 200, sm: '200px' },
                   maxHeight: { xs: 200, sm: 260 },
-                  borderRadius: { xs: '4px', sm: '8px' },
+                  borderRadius: { xs: '4px', sm: '6px' },
                 }}
               />
             </Box>
@@ -66,58 +66,58 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
               }}
               style={{ padding: 0 }}
             >
-              <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
+              <Grid container padding={0.5} spacing={1} sx={{ height: '100%' }} mb={{xs:2, sm:0}} display='flex' mx='auto' justifyContent='center'>
                 <Grid size={{ xs: 12 }} textAlign={{ xs: 'center', sm: 'left' }}>
                   <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                 </Grid>
+
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography
-                    variant="h4"
+                    variant="h6"
                     sx={{
+                      pl:{xs:6, sm:0},
                       textAlign: { xs: 'center', sm: 'left' },
-                      paddingLeft: { xs: '10vw', sm: 0 },
                       display: 'flex',
                       alignItems: 'center',
                       gap: 1,
                     }}
                   >
-                    <EuroIcon sx={{ fontFamily: theme.typography.h4, mb: 0.5 }} />
+                    <EuroIcon sx={{ fontFamily: theme.typography.h6, mb: 0.2 }} />
                     {venue.price} / DAY
                   </Typography>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography
-                    variant="h4"
-                    sx={{ paddingRight: { xs: 1, sm: 0 }, display: 'flex', alignItems: 'center', gap: 1 }}
+                    variant="h6"
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                   >
-                    <PublicIcon />
+                    <PlaceIcon sx={{ fontFamily: theme.typography.h6 }}  />
                     {venue.location?.city && venue.location?.country
                       ? `${venue.location.city}, ${venue.location.country}`
                       : venue.location?.city || venue.location?.country || 'N/A'}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 6, sm: 4 }} display="flex" alignItems="center" gap={0.5}>
+                <Grid size={{ xs: 6, sm: 3 }} display="flex" alignItems="center">
                   <Typography
-                    variant="h4"
-                    sx={{ textAlign: { xs: 'start', sm: 'start', display: 'flex', alignItems: 'center', gap: 2 } }}
+                    variant="h6"
+                    sx={{  pl:{xs:6, sm:0},  textAlign:'left', display: 'flex', alignItems: 'center', gap: 0.5}}
                   >
-                    <PersonIcon />
+                    <PersonIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }}  />
                     {venue.maxGuests}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 6, sm: 8 }} display="flex" alignItems="center" gap={0.5}>
+                <Grid size={{ xs: 6, sm: 9 }} display="flex" alignItems="center" gap={0.5} >
                   <Typography
-                    variant="h4"
-                    paddingRight={{ xs: 0, sm: 8 }}
-                    sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+                    variant="h6"
+                    sx={{ display: 'flex', alignItems: 'center gap',gap: 0.5 }}
                   >
-                    <GradeIcon />
-                    {venue.rating || 'No rating'}
+                    <GradeIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
+                    {venue.rating || 0}
                   </Typography>
                 </Grid>
 
-                <Grid
+                <Grid size={12}
                   sx={{
                     display: { xs: 'none', sm: 'flex' },
                     flexDirection: 'column',
@@ -125,7 +125,6 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                     alignItems: 'stretch',
                     width: '100%',
                     padding: 0,
-                    marginTop: 'auto',
                   }}
                 >
                   <DefaultButton>
@@ -139,8 +138,8 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                         gap: 4,
                       }}
                     >
-                      See more!
-                      <ArrowForwardIosIcon />
+                      See details
+                      <ArrowForwardIosIcon sx={{fontFamily: theme.typography.h5}} />
                     </Button>
                   </DefaultButton>
                 </Grid>

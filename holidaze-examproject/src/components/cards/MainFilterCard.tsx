@@ -112,7 +112,7 @@ function MainFilterCard({
                 disabled={!searchTerm.trim()}
                 sx={{ mt: 2, justifyContent: 'right' }}
               >
-                Submit
+                search
               </Button>
             </DefaultButton>
           </Box>

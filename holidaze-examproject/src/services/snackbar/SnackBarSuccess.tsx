@@ -26,7 +26,7 @@ export default function SnackBarSuccess() {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={20000}
+      autoHideDuration={6000}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >

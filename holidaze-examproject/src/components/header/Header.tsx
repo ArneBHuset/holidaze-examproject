@@ -62,7 +62,7 @@ function Header() {
       position="static"
       sx={{
         backgroundColor: theme.palette.primary.light,
-        borderBottom: `1px solid ${theme.palette.secondary.main}`,
+        borderBottom: `2px solid ${theme.palette.secondary.main}`,
         boxShadow: `0 2px 2px rgba(0, 0, 0, 0.2)`,
       }}
     >
