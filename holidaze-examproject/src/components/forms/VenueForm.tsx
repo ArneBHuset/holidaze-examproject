@@ -8,7 +8,6 @@ import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 import SubTitle from '../titles/SubTitle.tsx';
 import { venueValidationSchema } from './validation/VenueValidation.ts';
 import CardContent from '@mui/material/CardContent';
-import MainCard from '../../layout/MainCard.tsx';
 import { ManageVenue } from '../../services/interfaces/api/manageVenues.ts';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 

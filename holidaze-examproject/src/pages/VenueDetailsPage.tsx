@@ -32,12 +32,12 @@ export default function VenueDetailsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toggleDrawer =
     (_anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) =>
-      (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (event.type === 'keydown' && 'key' in event && (event.key === 'Tab' || event.key === 'Shift')) {
-          return;
-        }
-        setDrawerOpen(open);
-      };
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (event.type === 'keydown' && 'key' in event && (event.key === 'Tab' || event.key === 'Shift')) {
+        return;
+      }
+      setDrawerOpen(open);
+    };
   useEffect(() => {
     if (!venue && id) {
       const fetchVenueData = async () => {
@@ -69,7 +69,11 @@ export default function VenueDetailsPage() {
   if (loading) return <LinearProgress color="secondary" aria-label="Loading venue details" />;
 
   if (!venue) {
-    return <Typography variant="h6" color="error">Error: Venue details could not be loaded.</Typography>;
+    return (
+      <Typography variant="h6" color="error">
+        Error: Venue details could not be loaded.
+      </Typography>
+    );
   }
 
   return (

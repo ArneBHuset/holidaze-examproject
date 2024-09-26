@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import Header from '../components/header/Header.tsx';
 import { Box, Container } from '@mui/material';
-import theme from '../styles/mui-styles/MuiThemes.ts';
 
 interface LayoutProps {
   children: ReactNode;

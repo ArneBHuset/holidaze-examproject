@@ -80,7 +80,7 @@ export default function LandingPage() {
     <Container maxWidth="md">
       <Grid container spacing={1} marginTop={2}>
         <Grid
-          size={{xs:12, sm:4 }}
+          size={{ xs: 12, sm: 4 }}
           sx={{
             maxWidth: { xs: '100%', sm: '500px' },
             position: isSmallScreen ? 'static' : 'sticky',
@@ -90,7 +90,7 @@ export default function LandingPage() {
         >
           <MainFilterCard onSearch={handleSearchChange} onSortChange={handleSortChange} />
         </Grid>
-        <Grid size={{xs:12, sm:8 }}>
+        <Grid size={{ xs: 12, sm: 8 }}>
           {loading ? <LinearProgress color="secondary" /> : null}
           {filteredVenueData.length === 0 && !loading ? (
             <Typography variant="h3" marginY={10} width="100%" align="center" color="primary.light">

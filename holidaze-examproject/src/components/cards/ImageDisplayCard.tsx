@@ -8,9 +8,8 @@ import MainCard from '../../layout/MainCard.tsx';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import { MediaData } from '../../services/interfaces/api/venueResponse.ts';
 
-
-
-const DEFAULT_IMAGE_URL = 'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0';
+const DEFAULT_IMAGE_URL =
+  'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0';
 
 /**
  * ImageDisplayCard component for displaying venue media images.
@@ -58,21 +57,35 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
           <Box position="relative" display="flex" alignItems="center" justifyContent="center">
             <Button
               onClick={handlePrevImage}
-              sx={{ position: 'absolute', left: '10px', zIndex: 1, color: theme.palette.secondary.main }}
+              sx={{ position: 'absolute', left: '0px', zIndex: 1, color: theme.palette.secondary.main }}
             >
-              <ArrowBackIosIcon />
+              <ArrowBackIosIcon sx={{ fontSize: 40 }} />
             </Button>
-            <Box maxHeight={'50px'}>
+            <Box
+              height="250px"
+              p={1}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ overflow: 'hidden' }}
+            >
               <img
                 src={`${getValidImageUrl(displayedMedia[currentImageIndex])}?w=248&fit=crop&auto=format`}
                 srcSet={`${getValidImageUrl(displayedMedia[currentImageIndex])}?w=248&fit=crop&auto=format&dpr=2 2x`}
                 alt={displayedMedia[currentImageIndex]?.alt || 'Venue image'}
                 loading="eager"
-                style={{ width: '100%', height: 'auto' }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  maxHeight: '250px',
+                  objectFit: 'cover', // Ensures the image fills the container without stretching
+                  borderRadius: '6px',
+                }}
                 onClick={() => handleImageClick(displayedMedia[currentImageIndex])}
                 onError={handleImageError}
               />
             </Box>
+
             <ImageListItemBar
               title={displayedMedia[currentImageIndex]?.alt || 'Venue Image'}
               sx={{
@@ -86,9 +99,9 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
             />
             <Button
               onClick={handleNextImage}
-              sx={{ position: 'absolute', right: '10px', zIndex: 1, color: theme.palette.secondary.main }}
+              sx={{ position: 'absolute', right: '0px', zIndex: 1, color: theme.palette.secondary.main }}
             >
-              <ArrowForwardIosIcon />
+              <ArrowForwardIosIcon sx={{ fontSize: 40 }} />
             </Button>
           </Box>
         ) : (

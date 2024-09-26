@@ -52,8 +52,8 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
                     venue.location.lat && venue.location.lng
                       ? `https://www.google.com/maps?q=${venue.location.lat},${venue.location.lng}`
                       : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        `${venue.location.city}, ${venue.location.country}`
-                      )}`
+                          `${venue.location.city}, ${venue.location.country}`,
+                        )}`
                   }
                   target="_blank"
                   rel="noopener noreferrer"

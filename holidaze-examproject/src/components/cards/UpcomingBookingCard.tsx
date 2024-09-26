@@ -19,6 +19,7 @@ import { useTheme } from '@mui/material/styles';
 import { BookingData } from '../../services/interfaces/api/bookingsData.ts';
 import PersonIcon from '@mui/icons-material/Person';
 import EditIcon from '@mui/icons-material/Edit';
+import { Celebration } from '@mui/icons-material';
 
 export default function UpcomingBookingCard({ bookings = [] }: { bookings: BookingData[] }) {
   const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
@@ -38,6 +39,7 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
         const duration = dateTo.diff(dateFrom, 'day');
         const daysUntilCheckIn = dateFrom.diff(dayjs(), 'day');
         const totalCost = venue.price * duration;
+        const isPastBooking = daysUntilCheckIn < 0;
 
         return (
           <Grid container spacing={0} key={venue.id} size={12}>
@@ -50,21 +52,22 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                 borderBottomLeftRadius: { xs: 0, sm: 3 },
                 borderBottomRightRadius: { xs: 0, sm: 3 },
                 boxShadow: isUpdating ? '8px 8px 6px rgba(73, 190, 248, 0.6)' : '3px 3px 10px rgba(73, 190, 248, 0.25)',
+                opacity: isPastBooking ? 0.6 : 1,
               }}
             >
-              <Box padding={{ xs: 0.5, sm: 1 }} paddingRight={{ sm: 0 }}>
+              <Box padding={{ xs: 0.5, sm: 0.5 }} paddingRight={{ sm: 0 }}>
                 <CardMedia
                   component="img"
                   alt={venue.media?.[0]?.alt || 'Venue image'}
                   image={
                     venue.media?.[0]?.url ||
-                    'https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0='
+                    'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0'
                   }
                   sx={{
-                    width: { xs: '100%', sm: 300, md: 350 },
-                    height: { xs: 200, sm: '100%' },
-                    maxHeight: { xs: 200, sm: 350 },
-                    borderRadius: { xs: '4px', sm: '8px' },
+                    width: { xs: '100%', sm: 200 },
+                    height: { xs: 200, sm: '200px' },
+                    maxHeight: { xs: 200, sm: 260 },
+                    borderRadius: { xs: '4px', sm: '6px' },
                   }}
                 />
               </Box>
@@ -77,33 +80,45 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                 }}
                 style={{ padding: 0 }}
               >
-                <Grid container padding={1} spacing={0} sx={{ height: '100%' }}>
-                  <Grid size={12} textAlign={{ xs: 'center', sm: 'left' }}>
+                <Grid
+                  container
+                  padding={0.5}
+                  spacing={1}
+                  sx={{ height: '100%' }}
+                  mb={{ xs: 2, sm: 0 }}
+                  display="flex"
+                  mx="auto"
+                  justifyContent="center"
+                >
+                  <Grid size={{ xs: 12 }} textAlign={{ xs: 'center', sm: 'left' }} maxHeight="40px" overflow="hidden">
                     <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                   </Grid>
-
-                  {/* Days Until Check-in */}
-                  <Grid size={12} textAlign={{ xs: 'center', sm: 'left' }} marginTop={2}>
-                    <Typography variant="subtitle2">
-                      {`Your booking in ${venue.location?.city || 'N/A'}, ${venue.location?.country || 'N/A'} is only `}
-                      <span style={{ color: theme.palette.secondary.main }}>
+                  <Grid size={12} textAlign={{ xs: 'center', sm: 'left' }}>
+                    {isPastBooking ? (
+                      <Typography variant="body1" color="error">
+                        This booking has passed
+                      </Typography>
+                    ) : (
+                      <Typography variant="body2" display="flex" alignItems="center">
+                        {`Your booking in ${venue.location?.city || 'N/A'}, ${venue.location?.country || 'N/A'} is `}
                         {`${daysUntilCheckIn} ${daysUntilCheckIn === 1 ? 'day' : 'days'}`}
-                      </span>
-                      {` away!`}
-                    </Typography>
+                        {` away`}
+                        <Celebration
+                          sx={{ fontFamily: theme.typography.h4, color: theme.palette.secondary.main, mr: 1 }}
+                        />
+                      </Typography>
+                    )}
                   </Grid>
-
                   <Grid
                     size={12}
                     display="flex"
-                    gap={2}
+                    gap={1}
                     alignItems="center"
                     justifyContent={{ xs: 'center', sm: 'left' }}
-                    marginTop={2}
                   >
-                    <Typography variant="h5">{dateFrom.format('DD/MM/YYYY')}</Typography>
-                    <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontSize: '1.8rem' }} />
-                    <Typography variant="h5">{dateTo.format('DD/MM/YYYY')}</Typography>
+                    <Typography variant="h6">{dateFrom.format('DD/MM/YYYY')}</Typography>
+                    <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
+                    <Typography variant="h6">{dateTo.format('DD/MM/YYYY')}</Typography>
                   </Grid>
 
                   <Grid

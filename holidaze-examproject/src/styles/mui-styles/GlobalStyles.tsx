@@ -13,7 +13,6 @@ const GlobalStyles = () => (
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
         fontFamily: theme.typography.fontFamily,
-
       },
     }}
   />

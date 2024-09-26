@@ -78,12 +78,12 @@ function Header() {
                 display: { xs: 'none', md: 'flex' },
               }}
             >
-              {isVenueManager ? 'HOLIDAZEmanage' : 'HOLIDAZE'}
+              {isVenueManager ? 'HOLIDAZE m' : 'HOLIDAZE'}
             </Typography>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton aria-label="menu" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu}>
-              <MenuIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
+              <MenuIcon sx={{ fontSize: 40, color: theme.palette.background.default }} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -118,7 +118,7 @@ function Header() {
             <Typography
               variant="h3"
               noWrap
-              sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, color: theme.palette.primary.main }}
+              sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
             >
               {isVenueManager ? 'HOLIDAZEmanage' : 'HOLIDAZE'}
             </Typography>
@@ -131,7 +131,7 @@ function Header() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: theme.palette.primary.main, display: 'block' }}
               >
-                <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link to={page.path} style={{ textDecoration: 'none', color: theme.palette.background.default }}>
                   {page.name}
                 </Link>
               </Button>

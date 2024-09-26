@@ -38,7 +38,13 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
   const anchor: 'bottom' = 'bottom';
   const navigate = useNavigate();
 
-  const { handleSubmit, control, setValue, watch, formState: { errors } } = useForm<FormValues>({
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
     resolver: yupResolver(newBookingValidation(venue.maxGuests)),
     defaultValues: {
       checkInDate: null,
@@ -94,7 +100,7 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
         <FormControl component="form" onSubmit={handleSubmit(onSubmit)} aria-labelledby="booking-form-title">
           <Grid container spacing={3} maxWidth="sm" justifyContent="center">
             <Grid size={12} textAlign="center">
-              <DefaultSubTitle >Place booking</DefaultSubTitle>
+              <DefaultSubTitle>Place booking</DefaultSubTitle>
             </Grid>
             <Grid size={6}>
               <Box mb={1}>

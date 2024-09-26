@@ -18,14 +18,21 @@ const DefaultBottomNavigation: React.FC<ReusableBottomNavigationProps> = ({ chil
         transform: 'translateX(-50%)',
         maxWidth: 'md',
         zIndex: 100,
-        width: {xs:'100%', md:'66vw !important'},
+        width: { xs: '100%', md: '66vw !important' },
         backgroundColor: 'none',
         display: 'flex',
         justifyContent: 'center',
       }}
       elevation={3}
     >
-      <BottomNavigation sx={{ backgroundColor: theme.palette.secondary.main, width: '100%', borderTopLeftRadius:'6px', borderTopRightRadius:'6px' }}>
+      <BottomNavigation
+        sx={{
+          backgroundColor: theme.palette.secondary.main,
+          width: '100%',
+          borderTopLeftRadius: '6px',
+          borderTopRightRadius: '6px',
+        }}
+      >
         {children}
       </BottomNavigation>
     </Paper>

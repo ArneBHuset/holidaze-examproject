@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import HostDetails from '../profile/ProfileDisplay.tsx';
 import Typography from '@mui/material/Typography';
 import { HostData } from '../../services/interfaces/api/profileDisplay';
 import MainCard from '../../layout/MainCard.tsx';
 import { Box } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
-import DefaultButton from '../../styles/mui-styles/components/defaultBtn';
 import Button from '@mui/material/Button';
 import EditProfile from '../forms/UpdateProfile.tsx';
+import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
 
-const UserProfileCard: React.FC = () => {
+/**
+ * UserProfileCard component displays the user's profile details and allows them to edit their profile.
+ * It fetches the user's profile from localStorage, listens for profile updates, and handles editing.
+ */
+function UserProfileCard() {
   const [profile, setProfile] = useState<HostData | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -63,8 +67,8 @@ const UserProfileCard: React.FC = () => {
     setIsEditing(false);
   };
 
-  const handleProfileUpdate = (updatedProfile: HostData) => {
-    setProfile(updatedProfile);
+  const handleProfileUpdate = (updatedProfile: Partial<HostData>) => {
+    setProfile((prevProfile) => (prevProfile ? { ...prevProfile, ...updatedProfile } : null));
   };
 
   if (!profile) {
@@ -80,21 +84,20 @@ const UserProfileCard: React.FC = () => {
       <CardContent sx={{ margin: 0, padding: 0 }}>
         <HostDetails data={profile} />
       </CardContent>
-      <CardContent sx={{ display: 'flex', justifyContent: 'end', marginTop: 4, paddingBottom: 0 }}>
-        <DefaultButton>
-          <Button variant="contained" onClick={handleEditClick}>
+      <CardContent sx={{ display: 'flex', justifyContent: 'end', my: 2, paddingBottom: 0 }}>
+        <SecondaryButton>
+          <Button onClick={handleEditClick} aria-label="Edit profile">
             EDIT PROFILE
           </Button>
-        </DefaultButton>
+        </SecondaryButton>
       </CardContent>
-
       {isEditing && (
-        <Box sx={{ padding: 4, borderTop: '1px solid #e0e0e0' }}>
+        <Box sx={{ padding: 1, borderTop: '1px solid #e0e0e0' }}>
           <EditProfile onClose={handleFormClose} currentProfile={profile} onProfileUpdate={handleProfileUpdate} />
         </Box>
       )}
     </MainCard>
   );
-};
+}
 
 export default UserProfileCard;

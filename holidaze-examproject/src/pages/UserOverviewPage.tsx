@@ -52,11 +52,11 @@ export default function UserOverviewPage() {
 
   return (
     <Container maxWidth="md">
-      <Grid container spacing={4} marginTop={4} width={'100%'}>
-        <Grid size={12}>
+      <Grid container spacing={0.5} marginTop={2}>
+        <Grid size={{ xs: 12, sm: 5 }}>
           <UserProfileCard />
         </Grid>
-        <Grid size={12}>
+        <Grid size={{ xs: 12, sm: 7 }}>
           <UpcomingBookingCard bookings={bookings} />
         </Grid>
       </Grid>

@@ -215,7 +215,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
 
           <Grid size={{ xs: 6 }}>
             <Box>
-              <SubTitle>Avatar desription</SubTitle>
+              <SubTitle>Avatar description</SubTitle>
               <Controller
                 name="avatar.alt"
                 control={control}
