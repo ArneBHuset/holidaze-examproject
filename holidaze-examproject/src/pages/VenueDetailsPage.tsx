@@ -73,12 +73,12 @@ export default function VenueDetailsPage() {
   }
 
   return (
-    <Container maxWidth={'sm'}>
-      <Grid container spacing={2} maxWidth={'sm'}>
-        <Grid size={12} marginBottom={2}>
+    <Container maxWidth={'md'}>
+      <Grid container spacing={1} mt={2} mb={8}>
+        <Grid size={{ xs: 12, sm: 4 }} marginBottom={2}>
           <ImageDisplayCard venueMedia={venue.media || [{ url: 'https://shorturl.at/MBljW', alt: 'Image missing' }]} />
         </Grid>
-        <Grid size={12}>
+        <Grid size={{ xs: 12, sm: 8 }}>
           <VenueSpecificDetails venue={venue} />
         </Grid>
       </Grid>

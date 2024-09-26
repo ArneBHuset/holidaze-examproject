@@ -55,8 +55,7 @@ const theme = createTheme({
     },
     h3: {
       fontFamily: '"CinzelDecorative-Regular", "Lora", "Arial", sans-serif',
-      fontSize: '2.4rem',
-      fontWeight: 300,
+      fontSize: '2.0rem',
       lineHeight: 1.167,
       letterSpacing: '0.015',
     },

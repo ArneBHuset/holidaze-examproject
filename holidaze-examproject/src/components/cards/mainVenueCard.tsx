@@ -66,7 +66,16 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
               }}
               style={{ padding: 0 }}
             >
-              <Grid container padding={0.5} spacing={1} sx={{ height: '100%' }} mb={{xs:2, sm:0}} display='flex' mx='auto' justifyContent='center'>
+              <Grid
+                container
+                padding={0.5}
+                spacing={1}
+                sx={{ height: '100%' }}
+                mb={{ xs: 2, sm: 0 }}
+                display="flex"
+                mx="auto"
+                justifyContent="center"
+              >
                 <Grid size={{ xs: 12 }} textAlign={{ xs: 'center', sm: 'left' }}>
                   <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                 </Grid>
@@ -75,7 +84,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                   <Typography
                     variant="h6"
                     sx={{
-                      pl:{xs:6, sm:0},
+                      pl: { xs: 6, sm: 0 },
                       textAlign: { xs: 'center', sm: 'left' },
                       display: 'flex',
                       alignItems: 'center',
@@ -88,36 +97,57 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-                  >
-                    <PlaceIcon sx={{ fontFamily: theme.typography.h6 }}  />
-                    {venue.location?.city && venue.location?.country
-                      ? `${venue.location.city}, ${venue.location.country}`
-                      : venue.location?.city || venue.location?.country || 'N/A'}
+                  <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {venue.location?.city && venue.location?.country ? (
+                      <a
+                        href={
+                          venue.location.lat && venue.location.lng
+                            ? `https://www.google.com/maps?q=${venue.location.lat},${venue.location.lng}`
+                            : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.location.city}, ${venue.location.country}`)}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          textDecoration: 'none',
+                          color: theme.palette.text.primary,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                        }}
+                      >
+                        <PlaceIcon
+                          sx={{
+                            color: theme.palette.primary.light,
+                            fontFamily: theme.typography.h6,
+                            transition: 'transform 0.2s ease-in-out',
+                            '&:hover': { transform: 'scale(1.2)' },
+                          }}
+                        />
+                        {`${venue.location.city}, ${venue.location.country}`}
+                      </a>
+                    ) : (
+                      venue.location?.city || venue.location?.country || 'N/A'
+                    )}
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 3 }} display="flex" alignItems="center">
                   <Typography
                     variant="h6"
-                    sx={{  pl:{xs:6, sm:0},  textAlign:'left', display: 'flex', alignItems: 'center', gap: 0.5}}
+                    sx={{ pl: { xs: 6, sm: 0 }, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 0.5 }}
                   >
-                    <PersonIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }}  />
+                    <PersonIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
                     {venue.maxGuests}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 6, sm: 9 }} display="flex" alignItems="center" gap={0.5} >
-                  <Typography
-                    variant="h6"
-                    sx={{ display: 'flex', alignItems: 'center gap',gap: 0.5 }}
-                  >
+                <Grid size={{ xs: 6, sm: 9 }} display="flex" alignItems="center" gap={0.5}>
+                  <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center gap', gap: 0.5 }}>
                     <GradeIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
                     {venue.rating || 0}
                   </Typography>
                 </Grid>
 
-                <Grid size={12}
+                <Grid
+                  size={12}
                   sx={{
                     display: { xs: 'none', sm: 'flex' },
                     flexDirection: 'column',
@@ -139,7 +169,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                       }}
                     >
                       See details
-                      <ArrowForwardIosIcon sx={{fontFamily: theme.typography.h5}} />
+                      <ArrowForwardIosIcon sx={{ fontFamily: theme.typography.h5 }} />
                     </Button>
                   </DefaultButton>
                 </Grid>

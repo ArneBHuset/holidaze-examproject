@@ -1,10 +1,9 @@
 import MainCard from '../../layout/MainCard.tsx';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid2'; // Use Grid2 for layout
+import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import Calendar from '../calendar/Calendar.tsx';
-import PublicIcon from '@mui/icons-material/Public';
 import StarIcon from '@mui/icons-material/Star';
 import EuroIcon from '@mui/icons-material/Euro';
 import Person4Icon from '@mui/icons-material/Person4';
@@ -16,6 +15,7 @@ import { useTheme } from '@mui/material/styles';
 import { BookingData } from '../../services/interfaces/api/venueResponse.ts';
 import { VenueSpecificDetailsProps } from '../../services/interfaces/api/venueResponse.ts';
 import HostDetails from '../profile/ProfileDisplay.tsx';
+import PlaceIcon from '@mui/icons-material/Place';
 
 function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
   const theme = useTheme();
@@ -29,35 +29,62 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
     <MainCard>
       <Box sx={{ padding: 1 }}>
         <Grid container spacing={2}>
-          <Grid size={12} textAlign="center">
-            <DefaultSubTitle>{venue.name}</DefaultSubTitle>
+          <Grid size={12} textAlign={{ xs: 'center', sm: 'left' }} mb={1}>
+            <Typography variant="h3" sx={{ borderBottom: 1, borderColor: theme.palette.primary.main, paddingY: 1 }}>
+              {venue.name}
+            </Typography>
           </Grid>
-          {/* Price */}
-          <Grid size={{ xs: 7, sm: 4, md: 6 }} marginLeft={{ xs: '20px', sm: '100px', md: '80px' }}>
-            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <EuroIcon sx={{ color: theme.palette.secondary.main, fontSize: 32 }} />
+          <Grid size={{ xs: 7, sm: 6 }} marginLeft={{}}>
+            <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <EuroIcon sx={{ color: theme.palette.primary.light }} />
               {venue.price}
             </Typography>
-
-            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
-              <PublicIcon sx={{ color: theme.palette.secondary.main, fontSize: 32 }} />
-              {venue.location?.country || 'Not available'}
+            <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
+              {venue.location?.city && venue.location?.country ? (
+                <a
+                  href={
+                    venue.location.lat && venue.location.lng
+                      ? `https://www.google.com/maps?q=${venue.location.lat},${venue.location.lng}`
+                      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.location.city}, ${venue.location.country}`)}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    textDecoration: 'none',
+                    color: theme.palette.text.primary,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <PlaceIcon
+                    sx={{
+                      color: theme.palette.primary.light,
+                      transition: 'transform 0.2s ease-in-out',
+                      '&:hover': { transform: 'scale(1.2)' },
+                    }}
+                  />
+                  {`${venue.location.city}, ${venue.location.country}`}
+                </a>
+              ) : (
+                venue.location?.city || venue.location?.country || 'N/A'
+              )}
             </Typography>
           </Grid>
-          <Grid size={{ xs: 3, sm: 4, md: 3 }}>
-            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <StarIcon sx={{ color: theme.palette.secondary.main, fontSize: 32 }} />
-              {venue.rating || 'No rating available'}
+          <Grid size={{ xs: 3, sm: 5 }} ml={2}>
+            <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <StarIcon sx={{ color: theme.palette.primary.light }} />
+              {venue.rating || 'N/A'}
             </Typography>
 
-            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
-              <Person4Icon sx={{ color: theme.palette.secondary.main, fontSize: 32 }} />
+            <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
+              <Person4Icon sx={{ color: theme.palette.primary.light }} />
               {venue.maxGuests}
             </Typography>
           </Grid>
-          <Grid size={{ xs: 12 }} my={2}>
+          <Grid size={{ xs: 12 }} my={1}>
             <DefaultSubTitle>Description</DefaultSubTitle>
-            <Typography variant="body1" marginTop={2}>
+            <Typography variant="body1" marginTop={1}>
               {venue.description}
             </Typography>
           </Grid>
@@ -65,31 +92,28 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
             <Grid size={12}>
               <DefaultSubTitle>Facilities</DefaultSubTitle>
             </Grid>
-            <Grid size={{ xs: 7, sm: 6, md: 7 }} marginLeft={{ xs: '20px', sm: '30px', md: '30px' }}>
-              <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Grid size={{ xs: 6 }} marginLeft={{}}>
+              <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <WifiIcon />
                 {venue.meta?.wifi ? 'Wifi available' : 'No wifi'}
               </Typography>
 
-              <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
+              <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
                 <FreeBreakfastIcon />
                 {venue.meta?.breakfast ? 'Breakfast available' : 'No breakfast'}
               </Typography>
             </Grid>
-
-            <Grid size={{ xs: 3, sm: 4, md: 4 }}>
-              <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <PetsIcon /> {venue.meta?.pets ? 'Pets allowed' : 'No pets'}
               </Typography>
-
-              <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
+              <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 3 }}>
                 <LocalParkingIcon />
                 {venue.meta?.parking ? 'Parking is available' : 'No parking'}
               </Typography>
             </Grid>
           </Grid>
-
-          <Grid size={{ xs: 12, sm: 12 }} sx={{ marginTop: 4 }}>
+          <Grid size={{ xs: 12, sm: 12 }} sx={{ marginTop: 2 }}>
             <Calendar events={bookingEvents || []} />
           </Grid>
 
