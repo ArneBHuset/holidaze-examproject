@@ -30,7 +30,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
   return (
     <Grid container spacing={1}>
       {venues.map((venue) => (
-        <Grid key={venue.id}>
+        <Grid key={venue.id} size={{xs:12}} >
           <Card
             sx={{
               display: 'flex',
@@ -46,10 +46,14 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
               <CardMedia
                 component="img"
                 alt={venue.media?.[0]?.alt || 'Venue image'}
-                image={
+                src={
                   venue.media?.[0]?.url ||
                   'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0'
                 }
+                onError={(e) => {
+                  e.currentTarget.src =
+                    'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0';
+                }}
                 sx={{
                   width: { xs: '100%', sm: 200 },
                   height: { xs: 200, sm: '200px' },
@@ -57,6 +61,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                   borderRadius: { xs: '4px', sm: '6px' },
                 }}
               />
+
             </Box>
             <CardContent
               sx={{

@@ -14,6 +14,10 @@ const DEFAULT_IMAGE_URL =
 /**
  * ImageDisplayCard component for displaying venue media images.
  * It shows images vertically on larger screens, and as a carousel on smaller screens.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {MediaData[]} props.venueMedia - An array of media objects representing venue images.
+ * @returns {JSX.Element} The rendered ImageDisplayCard component.
  */
 function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
   const theme = useTheme();
@@ -23,31 +27,22 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
   const [modalImage, setModalImage] = useState<MediaData | null>(null);
 
   const displayedMedia = venueMedia.length > 0 ? venueMedia : [{ url: DEFAULT_IMAGE_URL, alt: 'Default image' }];
-
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % displayedMedia.length);
   };
-
   const handlePrevImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + displayedMedia.length) % displayedMedia.length);
   };
-
   const handleImageClick = (media: MediaData) => {
     setModalImage(media);
     setOpenModal(true);
   };
-
   const handleCloseModal = () => {
     setOpenModal(false);
     setModalImage(null);
   };
-
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = DEFAULT_IMAGE_URL;
-  };
-
-  const getValidImageUrl = (media: MediaData | null) => {
-    return media?.url || DEFAULT_IMAGE_URL;
   };
 
   return (
@@ -70,15 +65,14 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
               sx={{ overflow: 'hidden' }}
             >
               <img
-                src={`${getValidImageUrl(displayedMedia[currentImageIndex])}?w=248&fit=crop&auto=format`}
-                srcSet={`${getValidImageUrl(displayedMedia[currentImageIndex])}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                src={displayedMedia[currentImageIndex].url}
                 alt={displayedMedia[currentImageIndex]?.alt || 'Venue image'}
                 loading="eager"
                 style={{
                   width: '100%',
                   height: '100%',
                   maxHeight: '250px',
-                  objectFit: 'cover', // Ensures the image fills the container without stretching
+                  objectFit: 'cover',
                   borderRadius: '6px',
                 }}
                 onClick={() => handleImageClick(displayedMedia[currentImageIndex])}
@@ -109,8 +103,7 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
             {displayedMedia.map((media) => (
               <ImageListItem key={media.url}>
                 <img
-                  src={`${getValidImageUrl(media)}?w=248&fit=crop&auto=format`}
-                  srcSet={`${getValidImageUrl(media)}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  src={media.url}
                   alt={media.alt || 'Venue image'}
                   loading="eager"
                   style={{ cursor: 'pointer', borderRadius: '6px', maxHeight: '200px' }}
@@ -161,7 +154,7 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
             <>
               <DefaultSubTitle>{modalImage.alt || 'Venue Image'}</DefaultSubTitle>
               <img
-                src={`${getValidImageUrl(modalImage)}`}
+                src={modalImage.url}
                 alt={modalImage.alt || 'Venue image'}
                 style={{ width: '100%', height: '100%', maxHeight: '420px', marginBottom: 10 }}
                 onError={handleImageError}
