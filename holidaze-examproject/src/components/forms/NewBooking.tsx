@@ -104,7 +104,7 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
             </Grid>
             <Grid size={6}>
               <Box mb={1}>
-                <DefaultSubTitle>Check-in Date</DefaultSubTitle>
+                <DefaultSubTitle>Check-in</DefaultSubTitle>
               </Box>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller
@@ -144,7 +144,7 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
             </Grid>
             <Grid size={6}>
               <Box mb={1}>
-                <DefaultSubTitle>Check-out Date</DefaultSubTitle>
+                <DefaultSubTitle>Check-out</DefaultSubTitle>
               </Box>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller

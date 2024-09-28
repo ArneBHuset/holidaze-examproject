@@ -19,16 +19,35 @@ import { useTheme } from '@mui/material/styles';
 import { BookingData } from '../../services/interfaces/api/bookingsData.ts';
 import PersonIcon from '@mui/icons-material/Person';
 import EditIcon from '@mui/icons-material/Edit';
-import { Celebration } from '@mui/icons-material';
 
+
+/**
+ * UpcomingBookingCard component that renders a list of upcoming and past venue bookings.
+ *
+ * The component displays each booking with relevant details like the venue name, booking dates,
+ * number of guests, and total cost. It also provides the option to edit a booking or view
+ * venue details. Past bookings are visually distinguished with reduced opacity and are
+ * listed after upcoming bookings.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {BookingData[]} props.bookings - An array of booking data containing information about venue bookings.
+ * @returns {JSX.Element} A React component that displays a list of bookings with their details.
+ *
+ */
 export default function UpcomingBookingCard({ bookings = [] }: { bookings: BookingData[] }) {
   const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
   const theme = useTheme();
   const navigate = useNavigate();
 
+  const sortedBookings = bookings.sort((a, b) => {
+    const isPastA = dayjs(a.dateFrom).diff(dayjs(), 'day') < 0;
+    const isPastB = dayjs(b.dateFrom).diff(dayjs(), 'day') < 0;
+    return Number(isPastA) - Number(isPastB);
+  });
+
   return (
     <Grid container spacing={2}>
-      {bookings.map((booking) => {
+      {sortedBookings.map((booking) => {
         const { venue } = booking;
         const isUpdating = selectedBookingId === booking.id;
 
@@ -42,7 +61,7 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
         const isPastBooking = daysUntilCheckIn < 0;
 
         return (
-          <Grid container spacing={0} key={venue.id} size={12}>
+          <Grid container spacing={0}  size={12} sx={{ width: '100%' }}>
             <Card
               sx={{
                 display: 'flex',
@@ -74,7 +93,6 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                     borderRadius: { xs: '4px', sm: '6px' },
                   }}
                 />
-
               </Box>
 
               <CardContent
@@ -108,9 +126,6 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                         {`Your booking in ${venue.location?.city || 'N/A'}, ${venue.location?.country || 'N/A'} is `}
                         {`${daysUntilCheckIn} ${daysUntilCheckIn === 1 ? 'day' : 'days'}`}
                         {` away`}
-                        <Celebration
-                          sx={{ fontFamily: theme.typography.h4, color: theme.palette.secondary.main, mr: 1 }}
-                        />
                       </Typography>
                     )}
                   </Grid>
@@ -124,80 +139,66 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                     <Typography variant="h6">{dateFrom.format('DD/MM/YYYY')}</Typography>
                     <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
                     <Typography variant="h6">{dateTo.format('DD/MM/YYYY')}</Typography>
+                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+                      <AccessTimeIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
+                      {duration}
+                    </Typography>
                   </Grid>
-
                   <Grid
                     size={12}
                     justifyContent={{ xs: 'center', sm: 'left' }}
-                    gap={{ xs: 6, sm: 8 }}
-                    sx={{ display: 'flex', alignItems: 'center', pt: { xs: 1, md: 2 } }}
+                    gap={{ xs: 6, sm: 4 }}
+                    sx={{ display: 'flex', alignItems: 'center', pt: { xs: 1, sm: 0 } }}
                   >
-                    <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <AccessTimeIcon sx={{ fontSize: '2rem', color: theme.palette.secondary.main, pb: 0.5 }} />
-                      {duration} {duration === 1 ? 'day' : 'days'}
-                    </Typography>
-                    <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <PersonIcon sx={{ fontSize: '2rem', color: theme.palette.secondary.main, pb: 0.5 }} />
+                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <PersonIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
                       {booking.guests}/{venue.maxGuests}
                     </Typography>
-                  </Grid>
-                  <Grid size={12} mb={4}>
-                    <Typography
-                      textAlign={{ xs: 'center', sm: 'left' }}
-                      variant="h4"
-                      sx={{ marginTop: 1, textDecoration: 'underline' }}
-                    >
-                      Total Cost: ${totalCost.toFixed(2)}
+                    <Typography textAlign={{ xs: 'center', sm: 'left' }} variant="h6">
+                      Total Cost: €{totalCost.toFixed(2)}
                     </Typography>
-                  </Grid>
-                  <Grid size={{ xs: 0, sm: 3 }} display="flex" alignItems="end">
-                    <Typography
-                      variant="body2"
-                      style={{ opacity: 0.7 }}
-                      display={{ xs: 'none', sm: 'block', width: '100%' }}
-                    >
-                      Updated: {dayjs(booking.updated).format('DD/MM/YYYY')}
-                    </Typography>
-                  </Grid>
-                  <Grid size={4}>
-                    {!isUpdating && (
-                      <SecondaryButton>
-                        <Button
-                          onClick={() => setSelectedBookingId(booking.id)}
-                          sx={{
-                            borderBottomLeftRadius: { xs: 0, sm: 4 },
-                            borderBottomRightRadius: { xs: 0, sm: 4 },
-                            padding: { xs: 1, sm: 1.5 },
-                            gap: 2,
-                            alignItems: 'center',
-                            width: '100%',
-                          }}
-                        >
-                          <EditIcon sx={{ fontSize: '1.2rem' }} /> Edit
-                        </Button>
-                      </SecondaryButton>
-                    )}
                   </Grid>
 
-                  <Grid size={5}>
-                    <DefaultButton>
-                      <Button
-                        onClick={() => navigate(`/venue/${venue.id}`)}
-                        sx={{
-                          borderBottomLeftRadius: { xs: 0, sm: 4 },
-                          borderBottomRightRadius: { xs: 0, sm: 4 },
-                          padding: { xs: 1, sm: 1.5 },
-                          width: '100%',
-                        }}
-                      >
-                        Venue details <ArrowForwardIosIcon />
-                      </Button>
-                    </DefaultButton>
+                  <Grid size={12} display="flex" alignItems="end">
+                    <Typography
+                      variant="body2"
+                      style={{ opacity: 0.65 }}
+                      display={{ xs: 'none', sm: 'block', width: '100%' }}
+                    >
+                      Last updated: {dayjs(booking.updated).format('DD/MM/YYYY')}
+                    </Typography>
                   </Grid>
                 </Grid>
               </CardContent>
             </Card>
-
+            {!isUpdating && (
+              <Card
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'right',
+                  gap: 2,
+                  width: '100%',
+                  height: 'auto',
+                  mt: 0.5,
+                  p: 1,
+                  boxShadow: '3px 3px 10px rgba(73, 190, 248, 0.25)',
+                  borderBottomLeftRadius: { xs: 0, sm: 3 },
+                  borderBottomRightRadius: { xs: 0, sm: 3 },
+                  opacity: isPastBooking ? 0.6 : 1,
+                }}
+              >
+                <SecondaryButton>
+                  <Button onClick={() => setSelectedBookingId(booking.id)} sx={{ width: '40%' }}>
+                    <EditIcon sx={{ fontSize: '1rem' }} /> Edit
+                  </Button>
+                </SecondaryButton>
+                <DefaultButton>
+                  <Button onClick={() => navigate(`/venue/${venue.id}`)} sx={{ width: '60%' }}>
+                    Venue details <ArrowForwardIosIcon />
+                  </Button>
+                </DefaultButton>
+              </Card>
+            )}
             {isUpdating && (
               <Card
                 sx={{
@@ -208,10 +209,14 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                   borderBottomLeftRadius: { xs: 0, sm: 3 },
                   borderBottomRightRadius: { xs: 0, sm: 3 },
                   boxShadow: '6px 6px 30px rgba(73, 190, 248, 0.4)',
-                  marginTop: 2,
+                  marginTop: 1,
                 }}
               >
-                <UpdateBooking booking={booking} onCancel={() => setSelectedBookingId(null)} />
+                {booking.venue ? (
+                  <UpdateBooking booking={booking} onCancel={() => setSelectedBookingId(null)} />
+                ) : (
+                  <Typography color='error'>Venue information is missing.</Typography>
+                )}
               </Card>
             )}
           </Grid>

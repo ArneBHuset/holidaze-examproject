@@ -44,6 +44,7 @@ export interface BookingData {
   created: string;
   updated: string;
   customer?: CustomerData;
+  venue?: VenueData;
 }
 
 export interface VenueSpecificDetailsProps {
