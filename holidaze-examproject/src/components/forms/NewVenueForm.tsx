@@ -8,34 +8,60 @@ import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 import SubTitle from '../titles/SubTitle.tsx';
 import { venueValidationSchema } from './validation/VenueValidation.ts';
 import CardContent from '@mui/material/CardContent';
-import { ManageVenue } from '../../services/interfaces/api/manageVenues.ts';
+import { VenueCreateUpdate } from '../../services/interfaces/api/VenueCreateUpdate.ts';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
 interface VenueFormProps {
-  initialValues?: Partial<ManageVenue>;
-  onSubmit: (formData: ManageVenue) => void;
+  initialValues?: Partial<VenueCreateUpdate>;
+  onSubmit: (formData: VenueCreateUpdate) => void;
   submitLabel?: string;
 }
 
-function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' }: VenueFormProps) {
-  const [imageUrls, setImageUrls] = useState<string[]>(initialValues?.media?.map((item) => item.url) || []);
+/**
+ * NewVenueForm is a form component used for creating a new venue.
+ * @param {Object} props - The props object for NewVenueForm.
+ * @param {Partial<VenueCreateUpdate>} props.initialValues - Initial values to populate the form, which include venue details like name, location, media, etc.
+ * @param {function} props.onSubmit - A callback function to handle form submission. Receives the new venue data as an argument.
+ * @param {string} [props.submitLabel='Submit Venue'] - Label text for the submit button. Defaults to 'Submit Venue'.
+ */
+function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue' }: VenueFormProps) {
+  const [imageUrls, setImageUrls] = useState<{ url: string; alt: string }[]>(
+    initialValues?.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
+  );
+
   const [hoverRating, setHoverRating] = useState<number | null>(initialValues?.rating || 0);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<VenueCreateUpdate>({
     resolver: yupResolver(venueValidationSchema),
-    defaultValues: initialValues,
+    defaultValues: {
+      ...initialValues,
+      rating: initialValues.rating ?? null,
+      media: initialValues.media ?? [],
+      meta: {
+        wifi: initialValues.meta?.wifi ?? false,
+        parking: initialValues.meta?.parking ?? false,
+        breakfast: initialValues.meta?.breakfast ?? false,
+        pets: initialValues.meta?.pets ?? false,
+      },
+    },
   });
 
   const handleAddImageUrl = (url: string) => {
     if (url.trim()) {
-      setImageUrls([...imageUrls, url]);
+      setImageUrls([...imageUrls, { url, alt: '' }]);
     }
   };
-
+  const handleAltTextChange = (index: number, newAlt: string) => {
+    const updatedImages = [...imageUrls];
+    updatedImages[index].alt = newAlt;
+    setImageUrls(updatedImages);
+  };
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const url = event.currentTarget.value;
     if (event.key === 'Enter') {
@@ -44,26 +70,46 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
       event.preventDefault();
     }
   };
-
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     const url = event.currentTarget.value;
     handleAddImageUrl(url);
     event.currentTarget.value = '';
   };
-
-  const onFormSubmit = (data: ManageVenue) => {
-    const venueData: ManageVenue = {
+  const onFormSubmit = (data: Partial<VenueCreateUpdate>) => {
+    const venueData: VenueCreateUpdate = {
       ...data,
-      media: imageUrls.map((url) => ({ url, alt: '' })),
+      name: data.name || '',
+      location: {
+        address: data.location?.address || '',
+        city: data.location?.city || '',
+        zip: data.location?.zip || '',
+        country: data.location?.country || '',
+      },
+      description: data.description || '',
+      price: data.price || 0,
+      maxGuests: data.maxGuests || 1,
+      media: data.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
       rating: data.rating || 0,
+      meta: {
+        wifi: data.meta?.wifi || false,
+        parking: data.meta?.parking || false,
+        breakfast: data.meta?.breakfast || false,
+        pets: data.meta?.pets || false,
+      },
     };
     onSubmit(venueData);
+  };
+
+  const handleDeleteImage = (index: number) => {
+    const updatedImages = imageUrls.filter((_, i) => i !== index);
+    setImageUrls(updatedImages);
   };
 
   return (
     <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
       <FormControl component="form" onSubmit={handleSubmit(onFormSubmit)}>
         <Grid container spacing={4} maxWidth="sm">
+          {/* Venue Name */}
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Venue name</SubTitle>
@@ -85,7 +131,6 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               />
             </Box>
           </Grid>
-
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Description</SubTitle>
@@ -130,6 +175,7 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               />
             </Box>
           </Grid>
+
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>City</SubTitle>
@@ -176,7 +222,7 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
 
           <Grid size={{ xs: 6 }}>
             <Box>
-              <SubTitle>STREET</SubTitle>
+              <SubTitle>Street</SubTitle>
               <Controller
                 name="location.address"
                 control={control}
@@ -195,7 +241,6 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               />
             </Box>
           </Grid>
-
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Price</SubTitle>
@@ -241,7 +286,6 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
               />
             </Box>
           </Grid>
-
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Rating</SubTitle>
@@ -259,7 +303,7 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
                         field.onChange(newValue);
                       }}
                       onChangeActive={(_, hoverValue) => {
-                        setHoverRating(hoverValue !== -1 ? hoverValue : field.value);
+                        setHoverRating(hoverValue !== -1 ? (hoverValue ?? null) : (field.value ?? null));
                       }}
                       sx={{ color: 'secondary.main' }}
                     />
@@ -276,9 +320,8 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
             <Grid size={6} key={metaItem}>
               <Box display="flex" alignItems="center">
                 <Controller
-                  name={`meta.${metaItem}`}
+                  name={`meta.${metaItem}` as keyof VenueCreateUpdate}
                   control={control}
-                  defaultValue={false}
                   render={({ field }) => (
                     <Checkbox
                       size="large"
@@ -300,7 +343,7 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
             <Box>
               <SubTitle>Upload Images</SubTitle>
               <Controller
-                name="imageUpload"
+                name="media"
                 control={control}
                 render={({ field }) => (
                   <DefaultInput>
@@ -316,20 +359,54 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
                 )}
               />
               <ImageList cols={3} rowHeight={164}>
-                {imageUrls.map((url, index) => (
+                {imageUrls.map((image, index) => (
                   <ImageListItem key={index}>
-                    <img src={url} alt={`Uploaded ${index}`} loading="lazy" />
+                    <Box position="relative">
+                      <img
+                        src={image.url}
+                        alt={image.alt || `Uploaded ${index}`}
+                        loading="lazy"
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                          maxHeight: '150px',
+                        }}
+                      />
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDeleteImage(index)}
+                        sx={{
+                          position: 'absolute',
+                          top: 0,
+                          right: 0,
+                          color: 'secondary.main',
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </Box>
+                    <DefaultInput>
+                      <TextField
+                        fullWidth
+                        placeholder="Alt Text"
+                        variant="standard"
+                        value={image.alt}
+                        onChange={(e) => handleAltTextChange(index, e.target.value)}
+                      />
+                    </DefaultInput>
                   </ImageListItem>
                 ))}
               </ImageList>
             </Box>
           </Grid>
-          <Grid size={{ xs: 12 }}>
-            <DefaultButton>
-              <Button type="submit" variant="contained" fullWidth>
-                {submitLabel}
-              </Button>
-            </DefaultButton>
+          <Grid container spacing={2} width="100%">
+            <Grid size={12} mb={2} pb={2}>
+              <DefaultButton>
+                <Button type="submit" fullWidth sx={{ gap: 1 }}>
+                  {submitLabel}
+                </Button>
+              </DefaultButton>
+            </Grid>
           </Grid>
         </Grid>
       </FormControl>
@@ -337,4 +414,4 @@ function VenueForm({ initialValues = {}, onSubmit, submitLabel = 'Submit Venue' 
   );
 }
 
-export default VenueForm;
+export default NewVenueForm;

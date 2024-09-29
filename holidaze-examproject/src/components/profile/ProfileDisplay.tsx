@@ -39,12 +39,18 @@ function HostDetails({ data }: HostDetailsProps) {
           display="flex"
           alignItems="center"
           gap={{ xs: 2, sm: 1 }}
-          sx={{ marginTop: '-65px', marginLeft: { xs: '1vw', sm: '0.5vw' }, maxWidth: {xs:'95%', sm:'80%', md:'95%', lg:'95%'} }} // Ensure the box has a max-width
+          sx={{
+            marginTop: '-65px',
+            marginLeft: { xs: '1vw', sm: '0.5vw' },
+            maxWidth: { xs: '95%', sm: '80%', md: '95%', lg: '95%' },
+          }} // Ensure the box has a max-width
         >
           <Link to={`/hostpage/${data?.name || ''}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Tooltip title={`View ${data?.name}'s profile`}>
               <Avatar
-                src={data?.avatar?.url || 'https://th.bing.com/th/id/OIP.6Q7DNPxnE4gnsCMOU_XYXAAAAA?rs=1&pid=ImgDetMain'}
+                src={
+                  data?.avatar?.url || 'https://th.bing.com/th/id/OIP.6Q7DNPxnE4gnsCMOU_XYXAAAAA?rs=1&pid=ImgDetMain'
+                }
                 alt={data?.avatar?.alt || 'Avatar description missing'}
                 sx={{
                   width: { xs: '110px', sm: '80px' },
@@ -102,10 +108,9 @@ function HostDetails({ data }: HostDetailsProps) {
             </Accordion>
           </Box>
         </Box>
-
       </Grid>
     </>
   );
-};
+}
 
 export default HostDetails;
