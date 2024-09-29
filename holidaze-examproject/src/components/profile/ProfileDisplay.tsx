@@ -1,4 +1,3 @@
-import React from 'react';
 import { Avatar, Box, Typography, Accordion, AccordionSummary, AccordionDetails, LinearProgress } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -8,7 +7,13 @@ import theme from '../../styles/mui-styles/MuiThemes.ts';
 import EmailIcon from '@mui/icons-material/Email';
 import Tooltip from '@mui/material/Tooltip';
 
-const HostDetails: React.FC<HostDetailsProps> = ({ data }) => {
+/**
+ * HostDetails component renders the profile details of a host, including a banner, avatar, name, email, and bio.
+ * It includes an accordion to expand and view the profile's detailed information.
+ *
+ * @param {HostDetailsProps} props - Props object containing the data for the host.
+ */
+function HostDetails({ data }: HostDetailsProps) {
   if (!data) {
     return <LinearProgress color="secondary"></LinearProgress>;
   }
@@ -34,14 +39,12 @@ const HostDetails: React.FC<HostDetailsProps> = ({ data }) => {
           display="flex"
           alignItems="center"
           gap={{ xs: 2, sm: 1 }}
-          sx={{ marginTop: '-65px', marginLeft: { xs: '1vw', sm: '0.5vw' } }}
+          sx={{ marginTop: '-65px', marginLeft: { xs: '1vw', sm: '0.5vw' }, maxWidth: {xs:'95%', sm:'80%', md:'95%', lg:'95%'} }} // Ensure the box has a max-width
         >
           <Link to={`/hostpage/${data?.name || ''}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Tooltip title={`View ${data?.name}'s profile`}>
               <Avatar
-                src={
-                  data?.avatar?.url || 'https://th.bing.com/th/id/OIP.6Q7DNPxnE4gnsCMOU_XYXAAAAA?rs=1&pid=ImgDetMain'
-                }
+                src={data?.avatar?.url || 'https://th.bing.com/th/id/OIP.6Q7DNPxnE4gnsCMOU_XYXAAAAA?rs=1&pid=ImgDetMain'}
                 alt={data?.avatar?.alt || 'Avatar description missing'}
                 sx={{
                   width: { xs: '110px', sm: '80px' },
@@ -51,15 +54,17 @@ const HostDetails: React.FC<HostDetailsProps> = ({ data }) => {
               />
             </Tooltip>
           </Link>
-          <Box paddingTop={'60px'}>
-            <Typography variant="h4">
+
+          <Box paddingTop={'60px'} sx={{ maxWidth: '80%' }}>
+            <Typography variant="h4" sx={{ wordWrap: 'break-word', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               <Tooltip title={`View ${data?.name}s profile`}>
                 <Link to={`/hostpage/${data?.name || ''}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                   {data?.name || 'Unknown User'}
                 </Link>
               </Tooltip>
             </Typography>
-            <Accordion sx={{ boxShadow: 'none', border: 'none', width: '97%' }}>
+
+            <Accordion sx={{ boxShadow: 'none', border: 'none', maxWidth: '100%' }}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 sx={{ padding: 0, '& .MuiAccordionSummary-content': { margin: 0 } }}
@@ -68,9 +73,20 @@ const HostDetails: React.FC<HostDetailsProps> = ({ data }) => {
                   See profile details
                 </Typography>
               </AccordionSummary>
+
               <AccordionDetails sx={{ padding: 0 }}>
-                <Typography variant="body1" display="flex" alignItems="center" gap={1}>
-                  <EmailIcon sx={{ color: theme.palette.primary.light }} /> {data?.email || 'No email provided'}
+                <Typography
+                  variant="body1"
+                  display="flex"
+                  alignItems="center"
+                  gap={0.5}
+                  sx={{
+                    wordBreak: 'break-word',
+                    width: '100%',
+                  }}
+                >
+                  <EmailIcon sx={{ color: theme.palette.primary.light }} />
+                  {data?.email || 'No email provided'}
                 </Typography>
                 <Box
                   marginTop={1}
@@ -86,6 +102,7 @@ const HostDetails: React.FC<HostDetailsProps> = ({ data }) => {
             </Accordion>
           </Box>
         </Box>
+
       </Grid>
     </>
   );

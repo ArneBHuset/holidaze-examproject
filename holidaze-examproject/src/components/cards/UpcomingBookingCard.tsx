@@ -20,7 +20,6 @@ import { BookingData } from '../../services/interfaces/api/bookingsData.ts';
 import PersonIcon from '@mui/icons-material/Person';
 import EditIcon from '@mui/icons-material/Edit';
 
-
 /**
  * UpcomingBookingCard component that renders a list of upcoming and past venue bookings.
  *
@@ -61,7 +60,7 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
         const isPastBooking = daysUntilCheckIn < 0;
 
         return (
-          <Grid container spacing={0}  size={12} sx={{ width: '100%' }}>
+          <Grid container spacing={0} size={12} sx={{ width: '100%' }}>
             <Card
               sx={{
                 display: 'flex',
@@ -215,7 +214,7 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                 {booking.venue ? (
                   <UpdateBooking booking={booking} onCancel={() => setSelectedBookingId(null)} />
                 ) : (
-                  <Typography color='error'>Venue information is missing.</Typography>
+                  <Typography color="error">Venue information is missing.</Typography>
                 )}
               </Card>
             )}

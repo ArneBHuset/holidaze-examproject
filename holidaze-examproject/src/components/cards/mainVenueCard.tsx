@@ -30,7 +30,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
   return (
     <Grid container spacing={1}>
       {venues.map((venue) => (
-        <Grid key={venue.id} size={{xs:12}} >
+        <Grid key={venue.id} size={{ xs: 12 }}>
           <Card
             sx={{
               display: 'flex',
@@ -61,7 +61,6 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                   borderRadius: { xs: '4px', sm: '6px' },
                 }}
               />
-
             </Box>
             <CardContent
               sx={{

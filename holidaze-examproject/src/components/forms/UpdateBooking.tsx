@@ -64,10 +64,10 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
   const makeApiCall = async (method: 'PUT' | 'DELETE', data: any = null) => {
     const bookingData = data
       ? {
-        dateFrom: data.checkInDate?.toISOString(),
-        dateTo: data.checkOutDate?.toISOString(),
-        guests: data.guests,
-      }
+          dateFrom: data.checkInDate?.toISOString(),
+          dateTo: data.checkOutDate?.toISOString(),
+          guests: data.guests,
+        }
       : null;
 
     try {
@@ -78,18 +78,17 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
         headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
         body: bookingData ? JSON.stringify(bookingData) : undefined,
       });
-      console.log(response)
-      console.log(baseApiCall)
+      console.log(response);
+      console.log(baseApiCall);
       if (method === 'DELETE') {
         snackBarSuccess('Booking deleted successfully!');
         onCancel();
       } else {
         snackBarSuccess('Booking updated successfully!');
-
       }
     } catch (error) {
       const apiError = error as ApiError;
-      console.log(apiError.message)
+      console.log(apiError.message);
       const errorMessage = method === 'DELETE' ? 'Error deleting booking' : 'Error updating booking';
       snackBarError(apiError.message || `${errorMessage}. Please try again.`);
     }
@@ -98,7 +97,7 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
   return (
     <FormControl component="fieldset" sx={{ width: '100%' }}>
       <Grid container spacing={1} maxWidth="sm" margin={'auto'} padding={2}>
-        <Grid size={12} mb={1} textAlign='center'>
+        <Grid size={12} mb={1} textAlign="center">
           <DefaultSubTitle>EDIT BOOKING</DefaultSubTitle>
         </Grid>
         <Grid size={6}>
@@ -117,7 +116,7 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
                     field.onChange(newDate);
                     setValue('checkOutDate', null);
                   }}
-                  value={field.value} 
+                  value={field.value}
                   slots={{ textField: TextField }}
                   slotProps={{
                     textField: {
