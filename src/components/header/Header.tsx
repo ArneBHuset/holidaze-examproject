@@ -80,7 +80,7 @@ function Header() {
                 noWrap
                 sx={{
                   mr: 0,
-                  display: { xs: 'none', md: 'flex' },
+                  display: { xs: 'none', sm: 'flex' },
                 }}
               >
                 HOLIDAZE
@@ -89,14 +89,14 @@ function Header() {
                 <Typography
                   variant="h5"
                   color={theme.palette.secondary.main}
-                  sx={{ display: { xs: 'none', md: 'flex' } }}
+                  sx={{ display: { xs: 'none', sm: 'flex' } }}
                 >
                   Manage
                 </Typography>
               )}
             </Box>
           </Link>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }}>
             <IconButton aria-label="menu" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu}>
               <MenuIcon sx={{ fontSize: 40, color: theme.palette.background.default }} />
             </IconButton>
@@ -115,7 +115,7 @@ function Header() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: 'block', sm: 'none' },
               }}
             >
               {menuItems.map((page) => (
@@ -134,7 +134,7 @@ function Header() {
               <Typography
                 variant={isVenueManager ? 'h3' : 'h3'}
                 noWrap
-                sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
+                sx={{ mr: 2, display: { xs: 'flex', sm: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
               >
                 HOLIDAZE
               </Typography>
@@ -142,7 +142,7 @@ function Header() {
                 <Typography
                   variant="h6"
                   color={theme.palette.secondary.main}
-                  sx={{ display: { xs: 'flex', md: 'none' } }}
+                  sx={{ display: { xs: 'flex', sm: 'none' } }}
                 >
                   Manage
                 </Typography>
@@ -150,7 +150,7 @@ function Header() {
             </Box>
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 6, gap: 2 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' }, ml: 6, gap: 2 }}>
             {menuItems.map((page) => (
               <Button
                 key={page.name}

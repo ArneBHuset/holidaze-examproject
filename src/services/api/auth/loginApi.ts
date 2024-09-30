@@ -29,7 +29,6 @@ export async function loginApiCall(
       localStorage.setItem('accessToken', loginResponse.data.accessToken);
       localStorage.setItem('profileData', JSON.stringify(loginResponse.data));
       updateVenueManagerStatus(loginResponse.data.venueManager);
-      console.log(loginResponse);
       return { success: true };
     } else {
       const errorMessage = loginResponse.errors?.[0]?.message || 'Wrong password';

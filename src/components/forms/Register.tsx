@@ -196,6 +196,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="avatar.url"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -219,6 +220,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="avatar.alt"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -242,6 +244,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="banner.url"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -265,6 +268,7 @@ function Register({ setIsRegistering }: { setIsRegistering: React.Dispatch<React
               <Controller
                 name="banner.alt"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField

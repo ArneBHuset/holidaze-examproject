@@ -125,14 +125,15 @@ const theme = createTheme({
           font-style: normal;
           font-display: swap;
           font-weight: 400;
-          src: url('/src/assets/fonts/CinzelDecorative-Bold.ttf') format('truetype');
+          src: url('/CinzelDecorative-Bold.ttf') format('truetype');
+
         }
         @font-face {
           font-family: 'Cinzel-Regular';
           font-style: normal;
           font-display: swap;
           font-weight: 400;
-          src: url('/src/assets/fonts/Cinzel-Regular.ttf') format('truetype');
+          src: url('/Cinzel-Regular.ttf') format('truetype');
         }
       `,
     },
