@@ -38,10 +38,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-        env:
-          VITE_NOROFF_API_KEY: ${{ secrets.API_KEY }}
 
       - name: Build project
         run: npm run build
-        env:
-          VITE_NOROFF_API_KEY: ${{ secrets.API_KEY }}
