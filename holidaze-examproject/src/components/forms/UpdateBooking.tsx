@@ -55,8 +55,8 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
   } = useForm({
     resolver: yupResolver(newBookingValidation(venue?.maxGuests || 1)),
     defaultValues: {
-      checkInDate: booking.dateFrom ? dayjs(booking.dateFrom) : undefined,
-      checkOutDate: booking.dateTo ? dayjs(booking.dateTo) : undefined,
+      checkInDate: booking.dateFrom ? dayjs(booking.dateFrom) : null,
+      checkOutDate: booking.dateTo ? dayjs(booking.dateTo) : null,
       guests: booking.guests,
     },
   });
@@ -66,10 +66,10 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
   const makeApiCall = async (method: 'PUT' | 'DELETE', data: BookingUpdateData | null = null) => {
     const bookingData = data
       ? {
-          dateFrom: data.dateFrom,
-          dateTo: data.dateTo,
-          guests: data.guests,
-        }
+        dateFrom: data.dateFrom,
+        dateTo: data.dateTo,
+        guests: data.guests,
+      }
       : null;
 
     try {

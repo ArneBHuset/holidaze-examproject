@@ -60,13 +60,14 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
   };
 
   const onSubmit = async (data: FormValues) => {
+
     const bookingData = {
       dateFrom: data.checkInDate?.toISOString(),
       dateTo: data.checkOutDate?.toISOString(),
       guests: data.guests,
       venueId: venue.id,
     };
-
+  console.log(bookingData)
     try {
       const headers = getValidatedHeader();
       await baseApiCall({
