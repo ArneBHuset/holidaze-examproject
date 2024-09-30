@@ -35,7 +35,7 @@ const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
  */
 function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
   const [success, setSuccess] = useState(false);
-  const anchor: 'bottom' = 'bottom';
+  const anchor = 'bottom' as const;
   const navigate = useNavigate();
 
   const {
@@ -45,7 +45,7 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
     watch,
     formState: { errors },
   } = useForm<FormValues>({
-    // @ts-ignore
+    //@ts-expect-error //@ts-expect-error //Unresolved issue with typesafety for dayjs data to/from values
     resolver: yupResolver(newBookingValidation(venue.maxGuests)),
     defaultValues: {
       checkInDate: null,
