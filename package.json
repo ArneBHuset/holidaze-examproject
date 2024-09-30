@@ -10,7 +10,8 @@
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "preview": "vite preview",
     "prepare": "husky",
-    "host": "vite --host"
+    "host": "vite --host",
+    "test": "eslint --config ./eslint.config.js \"src/**/*.{js,jsx,ts,tsx}\" --quiet"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

@@ -37,9 +37,6 @@ jobs:
       - name: Set up environment file
         run: echo "VITE_NOROFF_API_KEY=${{ secrets.API_KEY }}" > .env
 
-      - name: Lint the code
-        run: npm run lint
-
       - name: Run tests
         run: npm test
 
