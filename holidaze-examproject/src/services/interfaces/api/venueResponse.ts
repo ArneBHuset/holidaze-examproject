@@ -1,5 +1,5 @@
 export interface MediaData {
-  url: string;
+  url?: string;
   alt?: string;
 }
 
@@ -44,6 +44,7 @@ export interface BookingData {
   created: string;
   updated: string;
   customer?: CustomerData;
+  venue?: VenueData;
 }
 
 export interface VenueSpecificDetailsProps {

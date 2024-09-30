@@ -3,21 +3,23 @@ import VenueSpecificDetails from '../components/cards/VenueSpecificDetails.tsx';
 import ImageDisplayCard from '../components/cards/ImageDisplayCard.tsx';
 import Grid from '@mui/material/Grid2';
 import VenueData from '../services/interfaces/api/venueResponse.ts';
-import { Container } from '@mui/material';
+import { Container, Typography, Button, LinearProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultBottomNavigation from '../styles/mui-styles/components/BottomNavigation.tsx';
-import Button from '@mui/material/Button';
 import BookVenueDrawer from '../components/forms/NewBooking.tsx';
 import baseApiCall from '../services/api/apiMain.ts';
 import { venuesEndpoint } from '../services/api/variables/endpoints/venueEndpoint.ts';
 import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
-import { LinearProgress } from '@mui/material';
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import { ApiError } from '../services/interfaces/error/catchError.ts';
 import { useUser } from '../services/utilities/UserTypeContext.tsx';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
+/**
+ * VenueDetailsPage component renders details about a venue including images, specific details, and booking options.
+ * @returns JSX.Element
+ */
 export default function VenueDetailsPage() {
   const location = useLocation();
   const { state } = location;
@@ -31,12 +33,11 @@ export default function VenueDetailsPage() {
   const toggleDrawer =
     (_anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      if (event.type === 'keydown' && 'key' in event && (event.key === 'Tab' || event.key === 'Shift')) {
         return;
       }
       setDrawerOpen(open);
     };
-
   useEffect(() => {
     if (!venue && id) {
       const fetchVenueData = async () => {
@@ -49,11 +50,10 @@ export default function VenueDetailsPage() {
             method: 'GET',
             headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
           });
-
           if (response && response.data) {
             setVenue(response.data);
           } else {
-            throw new Error('Unexpected response structure');
+            snackBarError('Unknown error occurred');
           }
         } catch (error) {
           const apiError = error as ApiError;
@@ -66,25 +66,29 @@ export default function VenueDetailsPage() {
     }
   }, [venue, id]);
 
-  if (loading) return <LinearProgress color="secondary" />;
+  if (loading) return <LinearProgress color="secondary" aria-label="Loading venue details" />;
 
   if (!venue) {
-    return null;
+    return (
+      <Typography variant="h6" color="error">
+        Error: Venue details could not be loaded.
+      </Typography>
+    );
   }
 
   return (
-    <Container maxWidth={'sm'}>
-      <Grid container spacing={2} maxWidth={'sm'}>
-        <Grid size={12} marginBottom={2}>
-          <ImageDisplayCard venueMedia={venue.media || [{ url: 'https://shorturl.at/MBljW', alt: 'Image missing' }]} />
+    <Container maxWidth="md">
+      <Grid container spacing={1} mt={2} mb={8}>
+        <Grid size={{ xs: 12, sm: 4 }} marginBottom={2}>
+          <ImageDisplayCard venueMedia={venue.media ?? []} />
         </Grid>
-        <Grid size={12}>
+        <Grid size={{ xs: 12, sm: 8 }}>
           <VenueSpecificDetails venue={venue} />
         </Grid>
       </Grid>
       {!isVenueManager && (
         <DefaultBottomNavigation>
-          <Button sx={{ width: '100%' }} onClick={toggleDrawer('bottom', true)}>
+          <Button sx={{ width: '100%' }} onClick={toggleDrawer('bottom', true)} aria-label="Book venue drawer">
             BOOK VENUE
           </Button>
         </DefaultBottomNavigation>

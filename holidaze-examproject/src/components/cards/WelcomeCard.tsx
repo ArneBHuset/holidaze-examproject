@@ -1,38 +1,49 @@
 import Typography from '@mui/material/Typography';
-import { CardContent, Box } from '@mui/material';
-import { ImageList, ImageListItem } from '@mui/material';
-import MainCard from '../../layout/MainCard.tsx';
+import { CardContent, Box, useTheme, alpha } from '@mui/material';
+import Card from '@mui/material/Card';
 
 function WelcomeCard() {
-  const itemData = [
-    {
-      img: 'https://th.bing.com/th/id/R.18d0d9117a2f5ba5ab53bcb3f4a4a23b?rik=kJH4Pg77%2bTytlg&pid=ImgRaw&r=0',
-      title: 'Beautiful Venue 1',
-    },
-  ];
+  const theme = useTheme();
+
   return (
-    <MainCard>
-      <CardContent sx={{ display: 'flex', gap: 4 }}>
-        <Box>
-          <Typography variant="h1">HOLIDAZE</Typography>
-          <Typography>Where Every Venue Becomes Your Dream Destination</Typography>
-        </Box>
-        <Box>
-          <ImageList sx={{ width: 220, height: 120, mt: 1, borderRadius: 3 }}>
-            {itemData.map((item) => (
-              <ImageListItem key={item.img} sx={{ borderRadius: '4px' }}>
-                <img
-                  srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                  alt={item.title}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
+    <Card
+      sx={{
+        background: `linear-gradient(to bottom, ${alpha(theme.palette.primary.light, 0.7)} 15%, ${alpha(
+          theme.palette.primary.light,
+          0.1,
+        )} 100%)`,
+        width: { xs: '100%', sm: '90%', md: '90%', lg: '70%' },
+      }}
+    >
+      <CardContent sx={{ backgroundColor: alpha(theme.palette.primary.light, 0) }}>
+        <Box
+          sx={{
+            textAlign: 'left',
+            borderRadius: 2,
+            paddingTop: 2,
+            color: theme.palette.primary.light,
+          }}
+        >
+          <Typography
+            variant="h1"
+            sx={{
+              color: theme.palette.secondary.main,
+              fontSize: {
+                xs: theme.typography.h2.fontSize,
+                sm: theme.typography.h3.fontSize,
+                md: theme.typography.h2.fontSize,
+                lg: theme.typography.h1.fontSize,
+              },
+            }}
+          >
+            HOLIDAZE
+          </Typography>
+          <Typography variant="h4" sx={{ color: theme.palette.background.paper }}>
+            Your luxurious adventures are only a few clicks aways
+          </Typography>
         </Box>
       </CardContent>
-    </MainCard>
+    </Card>
   );
 }
 

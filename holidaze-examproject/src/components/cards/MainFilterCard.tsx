@@ -2,43 +2,29 @@ import MainCard from '../../layout/MainCard.tsx';
 import Grid from '@mui/material/Grid2';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
-import { Box, Chip, Select, SelectChangeEvent, TextField, MenuItem, Typography, Checkbox, Button } from '@mui/material';
-import React, { useState, useEffect, useRef } from 'react';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useTheme, Theme } from '@mui/material/styles';
-import DefaultSelect from '../../styles/mui-styles/components/SelectMenu.tsx';
-import availableCountries from '../../services/interfaces/api/filtering/availableCountries.ts';
-import { DatesType } from '../../services/interfaces/api/filtering/uiFilterParams.ts';
-import { applyFilters } from '../../services/filtering/filterLandingPage.ts';
+import { Box, Checkbox, Typography, Button, TextField, IconButton, InputAdornment } from '@mui/material';
+import React, { useState } from 'react';
 import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
+import theme from '../../styles/mui-styles/MuiThemes.ts';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SearchIcon from '@mui/icons-material/Search';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-function getStyles(country: string, selectedCountries: readonly string[], theme: Theme) {
-  return {
-    fontWeight:
-      selectedCountries.indexOf(country) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }) {
-  const theme = useTheme();
-
+/**
+ * MainFilterCard component that handles search and sort functionalities.
+ */
+function MainFilterCard({
+  onSearch,
+  onSortChange,
+}: {
+  onSearch: (searchTerm: string) => void;
+  onSortChange: (sort: string, sortOrder: string) => void;
+}) {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [submittedSearchTerm, setSubmittedSearchTerm] = useState<string>('');
+  const [selectedSort, setSelectedSort] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<string>('asc');
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
@@ -46,192 +32,135 @@ function MainFilterCard({ onSearch }: { onSearch: (searchTerm: string) => void }
 
   const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim()) {
-      onSearch(searchTerm);
+      submitSearchTerm();
     }
   };
 
-  const [detailedOnly, setDetailedOnly] = useState<boolean>(false);
-  const handleDetailedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailedOnly(event.target.checked);
-  };
-  const [selectedCountries, setSelectedCountries] = useState<availableCountries['selectedCountries']>([]);
-  const [countries, setCountries] = useState<availableCountries['countries']>([]);
-
-  const handleMenuSelectChange = (event: SelectChangeEvent<typeof selectedCountries>) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedCountries(typeof value === 'string' ? value.split(',') : value);
-  };
-
-  const handleDeleteCountry = (countryToDelete: string) => {
-    setSelectedCountries((prevSelected) => prevSelected.filter((country) => country !== countryToDelete));
-  };
-
-  useEffect(() => {
-    const storedCountries = sessionStorage.getItem('countries');
-    if (storedCountries) {
-      setCountries(JSON.parse(storedCountries) as availableCountries['countries']);
-    }
-  }, []);
-
-  const [dates, setDates] = useState<DatesType>({
-    checkInDate: null,
-    checkOutDate: null,
-  });
-  const checkOutRef = useRef<HTMLInputElement>(null);
-  const [checkOutOpen, setCheckOutOpen] = useState<boolean>(false);
-
-  const handleCheckInChange = (newDate: Dayjs | null) => {
-    setDates((prevDates) => ({
-      ...prevDates,
-      checkInDate: newDate,
-      checkOutDate:
-        newDate && dates.checkOutDate && newDate.isAfter(dates.checkOutDate) ? null : prevDates.checkOutDate,
-    }));
-
-    if (newDate) {
-      setCheckOutOpen(true);
+  const handleSearchSubmit = () => {
+    if (searchTerm.trim()) {
+      submitSearchTerm();
     }
   };
 
-  const handleCheckOutChange = (newDate: Dayjs | null) => {
-    setDates((prevDates) => ({
-      ...prevDates,
-      checkOutDate: newDate,
-    }));
-    setCheckOutOpen(false);
+  const submitSearchTerm = () => {
+    setSubmittedSearchTerm(searchTerm);
+    onSearch(searchTerm);
   };
 
-  const handleReset = () => {
+  const handleClearSearch = () => {
     setSearchTerm('');
-    setDetailedOnly(false);
-    setSelectedCountries([]);
-    setDates({ checkInDate: null, checkOutDate: null });
+    setSubmittedSearchTerm('');
+    onSearch('');
   };
 
-  useEffect(() => {
-    const filters = {
-      detailedOnly,
-      selectedCountries,
-      dates,
-    };
+  const handleSortToggle = (sortField: string) => {
+    if (selectedSort === sortField) {
+      const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+      setSortOrder(newSortOrder);
+      onSortChange(sortField, newSortOrder);
+    }
+  };
 
-    applyFilters(filters);
-  }, [detailedOnly, selectedCountries, dates]);
+  const handleSortCheck = (sortField: string) => {
+    if (selectedSort !== sortField) {
+      setSelectedSort(sortField);
+      setSortOrder('asc');
+      onSortChange(sortField, 'asc');
+    } else {
+      setSelectedSort('');
+      onSortChange('created', 'desc');
+    }
+  };
 
   return (
     <MainCard>
-      <Grid container maxWidth="sm" rowSpacing={2} columnSpacing={1} padding={2} m="auto">
+      <Grid container rowSpacing={1} padding={2}>
         <Grid size={{ xs: 12 }}>
-          <DefaultSubTitle>Search</DefaultSubTitle>
+          <DefaultSubTitle>search</DefaultSubTitle>
           <DefaultInput>
             <TextField
-              fullWidth
               type="search"
-              placeholder="Beach house in..."
-              value={searchTerm}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleSearchInputChange(event)}
-              onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => handleSearchKeyDown(event)}
+              placeholder="Villa..."
               variant="standard"
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              value={searchTerm}
+              onChange={handleSearchInputChange}
+              onKeyDown={handleSearchKeyDown}
+              style={{ width: '100%' }}
             />
           </DefaultInput>
-        </Grid>
-        <Grid size={{ xs: 12 }}>
-          <Box marginBottom={1}>
-            <DefaultSubTitle>Country</DefaultSubTitle>
-          </Box>
-          <DefaultSelect>
-            <Select
-              multiple
-              variant="standard"
-              value={selectedCountries}
-              onChange={handleMenuSelectChange}
-              fullWidth={true}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip
-                      key={value}
-                      label={value}
-                      sx={{ backgroundColor: theme.palette.secondary.main }}
-                      onDelete={() => handleDeleteCountry(value)}
-                    />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {countries.map((country) => (
-                <MenuItem key={country} value={country} style={getStyles(country, selectedCountries, theme)}>
-                  {country}
-                </MenuItem>
-              ))}
-            </Select>
-          </DefaultSelect>
-        </Grid>
-        <Grid size={{ xs: 12 }}>
-          <DefaultSubTitle>Check-in & check-out</DefaultSubTitle>
-          <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: 1 }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={dates.checkInDate}
-                onChange={handleCheckInChange}
-                slots={{ textField: TextField }}
-                slotProps={{
-                  textField: {
-                    placeholder: 'Check-in',
-                    fullWidth: true,
-                  },
-                }}
-              />
-            </LocalizationProvider>
-            <Typography>TO</Typography>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={dates.checkOutDate}
-                onChange={handleCheckOutChange}
-                disabled={!dates.checkInDate}
-                open={checkOutOpen}
-                onClose={() => setCheckOutOpen(false)}
-                minDate={dates.checkInDate ? dayjs(dates.checkInDate).add(1, 'day') : undefined}
-                slots={{ textField: TextField }}
-                slotProps={{
-                  textField: {
-                    inputRef: checkOutRef,
-                    placeholder: 'Check-out',
-                    fullWidth: true,
-                  },
-                }}
-              />
-            </LocalizationProvider>
+          {submittedSearchTerm && (
+            <Box display="flex" alignItems="center" justifyContent="space-between" mt={1} paddingX={1}>
+              <Typography variant="body1">{submittedSearchTerm}</Typography>
+              <IconButton onClick={handleClearSearch} size="small">
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          )}
+          <Box display="flex" justifyContent="right">
+            <DefaultButton>
+              <Button
+                onClick={handleSearchSubmit}
+                disabled={!searchTerm.trim()}
+                sx={{ mt: 2, justifyContent: 'right' }}
+              >
+                search
+              </Button>
+            </DefaultButton>
           </Box>
         </Grid>
-        <Grid size={{ xs: 8 }}>
-          <Box display="flex" alignItems="center" gap={2} marginTop={1}>
-            <Checkbox
-              checked={detailedOnly}
-              onChange={handleDetailedChange}
-              size="large"
-              inputProps={{ 'aria-label': 'controlled' }}
-              sx={{
-                color: theme.palette.primary.main,
-                padding: 0,
-                '&.Mui-checked': { color: theme.palette.secondary.main },
-                '&:hover': { color: theme.palette.secondary.main },
-              }}
-            />
-            <Typography>Detailed venues only</Typography>
+        <Grid size={{ xs: 12 }} mb={2}>
+          <DefaultSubTitle>Sort</DefaultSubTitle>
+          <Box display="flex" flexDirection="column" gap={2}>
+            {['price', 'maxGuests', 'rating'].map((sortField) => (
+              <Box key={sortField} display="flex" alignItems="center" gap={2} marginTop={1}>
+                <Checkbox
+                  checked={selectedSort === sortField}
+                  onChange={() => handleSortCheck(sortField)}
+                  size="large"
+                  sx={{
+                    color: theme.palette.primary.light,
+                    padding: 0,
+                    '&.Mui-checked': { color: theme.palette.secondary.main },
+                    '&:hover': { color: theme.palette.secondary.main },
+                  }}
+                />
+                <Typography
+                  onClick={() => selectedSort === sortField && handleSortToggle(sortField)}
+                  variant="h5"
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: selectedSort === sortField ? 'pointer' : 'default',
+                    color: selectedSort === sortField ? 'inherit' : 'gray',
+                    borderBottom: selectedSort === sortField ? `2px solid ${theme.palette.secondary.main}` : 'none',
+                  }}
+                >
+                  {sortField.charAt(0).toUpperCase() + sortField.slice(1)}
+                  {selectedSort === sortField &&
+                    (sortOrder === 'asc' ? (
+                      <ArrowDropUpIcon sx={{ fontSize: 30 }} />
+                    ) : (
+                      <ArrowDropDownIcon sx={{ fontSize: 30 }} />
+                    ))}
+                </Typography>
+              </Box>
+            ))}
           </Box>
-        </Grid>
-        <Grid size={{ xs: 4 }} display="flex" justifyContent="flex-end">
-          <DefaultButton>
-            <Button onClick={handleReset}>Reset</Button>
-          </DefaultButton>
         </Grid>
       </Grid>
     </MainCard>
   );
 }
 
-export default MainFilterCard;
+export default React.memo(MainFilterCard);

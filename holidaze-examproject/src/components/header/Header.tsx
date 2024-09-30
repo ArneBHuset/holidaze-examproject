@@ -22,7 +22,10 @@ function Header() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isVenueManager } = useUser();
-  console.log('current user type', isVenueManager);
+
+  const profileData = localStorage.getItem('profileData')
+    ? JSON.parse(localStorage.getItem('profileData') as string)
+    : null;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -46,6 +49,7 @@ function Header() {
     navigate('/auth');
     window.location.reload();
   };
+
   const menuItems = isVenueManager
     ? [
         { name: 'Manage Venues', path: '/manage-venue' },
@@ -61,29 +65,40 @@ function Header() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: theme.palette.background.default,
-        borderBottom: `1px solid ${theme.palette.primary.main}`,
+        backgroundColor: theme.palette.primary.light,
+        borderBottom: `2px solid ${theme.palette.secondary.main}`,
         boxShadow: `0 2px 2px rgba(0, 0, 0, 0.2)`,
       }}
     >
       <Container maxWidth="md">
         <Toolbar disableGutters sx={{ mx: 1 }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <Typography
-              variant="h2"
-              color={theme.palette.primary.main}
-              noWrap
-              sx={{
-                mr: 0,
-                display: { xs: 'none', md: 'flex' },
-              }}
-            >
-              {isVenueManager ? 'HOLIDAZEmanage' : 'HOLIDAZE'}
-            </Typography>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Typography
+                variant={isVenueManager ? 'h3' : 'h2'}
+                color={theme.palette.secondary.main}
+                noWrap
+                sx={{
+                  mr: 0,
+                  display: { xs: 'none', md: 'flex' },
+                }}
+              >
+                HOLIDAZE
+              </Typography>
+              {isVenueManager && (
+                <Typography
+                  variant="h5"
+                  color={theme.palette.secondary.main}
+                  sx={{ display: { xs: 'none', md: 'flex' } }}
+                >
+                  Manage
+                </Typography>
+              )}
+            </Box>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton aria-label="menu" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu}>
-              <MenuIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
+              <MenuIcon sx={{ fontSize: 40, color: theme.palette.background.default }} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -115,13 +130,24 @@ function Header() {
             </Menu>
           </Box>
           <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
-            <Typography
-              variant="h3"
-              noWrap
-              sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, color: theme.palette.primary.main }}
-            >
-              {isVenueManager ? 'HOLIDAZEmanage' : 'HOLIDAZE'}
-            </Typography>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Typography
+                variant={isVenueManager ? 'h3' : 'h3'}
+                noWrap
+                sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
+              >
+                HOLIDAZE
+              </Typography>
+              {isVenueManager && (
+                <Typography
+                  variant="h6"
+                  color={theme.palette.secondary.main}
+                  sx={{ display: { xs: 'flex', md: 'none' } }}
+                >
+                  Manage
+                </Typography>
+              )}
+            </Box>
           </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 6, gap: 2 }}>
@@ -131,7 +157,7 @@ function Header() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: theme.palette.primary.main, display: 'block' }}
               >
-                <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link to={page.path} style={{ textDecoration: 'none', color: theme.palette.background.default }}>
                   {page.name}
                 </Link>
               </Button>
@@ -143,8 +169,8 @@ function Header() {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   sx={{ width: '50px', height: '50px' }}
-                  alt={JSON.parse(localStorage.getItem('profileData')).avatar.alt}
-                  src={JSON.parse(localStorage.getItem('profileData')).avatar.url}
+                  alt={profileData?.avatar?.alt || 'User avatar'}
+                  src={profileData?.avatar?.url || ''}
                 />
               </IconButton>
             </Tooltip>
@@ -173,7 +199,7 @@ function Header() {
                 }}
               >
                 <Typography variant="h4" textAlign="center">
-                  {JSON.parse(localStorage.getItem('profileData')).name}
+                  {profileData?.name || 'Guest'}
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleLogout}>

@@ -30,10 +30,15 @@ async function baseApiCall({ url, method, headers, body }: ApiParameters) {
       return undefined;
     }
 
+    if (response.status === 204 || response.headers.get('content-length') === '0') {
+      return null;
+    }
+
     return await response.json();
   } catch (error) {
     const apiError = error as ApiError;
     const errorMessage = apiError.message || 'An unknown error occurred';
+    console.log('api error from main', apiError);
     snackBarError(errorMessage);
     return undefined;
   }
