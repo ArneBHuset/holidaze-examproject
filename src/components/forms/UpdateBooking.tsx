@@ -55,14 +55,14 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
   } = useForm({
     resolver: yupResolver(newBookingValidation(venue?.maxGuests || 1)),
     defaultValues: {
-      // @ts-ignore
+      //@ts-expect-error //Unresolved issue with typesafety for dayjs data to/from values
       checkInDate: booking.dateFrom ? dayjs(booking.dateFrom) : null,
-      // @ts-ignore
+      //@ts-expect-error //Unresolved issue with typesafety for dayjs data to/from values
       checkOutDate: booking.dateTo ? dayjs(booking.dateTo) : null,
       guests: booking.guests,
     },
   });
-// @ts-ignore
+  //@ts-expect-error //Unresolved issue with typesafety for dayjs data to/from values
   const checkInDate: Dayjs | null = watch('checkInDate');
 
   const makeApiCall = async (method: 'PUT' | 'DELETE', data: BookingUpdateData | null = null) => {
@@ -103,8 +103,6 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
         <Grid size={12} mb={1} textAlign="center">
           <DefaultSubTitle>EDIT BOOKING</DefaultSubTitle>
         </Grid>
-
-        {/* Check-in Date */}
         <Grid size={6}>
           <Box mb={1}>
             <DefaultSubTitle>Check-in</DefaultSubTitle>
@@ -119,10 +117,10 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
                   disablePast
                   onChange={(newDate: Dayjs | null) => {
                     field.onChange(newDate);
-                    // @ts-ignore
+                    //@ts-expect-error //Unresolved issue with typesafety for dayjs data to/from values
                     setValue('checkOutDate', null);
                   }}
-                  // @ts-ignore
+                  //@ts-expect-error //Unresolved issue with typesafety for dayjs data to/from values
                   value={field.value || null}
                   slots={{ textField: TextField }}
                   slotProps={{
