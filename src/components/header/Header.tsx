@@ -120,7 +120,15 @@ function Header() {
             >
               {menuItems.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="left">
+                  <Typography
+                    variant="h4"
+                    textAlign="left"
+                    sx={{
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
                     <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
                       {page.name}
                     </Link>
@@ -132,7 +140,8 @@ function Header() {
           <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
             <Box display="flex" flexDirection="column" alignItems="center">
               <Typography
-                variant={isVenueManager ? 'h3' : 'h3'}
+                variant="h3"
+                fontSize={isVenueManager ? theme.typography.h5.fontSize : theme.typography.h4.fontSize}
                 noWrap
                 sx={{ mr: 2, display: { xs: 'flex', sm: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
               >
@@ -155,7 +164,14 @@ function Header() {
               <Button
                 key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: theme.palette.primary.main, display: 'block' }}
+                sx={{
+                  my: 2,
+                  color: theme.palette.background.default,
+                  display: 'block',
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  },
+                }}
               >
                 <Link to={page.path} style={{ textDecoration: 'none', color: theme.palette.background.default }}>
                   {page.name}

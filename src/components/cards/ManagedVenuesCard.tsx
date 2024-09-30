@@ -51,7 +51,6 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
   const navigate = useNavigate();
 
   const changeVenue = async (venueId: string, method: 'PUT' | 'DELETE', data?: VenueCreateUpdate) => {
-    console.log(data);
     const headers = getValidatedHeader();
     try {
       const response = await baseApiCall({
@@ -60,7 +59,6 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
         headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
         body: method === 'PUT' && data ? JSON.stringify(data) : undefined,
       });
-      console.log(response);
       if (method === 'PUT' && response?.data) {
         snackBarSuccess('Venue updated successfully!');
         refreshVenues();

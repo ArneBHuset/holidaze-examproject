@@ -23,7 +23,6 @@ function NewVenuePage() {
   const navigate = useNavigate();
   const createVenue = async (venueData: VenueCreateUpdate) => {
     const headers = getValidatedHeader();
-    console.log(venueData);
     try {
       const response = await baseApiCall({
         url: venuesEndpoint(),

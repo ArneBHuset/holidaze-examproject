@@ -27,7 +27,7 @@ interface VenueFormProps {
  * @param {string} [props.submitLabel='Submit Venue'] - Label text for the submit button. Defaults to 'Submit Venue'.
  */
 function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue' }: VenueFormProps) {
-  const [imageUrl, setImageUrl] = useState<string>(''); // For the input field
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [imageUrls, setImageUrls] = useState<{ url: string; alt: string }[]>(
     initialValues?.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
   );
@@ -100,7 +100,6 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
       },
     };
 
-    console.log('Submitting form data with media:', venueData); // Debug log to check submission data
     onSubmit(venueData);
   };
 

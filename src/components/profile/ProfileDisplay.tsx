@@ -17,23 +17,24 @@ function HostDetails({ data }: HostDetailsProps) {
   if (!data) {
     return <LinearProgress color="secondary"></LinearProgress>;
   }
+
+  const placeholderBanner =
+    'https://th.bing.com/th/id/R.7c679658c9a587ffd6b0e66c9ab0d0fe?rik=mNvwy15NYRD0KA&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f08%2fFree-black-background-wallpaper.jpg&ehk=ILvp4NQzbBLVX8qQSyjksYYm60Ksy%2fllfcW5aOQo3A8%3d&risl=&pid=ImgRaw&r=0';
+
+  const placeholderAvatar = 'https://th.bing.com/th/id/OIP.6Q7DNPxnE4gnsCMOU_XYXAAAAA?rs=1&pid=ImgDetMain';
+
   return (
     <>
       <Grid size={12}>
-        {data?.banner?.url ? (
-          <img
-            src={data.banner.url}
-            alt={data.banner.alt || 'Owner banner'}
-            aria-label={data.banner.alt || 'Owner banner'}
-            style={{ width: '100%', borderRadius: '4px', height: '100px', objectFit: 'cover' }}
-          />
-        ) : (
-          <img
-            src="https://th.bing.com/th/id/R.7c679658c9a587ffd6b0e66c9ab0d0fe?rik=mNvwy15NYRD0KA&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f08%2fFree-black-background-wallpaper.jpg&ehk=ILvp4NQzbBLVX8qQSyjksYYm60Ksy%2fllfcW5aOQo3A8%3d&risl=&pid=ImgRaw&r=0"
-            alt="Default banner"
-            style={{ width: '100%', borderRadius: '8px', height: '90px', objectFit: 'cover' }}
-          />
-        )}
+        <img
+          src={data?.banner?.url || placeholderBanner}
+          alt={data?.banner?.alt || 'Owner banner'}
+          aria-label={data?.banner?.alt || 'Owner banner'}
+          style={{ width: '100%', borderRadius: '4px', height: '100px', objectFit: 'cover' }}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = placeholderBanner;
+          }}
+        />
 
         <Box
           display="flex"
@@ -43,19 +44,20 @@ function HostDetails({ data }: HostDetailsProps) {
             marginTop: '-65px',
             marginLeft: { xs: '1vw', sm: '0.5vw' },
             maxWidth: { xs: '95%', sm: '80%', md: '95%', lg: '95%' },
-          }} // Ensure the box has a max-width
+          }}
         >
           <Link to={`/hostpage/${data?.name || ''}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Tooltip title={`View ${data?.name}'s profile`}>
               <Avatar
-                src={
-                  data?.avatar?.url || 'https://th.bing.com/th/id/OIP.6Q7DNPxnE4gnsCMOU_XYXAAAAA?rs=1&pid=ImgDetMain'
-                }
+                src={data?.avatar?.url || placeholderAvatar}
                 alt={data?.avatar?.alt || 'Avatar description missing'}
                 sx={{
                   width: { xs: '110px', sm: '80px' },
                   height: { xs: '110px', sm: '80px' },
                   border: `1.5px solid ${theme.palette.secondary.main}`,
+                }}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = placeholderAvatar;
                 }}
               />
             </Tooltip>

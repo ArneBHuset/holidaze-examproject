@@ -38,7 +38,6 @@ async function baseApiCall({ url, method, headers, body }: ApiParameters) {
   } catch (error) {
     const apiError = error as ApiError;
     const errorMessage = apiError.message || 'An unknown error occurred';
-    console.log('api error from main', apiError);
     snackBarError(errorMessage);
     return undefined;
   }

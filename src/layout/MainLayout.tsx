@@ -23,7 +23,7 @@ function Layout(props: LayoutProps) {
         component="main"
         sx={{
           flexGrow: 1,
-          padding: 2,
+          padding: { xs: 0.5, sm: 1.5 },
         }}
       >
         {props.children}

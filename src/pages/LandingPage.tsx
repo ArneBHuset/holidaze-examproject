@@ -77,7 +77,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ padding: 0 }}>
       <Grid container spacing={1} marginTop={2}>
         <Grid
           size={{ xs: 12, sm: 4 }}
