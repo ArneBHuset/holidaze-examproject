@@ -11,29 +11,27 @@ import { snackBarSuccess } from '../../snackbar/SnackBarSuccess.tsx';
  * @returns {Promise<{ success: boolean; message?: string }>} - Result of the API call with success status and optional message.
  */
 export async function loginApiCall(loginFormData, updateVenueManagerStatus) {
-    try {
-        const loginResponse = await baseApiCall({
-            url: loginEndpoint,
-            method: 'POST',
-            headers: unValidatedHeader,
-            body: JSON.stringify(loginFormData),
-        });
-        if (loginResponse.data && loginResponse.data.accessToken) {
-            snackBarSuccess('Welcome back ' + loginResponse.data.name);
-            localStorage.setItem('accessToken', loginResponse.data.accessToken);
-            localStorage.setItem('profileData', JSON.stringify(loginResponse.data));
-            updateVenueManagerStatus(loginResponse.data.venueManager);
-            console.log(loginResponse);
-            return { success: true };
-        }
-        else {
-            const errorMessage = loginResponse.errors?.[0]?.message || 'Wrong password';
-            return { success: false, message: errorMessage };
-        }
+  try {
+    const loginResponse = await baseApiCall({
+      url: loginEndpoint,
+      method: 'POST',
+      headers: unValidatedHeader,
+      body: JSON.stringify(loginFormData),
+    });
+    if (loginResponse.data && loginResponse.data.accessToken) {
+      snackBarSuccess('Welcome back ' + loginResponse.data.name);
+      localStorage.setItem('accessToken', loginResponse.data.accessToken);
+      localStorage.setItem('profileData', JSON.stringify(loginResponse.data));
+      updateVenueManagerStatus(loginResponse.data.venueManager);
+      console.log(loginResponse);
+      return { success: true };
+    } else {
+      const errorMessage = loginResponse.errors?.[0]?.message || 'Wrong password';
+      return { success: false, message: errorMessage };
     }
-    catch (error) {
-        const apiError = error;
-        snackBarError(apiError.message || 'An error occurred with logging in');
-        return { success: false, message: 'An error occurred. Please try again later.' };
-    }
+  } catch (error) {
+    const apiError = error;
+    snackBarError(apiError.message || 'An error occurred with logging in');
+    return { success: false, message: 'An error occurred. Please try again later.' };
+  }
 }

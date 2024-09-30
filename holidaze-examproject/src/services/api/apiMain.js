@@ -9,31 +9,31 @@ import { snackBarError } from '../snackbar/SnackBarError.tsx';
  * @param {string} body - An optional stringified body to be sent with the API call (typically used with POST or PUT requests).
  */
 async function baseApiCall({ url, method, headers, body }) {
-    try {
-        const fetchData = {
-            method: method,
-            headers: headers,
-            body: body,
-        };
-        const response = await fetch(`${baseUrl}${url}`, fetchData);
-        if (!response.ok) {
-            const errorResponse = await response.json();
-            const errorMessage = errorResponse.message ||
-                (errorResponse.errors ? errorResponse.errors.map((e) => e.message).join(', ') : 'Failed to fetch data');
-            snackBarError(errorMessage);
-            return undefined;
-        }
-        if (response.status === 204 || response.headers.get('content-length') === '0') {
-            return null;
-        }
-        return await response.json();
+  try {
+    const fetchData = {
+      method: method,
+      headers: headers,
+      body: body,
+    };
+    const response = await fetch(`${baseUrl}${url}`, fetchData);
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      const errorMessage =
+        errorResponse.message ||
+        (errorResponse.errors ? errorResponse.errors.map((e) => e.message).join(', ') : 'Failed to fetch data');
+      snackBarError(errorMessage);
+      return undefined;
     }
-    catch (error) {
-        const apiError = error;
-        const errorMessage = apiError.message || 'An unknown error occurred';
-        console.log('api error from main', apiError);
-        snackBarError(errorMessage);
-        return undefined;
+    if (response.status === 204 || response.headers.get('content-length') === '0') {
+      return null;
     }
+    return await response.json();
+  } catch (error) {
+    const apiError = error;
+    const errorMessage = apiError.message || 'An unknown error occurred';
+    console.log('api error from main', apiError);
+    snackBarError(errorMessage);
+    return undefined;
+  }
 }
 export default baseApiCall;

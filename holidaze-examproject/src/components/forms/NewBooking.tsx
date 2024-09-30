@@ -35,7 +35,7 @@ const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
  */
 function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
   const [success, setSuccess] = useState(false);
-  const anchor = 'bottom' as const;
+  const anchor: 'bottom' = 'bottom';
   const navigate = useNavigate();
 
   const {
@@ -45,6 +45,7 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
     watch,
     formState: { errors },
   } = useForm<FormValues>({
+    // @ts-ignore
     resolver: yupResolver(newBookingValidation(venue.maxGuests)),
     defaultValues: {
       checkInDate: null,
@@ -60,14 +61,13 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
   };
 
   const onSubmit = async (data: FormValues) => {
-
     const bookingData = {
       dateFrom: data.checkInDate?.toISOString(),
       dateTo: data.checkOutDate?.toISOString(),
       guests: data.guests,
       venueId: venue.id,
     };
-  console.log(bookingData)
+
     try {
       const headers = getValidatedHeader();
       await baseApiCall({

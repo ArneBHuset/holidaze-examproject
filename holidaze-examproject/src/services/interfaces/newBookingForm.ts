@@ -7,6 +7,7 @@ export interface FormValues {
   checkOutDate: Dayjs | null;
   guests: number;
 }
+
 type Anchor = 'bottom';
 
 export interface DrawerComponentProps {

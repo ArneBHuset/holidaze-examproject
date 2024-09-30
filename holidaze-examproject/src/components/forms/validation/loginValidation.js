@@ -9,12 +9,12 @@ import * as yup from 'yup';
  * @returns {boolean} - Returns true if the form data is valid, false if not
  */
 export const loginValidationSchema = yup.object().shape({
-    email: yup
-        .string()
-        .required('Please enter email')
-        .matches(/^[\w.-]+@stud\.noroff\.no$/, 'Email must be a valid stud.noroff.no email'),
-    password: yup
-        .string()
-        .required('Password must be at least 8 characters long')
-        .min(8, 'Password must be at least 8 characters long'),
+  email: yup
+    .string()
+    .required('Please enter email')
+    .matches(/^[\w.-]+@stud\.noroff\.no$/, 'Email must be a valid stud.noroff.no email'),
+  password: yup
+    .string()
+    .required('Password must be at least 8 characters long')
+    .min(8, 'Password must be at least 8 characters long'),
 });
