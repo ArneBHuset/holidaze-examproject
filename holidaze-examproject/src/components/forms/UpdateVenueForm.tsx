@@ -22,22 +22,11 @@ interface VenueFormProps {
   submitLabel?: string;
 }
 
-/**
- * UpdateVenueForm is a form component used for updating venue details.
- * The form supports submitting the updated venue data and deleting the venue.
- *
- * @param {Object} props - The props object for UpdateVenueForm.
- * @param {Partial<VenueCreateUpdate>} props.initialValues - Initial values to populate the form, which include venue details like name, location, media, etc.
- * @param {function} props.onSubmit - A callback function to handle form submission. Receives the updated venue data as an argument.
- * @param {function} props.onDelete - A callback function to handle the deletion of the venue.
- * @param {string} [props.submitLabel='Save Changes'] - Label text for the submit button. Defaults to 'Save Changes'.
- *
- */
 function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel = 'Save Changes' }: VenueFormProps) {
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [imageUrls, setImageUrls] = useState<{ url: string; alt: string }[]>(
     initialValues?.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
   );
-
   const [hoverRating, setHoverRating] = useState<number | null>(initialValues?.rating || 0);
 
   const {
@@ -58,30 +47,36 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
       },
     },
   });
-
-  const handleAddImageUrl = (url: string) => {
-    if (url.trim()) {
-      setImageUrls([...imageUrls, { url, alt: '' }]);
+  const handleAddImageUrl = () => {
+    if (imageUrl.trim()) {
+      const updatedUrls = [...imageUrls, { url: imageUrl, alt: '' }];
+      setImageUrls(updatedUrls);
+      setImageUrl('');
     }
   };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleAddImageUrl();
+      event.preventDefault();
+    }
+  };
+
+  const handleBlur = () => {
+    handleAddImageUrl();
+  };
+
+  const handleDeleteImage = (index: number) => {
+    const updatedImages = imageUrls.filter((_, i) => i !== index);
+    setImageUrls(updatedImages);
+  };
+
   const handleAltTextChange = (index: number, newAlt: string) => {
     const updatedImages = [...imageUrls];
     updatedImages[index].alt = newAlt;
     setImageUrls(updatedImages);
   };
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const url = event.currentTarget.value;
-    if (event.key === 'Enter') {
-      handleAddImageUrl(url);
-      event.currentTarget.value = '';
-      event.preventDefault();
-    }
-  };
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    const url = event.currentTarget.value;
-    handleAddImageUrl(url);
-    event.currentTarget.value = '';
-  };
+
   const onFormSubmit = (data: Partial<VenueCreateUpdate>) => {
     const venueData: VenueCreateUpdate = {
       ...data,
@@ -95,7 +90,7 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
       description: data.description || '',
       price: data.price || 0,
       maxGuests: data.maxGuests || 1,
-      media: data.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
+      media: imageUrls,
       rating: data.rating || 0,
       meta: {
         wifi: data.meta?.wifi || false,
@@ -105,11 +100,6 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
       },
     };
     onSubmit(venueData);
-  };
-
-  const handleDeleteImage = (index: number) => {
-    const updatedImages = imageUrls.filter((_, i) => i !== index);
-    setImageUrls(updatedImages);
   };
 
   return (
@@ -345,22 +335,17 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Upload Images</SubTitle>
-              <Controller
-                name="media"
-                control={control}
-                render={({ field }) => (
-                  <DefaultInput>
-                    <TextField
-                      {...field}
-                      fullWidth
-                      placeholder="Paste Image URL"
-                      variant="standard"
-                      onKeyDown={handleKeyDown}
-                      onBlur={handleBlur}
-                    />
-                  </DefaultInput>
-                )}
-              />
+              <DefaultInput>
+                <TextField
+                  fullWidth
+                  placeholder="Paste Image URL"
+                  variant="standard"
+                  value={imageUrl} // Controlled by local state
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onBlur={handleBlur}
+                />
+              </DefaultInput>
               <ImageList cols={3} rowHeight={164}>
                 {imageUrls.map((image, index) => (
                   <ImageListItem key={index}>

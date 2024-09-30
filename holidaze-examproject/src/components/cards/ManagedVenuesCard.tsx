@@ -47,7 +47,6 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [isViewingGuests, setIsViewingGuests] = useState<string | null>(null);
 
-
   const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
   const navigate = useNavigate();
 
@@ -246,33 +245,33 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
               </CardContent>
             </Card>
 
-              <Card
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'right',
-                  gap: 2,
-                  width: '100%',
-                  height: 'auto',
-                  my: 0.5,
-                  p: 1,
-                  boxShadow: '3px 3px 10px rgba(73, 190, 248, 0.25)',
-                  borderBottomLeftRadius: { xs: 0, sm: 3 },
-                  borderBottomRightRadius: { xs: 0, sm: 3 },
-                }}
-              >
-                <SecondaryButton>
-                  <Button onClick={() => setIsEditing(venue.id)} sx={{ width: '50%' }}>
-                    <EditIcon />
-                    Edit
-                  </Button>
-                </SecondaryButton>
-                <SecondaryButton>
-                  <Button onClick={() => setIsViewingGuests(venue.id)} sx={{ width: '50%' }}>
-                    See guests
-                    <PersonIcon />
-                  </Button>
-                </SecondaryButton>
-              </Card>
+            <Card
+              sx={{
+                display: 'flex',
+                justifyContent: 'right',
+                gap: 2,
+                width: '100%',
+                height: 'auto',
+                my: 0.5,
+                p: 1,
+                boxShadow: '3px 3px 10px rgba(73, 190, 248, 0.25)',
+                borderBottomLeftRadius: { xs: 0, sm: 3 },
+                borderBottomRightRadius: { xs: 0, sm: 3 },
+              }}
+            >
+              <SecondaryButton>
+                <Button onClick={() => setIsEditing(venue.id)} sx={{ width: '50%' }}>
+                  <EditIcon />
+                  Edit
+                </Button>
+              </SecondaryButton>
+              <SecondaryButton>
+                <Button onClick={() => setIsViewingGuests(venue.id)} sx={{ width: '50%' }}>
+                  See guests
+                  <PersonIcon />
+                </Button>
+              </SecondaryButton>
+            </Card>
 
             {isEditingVenue && (
               <MainCard>
@@ -313,7 +312,7 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
                   <Grid size={12} p={1} textAlign="center">
                     <DefaultSubTitle>Bookings for {venue.name}</DefaultSubTitle>
                   </Grid>
-                  <Grid size={12} >
+                  <Grid size={12}>
                     <BookingsOnVenueCard venue={venue} />
                   </Grid>
                   <Grid size={12}>

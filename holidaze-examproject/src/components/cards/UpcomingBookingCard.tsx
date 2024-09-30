@@ -20,6 +20,10 @@ import { BookingData } from '../../services/interfaces/api/bookingsData.ts';
 import PersonIcon from '@mui/icons-material/Person';
 import EditIcon from '@mui/icons-material/Edit';
 
+interface UpcomingBookingCardProps {
+  bookings: BookingData[];
+  onBookingUpdate: () => void; // Add this prop
+}
 /**
  * UpcomingBookingCard component that renders a list of upcoming and past venue bookings.
  *
@@ -33,7 +37,7 @@ import EditIcon from '@mui/icons-material/Edit';
  * @returns {JSX.Element} A React component that displays a list of bookings with their details.
  *
  */
-export default function UpcomingBookingCard({ bookings = [] }: { bookings: BookingData[] }) {
+export default function UpcomingBookingCard({ bookings = [], onBookingUpdate }: UpcomingBookingCardProps) {
   const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
   const theme = useTheme();
   const navigate = useNavigate();
@@ -60,7 +64,7 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
         const isPastBooking = daysUntilCheckIn < 0;
 
         return (
-          <Grid container spacing={0} size={12} sx={{ width: '100%' }}>
+          <Grid container spacing={0} size={12} mt={2} sx={{ width: '100%' }}>
             <Card
               sx={{
                 display: 'flex',
@@ -212,7 +216,11 @@ export default function UpcomingBookingCard({ bookings = [] }: { bookings: Booki
                 }}
               >
                 {booking.venue ? (
-                  <UpdateBooking booking={booking} onCancel={() => setSelectedBookingId(null)} />
+                  <UpdateBooking
+                    booking={booking}
+                    onCancel={() => setSelectedBookingId(null)}
+                    onUpdate={onBookingUpdate}
+                  />
                 ) : (
                   <Typography color="error">Venue information is missing.</Typography>
                 )}

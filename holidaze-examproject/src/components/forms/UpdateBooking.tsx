@@ -23,25 +23,27 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Box from '@mui/material/Box';
 import { BookingData } from '../../services/interfaces/api/venueResponse.ts';
+import { BookingUpdateData } from '../../services/interfaces/api/makeBooking.ts';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
 interface UpdateBookingProps {
   booking: BookingData;
   onCancel: () => void;
+  onUpdate: () => void;
 }
-
 /**
- * Component to handle updating a booking. It allows the user to edit check-in date,
- * check-out date, number of guests, and delete the booking if necessary.
+ * UpdateBooking component handles updating a booking, allowing users to modify check-in/check-out dates,
+ * the number of guests, and also provides an option to delete the booking.
  *
- * @param {UpdateBookingProps} props - Props containing the booking information and a cancel handler.
- * @param {BookingData} props.booking - The booking object which contains information like check-in, check-out, guests, and the venue.
- * @param {() => void} props.onCancel - A function to call when the user cancels the update operation.
+ * @param {Object} props - The properties passed to the UpdateBooking component.
+ * @param {BookingData} props.booking - The booking object containing information such as check-in, check-out dates, number of guests, and the venue.
+ * @param {function} props.onCancel - A callback function that is called when the user cancels the booking update.
+ * @param {function} props.onUpdate - A callback function that is triggered when a booking is successfully updated or deleted, signaling the parent component to refresh the booking list.
  *
- * @returns {JSX.Element} The JSX element for rendering the booking update form.
+ * @returns {JSX.Element} The rendered UpdateBooking component which includes forms to update booking details and buttons for saving or deleting the booking.
  */
-export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps) {
+export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBookingProps) {
   const { venue } = booking;
 
   const {
@@ -51,44 +53,43 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(newBookingValidation(venue.maxGuests)),
+    resolver: yupResolver(newBookingValidation(venue?.maxGuests || 1)),
     defaultValues: {
-      checkInDate: dayjs(booking.dateFrom),
-      checkOutDate: dayjs(booking.dateTo),
+      checkInDate: booking.dateFrom ? dayjs(booking.dateFrom) : null,
+      checkOutDate: booking.dateTo ? dayjs(booking.dateTo) : null,
       guests: booking.guests,
     },
   });
 
   const checkInDate: Dayjs | null = watch('checkInDate');
 
-  const makeApiCall = async (method: 'PUT' | 'DELETE', data: any = null) => {
+  const makeApiCall = async (method: 'PUT' | 'DELETE', data: BookingUpdateData | null = null) => {
     const bookingData = data
       ? {
-          dateFrom: data.checkInDate?.toISOString(),
-          dateTo: data.checkOutDate?.toISOString(),
+          dateFrom: data.dateFrom,
+          dateTo: data.dateTo,
           guests: data.guests,
         }
       : null;
 
     try {
       const headers = getValidatedHeader();
-      const response = await baseApiCall({
+      await baseApiCall({
         url: `/holidaze/bookings/${booking.id}`,
         method,
         headers: { ...headers, 'X-Noroff-Api-Key': apiKey },
         body: bookingData ? JSON.stringify(bookingData) : undefined,
       });
-      console.log(response);
-      console.log(baseApiCall);
       if (method === 'DELETE') {
         snackBarSuccess('Booking deleted successfully!');
+        onUpdate();
         onCancel();
       } else {
         snackBarSuccess('Booking updated successfully!');
+        onUpdate();
       }
     } catch (error) {
       const apiError = error as ApiError;
-      console.log(apiError.message);
       const errorMessage = method === 'DELETE' ? 'Error deleting booking' : 'Error updating booking';
       snackBarError(apiError.message || `${errorMessage}. Please try again.`);
     }
@@ -100,6 +101,8 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
         <Grid size={12} mb={1} textAlign="center">
           <DefaultSubTitle>EDIT BOOKING</DefaultSubTitle>
         </Grid>
+
+        {/* Check-in Date */}
         <Grid size={6}>
           <Box mb={1}>
             <DefaultSubTitle>Check-in</DefaultSubTitle>
@@ -112,11 +115,11 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
                 <DatePicker
                   {...field}
                   disablePast
-                  onChange={(newDate) => {
+                  onChange={(newDate: Dayjs | null) => {
                     field.onChange(newDate);
                     setValue('checkOutDate', null);
                   }}
-                  value={field.value}
+                  value={field.value || null}
                   slots={{ textField: TextField }}
                   slotProps={{
                     textField: {
@@ -131,7 +134,6 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
             />
           </LocalizationProvider>
         </Grid>
-
         <Grid size={6}>
           <Box mb={1}>
             <DefaultSubTitle>Check-out</DefaultSubTitle>
@@ -144,9 +146,9 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
                 <DatePicker
                   {...field}
                   disablePast
-                  minDate={checkInDate ? dayjs(checkInDate).add(1, 'day') : dayjs()}
+                  minDate={checkInDate ? checkInDate.add(1, 'day') : dayjs()}
                   disabled={!checkInDate}
-                  value={field.value}
+                  value={field.value || null}
                   slots={{ textField: TextField }}
                   slotProps={{
                     textField: {
@@ -161,7 +163,6 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
             />
           </LocalizationProvider>
         </Grid>
-
         <Grid size={6}>
           <DefaultSubTitle>Guests</DefaultSubTitle>
           <FormControl fullWidth>
@@ -188,7 +189,7 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
           <DefaultSubTitle>Max guests</DefaultSubTitle>
           <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 2 }}>
             <Person4Icon sx={{ color: 'secondary.main', fontSize: 28 }} />
-            {venue.maxGuests}
+            {venue?.maxGuests || 0}
           </Typography>
         </Grid>
         <Grid size={6}>
@@ -198,10 +199,20 @@ export default function UpdateBooking({ booking, onCancel }: UpdateBookingProps)
             </Button>
           </SecondaryButton>
         </Grid>
-
         <Grid size={6}>
           <SecondaryButton>
-            <Button fullWidth onClick={handleSubmit((data) => makeApiCall('PUT', data))} sx={{ gap: 1 }}>
+            <Button
+              fullWidth
+              onClick={handleSubmit((data) => {
+                const updateData: BookingUpdateData = {
+                  dateFrom: data.checkInDate?.toISOString(),
+                  dateTo: data.checkOutDate?.toISOString(),
+                  guests: data.guests,
+                };
+                makeApiCall('PUT', updateData);
+              })}
+              sx={{ gap: 1 }}
+            >
               <SaveIcon />
               Save
             </Button>

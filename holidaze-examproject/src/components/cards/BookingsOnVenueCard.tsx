@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Calendar from '../calendar/Calendar.tsx';
-import {  BookingData, CustomerData } from '../../services/interfaces/api/venueResponse.ts';
+import { BookingData, CustomerData } from '../../services/interfaces/api/venueResponse.ts';
 import VenueData from '../../services/interfaces/api/venueResponse.ts';
 import Grid from '@mui/material/Grid2';
 import DefaultSubTitle from '../titles/SubTitle.tsx';
@@ -11,6 +11,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import theme from '../../styles/mui-styles/MuiThemes.ts';
 import PersonIcon from '@mui/icons-material/Person';
 import { alpha } from '@mui/material';
+import { EventApi } from '@fullcalendar/core';
 
 interface BookingsOnVenueCardProps {
   venue: VenueData;
@@ -39,7 +40,7 @@ const BookingsOnVenueCard: React.FC<BookingsOnVenueCardProps> = ({ venue }) => {
       updated: booking.updated,
     },
   }));
-  const handleEventClick = (eventData: any) => {
+  const handleEventClick = (eventData: EventApi) => {
     setSelectedBooking({
       customer: eventData.extendedProps.customer,
       dateFrom: eventData.extendedProps.dateFrom,
@@ -70,28 +71,30 @@ const BookingsOnVenueCard: React.FC<BookingsOnVenueCardProps> = ({ venue }) => {
                     banner: selectedBooking.customer?.banner || { url: '', alt: 'Default banner' },
                   }}
                 />
-
               </Grid>
-              <Grid size={12} width='100%' >
-                  <Grid size={12} >
-                <DefaultSubTitle>Booking Details</DefaultSubTitle>
-                  </Grid>
-                  <Grid size={12} my={1}  display='flex' alignItems='center'>
-                <Typography variant="h6">{new Date(selectedBooking.dateFrom).toLocaleDateString()}</Typography>
-                <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
-                <Typography variant="h6">{new Date(selectedBooking.dateTo).toLocaleDateString()}</Typography>
-                  </Grid>
-                  <Grid size={12} my={1}>
-                <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <PersonIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
-                  {selectedBooking.guests}/{venue.maxGuests}
-                </Typography>
-                  </Grid>
-                  <Grid size={12} my={1}>
-                <Typography variant="body2" sx={{color:alpha(theme.palette.primary.light,0.7)}}>
-                  Last Updated: {selectedBooking.updated ? new Date(selectedBooking.updated).toLocaleDateString() : new Date(selectedBooking.created).toLocaleDateString()}
-                </Typography>
-                  </Grid>
+              <Grid size={12} width="100%">
+                <Grid size={12}>
+                  <DefaultSubTitle>Booking Details</DefaultSubTitle>
+                </Grid>
+                <Grid size={12} my={1} display="flex" alignItems="center">
+                  <Typography variant="h6">{new Date(selectedBooking.dateFrom).toLocaleDateString()}</Typography>
+                  <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
+                  <Typography variant="h6">{new Date(selectedBooking.dateTo).toLocaleDateString()}</Typography>
+                </Grid>
+                <Grid size={12} my={1}>
+                  <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <PersonIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
+                    {selectedBooking.guests}/{venue.maxGuests}
+                  </Typography>
+                </Grid>
+                <Grid size={12} my={1}>
+                  <Typography variant="body2" sx={{ color: alpha(theme.palette.primary.light, 0.7) }}>
+                    Last Updated:{' '}
+                    {selectedBooking.updated
+                      ? new Date(selectedBooking.updated).toLocaleDateString()
+                      : new Date(selectedBooking.created).toLocaleDateString()}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
           ) : (

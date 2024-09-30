@@ -42,7 +42,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
             cursor: 'pointer',
             '&:hover': {
               backgroundColor: alpha(theme.palette.secondary.main, 1),
-              textDecoration:'underline'
+              textDecoration: 'underline',
             },
           }}
           onClick={() => onEventClick && onEventClick(eventInfo.event)}

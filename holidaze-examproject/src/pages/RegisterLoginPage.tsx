@@ -12,7 +12,12 @@ function RegisterLoginPage({ onLoginSuccess }: { onLoginSuccess: () => void }) {
   return (
     <Container maxWidth={false}>
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, sm: !isRegistering ? 5 : 6 }} marginTop={{ xs: 2, sm: 12 }}>
+        <Grid
+          size={{ xs: 12, sm: !isRegistering ? 5 : 6 }}
+          marginTop={{ xs: 2, sm: 12 }}
+          display="flex"
+          justifyContent="right"
+        >
           <WelcomeCard />
         </Grid>
         <Grid size={{ xs: 12, sm: !isRegistering ? 7 : 6 }} marginTop={{ xs: 2, sm: 12 }}>

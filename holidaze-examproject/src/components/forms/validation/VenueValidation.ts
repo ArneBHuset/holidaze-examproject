@@ -11,7 +11,7 @@ export const venueValidationSchema = yup.object().shape({
   description: yup.string().required('Description is required'),
   price: yup.number().min(0, 'Price must be a positive number').required('Price is required'),
   maxGuests: yup.number().min(1, 'At least 1 guest is required').required('Max guests is required'),
-  rating: yup.number().min(0).max(5).nullable(), // Optional, can be null
+  rating: yup.number().min(0).max(5).nullable(),
   media: yup
     .array()
     .of(
@@ -20,7 +20,7 @@ export const venueValidationSchema = yup.object().shape({
         alt: yup.string().optional(),
       }),
     )
-    .optional(), // Optional media array
+    .optional(),
   meta: yup
     .object()
     .shape({
@@ -29,5 +29,5 @@ export const venueValidationSchema = yup.object().shape({
       breakfast: yup.boolean(),
       pets: yup.boolean(),
     })
-    .optional(), // Optional meta object
+    .optional(),
 });

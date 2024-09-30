@@ -6,13 +6,21 @@ function WelcomeCard() {
   const theme = useTheme();
 
   return (
-    <Card sx={{ backgroundColor: alpha(theme.palette.primary.light, 0.8) }}>
+    <Card
+      sx={{
+        background: `linear-gradient(to bottom, ${alpha(theme.palette.primary.light, 0.7)} 15%, ${alpha(
+          theme.palette.primary.light,
+          0.1,
+        )} 100%)`,
+        width: { xs: '100%', sm: '90%', md: '90%', lg: '70%' },
+      }}
+    >
       <CardContent sx={{ backgroundColor: alpha(theme.palette.primary.light, 0) }}>
         <Box
           sx={{
-            textAlign: { xs: 'left', sm: 'left' },
+            textAlign: 'left',
             borderRadius: 2,
-            padding: 4,
+            paddingTop: 2,
             color: theme.palette.primary.light,
           }}
         >
@@ -22,7 +30,9 @@ function WelcomeCard() {
               color: theme.palette.secondary.main,
               fontSize: {
                 xs: theme.typography.h2.fontSize,
-                md: theme.typography.h1.fontSize,
+                sm: theme.typography.h3.fontSize,
+                md: theme.typography.h2.fontSize,
+                lg: theme.typography.h1.fontSize,
               },
             }}
           >

@@ -10,6 +10,7 @@ import { LinearProgress } from '@mui/material';
 import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
 import { ApiError } from '../services/interfaces/error/catchError.ts';
 import theme from '../styles/mui-styles/MuiThemes.ts';
+import DefaultSubTitle from '../components/titles/SubTitle.tsx';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -50,8 +51,6 @@ export default function UserOverviewPage() {
     fetchBookings();
   }, []);
 
-  if (loading) return <LinearProgress color="secondary" />;
-
   return (
     <Container maxWidth="md">
       <Grid container spacing={0.5} marginTop={2}>
@@ -67,7 +66,9 @@ export default function UserOverviewPage() {
           <UserProfileCard />
         </Grid>
         <Grid size={{ xs: 12, sm: 7 }}>
-          <UpcomingBookingCard bookings={bookings} />
+          <DefaultSubTitle>UPCOMING BOOKINGS</DefaultSubTitle>
+          {loading ? <LinearProgress color="secondary" /> : null}
+          <UpcomingBookingCard bookings={bookings} onBookingUpdate={fetchBookings} />
         </Grid>
       </Grid>
     </Container>

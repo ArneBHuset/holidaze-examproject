@@ -27,6 +27,7 @@ interface VenueFormProps {
  * @param {string} [props.submitLabel='Submit Venue'] - Label text for the submit button. Defaults to 'Submit Venue'.
  */
 function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue' }: VenueFormProps) {
+  const [imageUrl, setImageUrl] = useState<string>(''); // For the input field
   const [imageUrls, setImageUrls] = useState<{ url: string; alt: string }[]>(
     initialValues?.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
   );
@@ -52,29 +53,30 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
     },
   });
 
-  const handleAddImageUrl = (url: string) => {
-    if (url.trim()) {
-      setImageUrls([...imageUrls, { url, alt: '' }]);
+  const handleAddImageUrl = () => {
+    if (imageUrl.trim()) {
+      const updatedUrls = [...imageUrls, { url: imageUrl, alt: '' }];
+      setImageUrls(updatedUrls);
+      setImageUrl('');
     }
   };
-  const handleAltTextChange = (index: number, newAlt: string) => {
-    const updatedImages = [...imageUrls];
-    updatedImages[index].alt = newAlt;
-    setImageUrls(updatedImages);
-  };
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const url = event.currentTarget.value;
     if (event.key === 'Enter') {
-      handleAddImageUrl(url);
-      event.currentTarget.value = '';
+      handleAddImageUrl();
       event.preventDefault();
     }
   };
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    const url = event.currentTarget.value;
-    handleAddImageUrl(url);
-    event.currentTarget.value = '';
+
+  const handleBlur = () => {
+    handleAddImageUrl();
   };
+
+  const handleDeleteImage = (index: number) => {
+    const updatedImages = imageUrls.filter((_, i) => i !== index);
+    setImageUrls(updatedImages);
+  };
+
   const onFormSubmit = (data: Partial<VenueCreateUpdate>) => {
     const venueData: VenueCreateUpdate = {
       ...data,
@@ -88,7 +90,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
       description: data.description || '',
       price: data.price || 0,
       maxGuests: data.maxGuests || 1,
-      media: data.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
+      media: imageUrls, // Use the imageUrls state for media
       rating: data.rating || 0,
       meta: {
         wifi: data.meta?.wifi || false,
@@ -97,12 +99,9 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
         pets: data.meta?.pets || false,
       },
     };
-    onSubmit(venueData);
-  };
 
-  const handleDeleteImage = (index: number) => {
-    const updatedImages = imageUrls.filter((_, i) => i !== index);
-    setImageUrls(updatedImages);
+    console.log('Submitting form data with media:', venueData); // Debug log to check submission data
+    onSubmit(venueData);
   };
 
   return (
@@ -175,7 +174,6 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               />
             </Box>
           </Grid>
-
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>City</SubTitle>
@@ -197,7 +195,6 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               />
             </Box>
           </Grid>
-
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Zip Code</SubTitle>
@@ -219,7 +216,6 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               />
             </Box>
           </Grid>
-
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Street</SubTitle>
@@ -263,7 +259,6 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               />
             </Box>
           </Grid>
-
           <Grid size={{ xs: 6 }}>
             <Box>
               <SubTitle>Max Guests</SubTitle>
@@ -342,22 +337,17 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Upload Images</SubTitle>
-              <Controller
-                name="media"
-                control={control}
-                render={({ field }) => (
-                  <DefaultInput>
-                    <TextField
-                      {...field}
-                      fullWidth
-                      placeholder="Paste Image URL"
-                      variant="standard"
-                      onKeyDown={handleKeyDown}
-                      onBlur={handleBlur}
-                    />
-                  </DefaultInput>
-                )}
-              />
+              <DefaultInput>
+                <TextField
+                  fullWidth
+                  placeholder="Paste Image URL"
+                  variant="standard"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onBlur={handleBlur}
+                />
+              </DefaultInput>
               <ImageList cols={3} rowHeight={164}>
                 {imageUrls.map((image, index) => (
                   <ImageListItem key={index}>
@@ -391,7 +381,12 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
                         placeholder="Alt Text"
                         variant="standard"
                         value={image.alt}
-                        onChange={(e) => handleAltTextChange(index, e.target.value)}
+                        onChange={(e) => {
+                          const newAlt = e.target.value;
+                          const updatedImages = [...imageUrls];
+                          updatedImages[index].alt = newAlt;
+                          setImageUrls(updatedImages);
+                        }}
                       />
                     </DefaultInput>
                   </ImageListItem>

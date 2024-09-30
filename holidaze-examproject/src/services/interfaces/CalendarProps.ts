@@ -1,4 +1,5 @@
 import { CustomerData } from './api/venueResponse.ts';
+import { EventApi } from '@fullcalendar/core';
 
 export interface CalendarProps {
   events: {
@@ -14,5 +15,5 @@ export interface CalendarProps {
       updated: string;
     };
   }[];
-  onEventClick?: (eventData: any) => void;
+  onEventClick?: (eventData: EventApi) => void;
 }

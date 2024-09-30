@@ -35,7 +35,7 @@ export default function SnackBarSuccess() {
         severity="success"
         sx={{
           width: '500px',
-          backgroundColor: theme.palette.secondary.light,
+          backgroundColor: theme.palette.primary.light,
           color: theme.palette.background.paper,
           textAlign: 'center',
           pl: { xs: 4, sm: 10 },
