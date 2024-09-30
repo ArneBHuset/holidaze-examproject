@@ -7,7 +7,7 @@ const customTheme = (outerTheme: Theme) =>
       MuiTextField: {
         styleOverrides: {
           root: {
-            '--TextField-brandBorderColor': outerTheme.palette.primary.main,
+            '--TextField-brandBorderColor': outerTheme.palette.primary.light,
             '--TextField-brandBorderHoverColor': outerTheme.palette.secondary.main,
             '--TextField-brandBorderFocusedColor': outerTheme.palette.secondary.main,
             '--TextField-errorBorderColor': outerTheme.palette.error.main,

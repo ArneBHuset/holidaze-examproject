@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container, useMediaQuery } from '@mui/material';
 import UserProfileCard from '../components/cards/UserProfileCard.tsx';
 import Grid from '@mui/material/Grid2';
 import UpcomingBookingCard from '../components/cards/UpcomingBookingCard.tsx';
@@ -9,6 +9,8 @@ import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import { LinearProgress } from '@mui/material';
 import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
 import { ApiError } from '../services/interfaces/error/catchError.ts';
+import theme from '../styles/mui-styles/MuiThemes.ts';
+import DefaultSubTitle from '../components/titles/SubTitle.tsx';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -16,6 +18,7 @@ export default function UserOverviewPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
   const headers = getValidatedHeader();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const fetchBookings = async () => {
     const profileData = localStorage.getItem('profileData');
@@ -48,16 +51,24 @@ export default function UserOverviewPage() {
     fetchBookings();
   }, []);
 
-  if (loading) return <LinearProgress color="secondary" />;
-
   return (
     <Container maxWidth="md">
-      <Grid container spacing={4} marginTop={4} width={'100%'}>
-        <Grid size={12}>
+      <Grid container spacing={0.5} marginTop={2}>
+        <Grid
+          size={{ xs: 12, sm: 5 }}
+          sx={{
+            maxWidth: { xs: '100%', sm: '500px' },
+            position: isSmallScreen ? 'static' : 'sticky',
+            top: isSmallScreen ? 'auto' : '20px',
+            alignSelf: 'flex-start',
+          }}
+        >
           <UserProfileCard />
         </Grid>
-        <Grid size={12}>
-          <UpcomingBookingCard bookings={bookings} />
+        <Grid size={{ xs: 12, sm: 7 }}>
+          <DefaultSubTitle>UPCOMING BOOKINGS</DefaultSubTitle>
+          {loading ? <LinearProgress color="secondary" /> : null}
+          <UpcomingBookingCard bookings={bookings} onBookingUpdate={fetchBookings} />
         </Grid>
       </Grid>
     </Container>

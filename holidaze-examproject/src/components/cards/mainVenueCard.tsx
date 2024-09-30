@@ -11,6 +11,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import GradeIcon from '@mui/icons-material/Grade';
 import { useNavigate } from 'react-router-dom';
 import VenueData from '../../services/interfaces/api/venueResponse.ts';
+import EuroIcon from '@mui/icons-material/Euro';
+import PlaceIcon from '@mui/icons-material/Place';
+import theme from '../../styles/mui-styles/MuiThemes.ts';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 interface MainVenueCardProps {
   venues: VenueData[];
@@ -24,9 +28,9 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       {venues.map((venue) => (
-        <Grid key={venue.id}>
+        <Grid key={venue.id} size={{ xs: 12 }}>
           <Card
             sx={{
               display: 'flex',
@@ -38,19 +42,23 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
               boxShadow: '3px 3px 15px rgba(73, 190, 248, 0.25)',
             }}
           >
-            <Box padding={{ xs: 0.5, sm: 1 }} paddingRight={{ sm: 0 }}>
+            <Box padding={{ xs: 0.5, sm: 0.5 }} paddingRight={{ sm: 0 }}>
               <CardMedia
                 component="img"
                 alt={venue.media?.[0]?.alt || 'Venue image'}
-                image={
+                src={
                   venue.media?.[0]?.url ||
-                  'https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0='
+                  'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0'
                 }
+                onError={(e) => {
+                  e.currentTarget.src =
+                    'https://th.bing.com/th/id/R.957f5c1b65e9ae5f3c068ac1349d0f1f?rik=pzYV5kEHwRtrgg&pid=ImgRaw&r=0';
+                }}
                 sx={{
-                  width: { xs: '100%', sm: 250 },
-                  height: { xs: 200, sm: '100%' },
+                  width: { xs: '100%', sm: 200 },
+                  height: { xs: 200, sm: '200px' },
                   maxHeight: { xs: 200, sm: 260 },
-                  borderRadius: { xs: '4px', sm: '8px' },
+                  borderRadius: { xs: '4px', sm: '6px' },
                 }}
               />
             </Box>
@@ -62,42 +70,88 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
               }}
               style={{ padding: 0 }}
             >
-              <Grid container padding={1} spacing={1} sx={{ height: '100%' }}>
-                <Grid size={{ xs: 12 }}>
+              <Grid
+                container
+                padding={0.5}
+                spacing={1}
+                sx={{ height: '100%' }}
+                mb={{ xs: 2, sm: 0 }}
+                display="flex"
+                mx="auto"
+                justifyContent="center"
+              >
+                <Grid size={{ xs: 12 }} textAlign={{ xs: 'center', sm: 'left' }} maxHeight="40px" overflow="hidden">
                   <DefaultSubTitle>{venue.name}</DefaultSubTitle>
                 </Grid>
+
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography
-                    variant="body1"
-                    sx={{ textAlign: { xs: 'start', sm: 'start' }, paddingLeft: { xs: '10vw', sm: 0 } }}
+                    variant="h6"
+                    sx={{
+                      pl: { xs: 6, sm: 0 },
+                      textAlign: { xs: 'center', sm: 'left' },
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
                   >
-                    <strong>Price:</strong> ${venue.price}
+                    <EuroIcon sx={{ fontFamily: theme.typography.h6, mb: 0.2 }} />
+                    {venue.price} / DAY
                   </Typography>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12 }}>
-                  <Typography variant="body1" sx={{ paddingRight: { xs: 1, sm: 0 } }}>
-                    <strong>Country:</strong> {venue.location?.country || 'N/A'}
+                  <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {venue.location?.city && venue.location?.country ? (
+                      <a
+                        href={
+                          venue.location.lat && venue.location.lng
+                            ? `https://www.google.com/maps?q=${venue.location.lat},${venue.location.lng}`
+                            : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.location.city}, ${venue.location.country}`)}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          textDecoration: 'none',
+                          color: theme.palette.text.primary,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                        }}
+                      >
+                        <PlaceIcon
+                          sx={{
+                            color: theme.palette.primary.light,
+                            fontFamily: theme.typography.h6,
+                            transition: 'transform 0.2s ease-in-out',
+                            '&:hover': { transform: 'scale(1.2)' },
+                          }}
+                        />
+                        {`${venue.location.city}, ${venue.location.country}`}
+                      </a>
+                    ) : (
+                      venue.location?.city || venue.location?.country || 'N/A'
+                    )}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 6, sm: 4 }} display="flex" alignItems="center" gap={0.5}>
-                  <Box sx={{ paddingLeft: { xs: '10vw', sm: 0 } }}>
-                    <PersonIcon />
-                  </Box>
-                  <Typography variant="body1" sx={{ textAlign: { xs: 'start', sm: 'start' } }}>
+                <Grid size={{ xs: 6, sm: 3 }} display="flex" alignItems="center">
+                  <Typography
+                    variant="h6"
+                    sx={{ pl: { xs: 6, sm: 0 }, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 0.5 }}
+                  >
+                    <PersonIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
                     {venue.maxGuests}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 6, sm: 8 }} display="flex" alignItems="center" gap={0.5}>
-                  <Box>
-                    <GradeIcon />
-                  </Box>
-                  <Typography variant="body1" paddingRight={{ xs: 0, sm: 8 }}>
-                    {venue.rating || 'No rating'}
+                <Grid size={{ xs: 6, sm: 9 }} display="flex" alignItems="center" gap={0.5}>
+                  <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center gap', gap: 0.5 }}>
+                    <GradeIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
+                    {venue.rating || 0}
                   </Typography>
                 </Grid>
 
                 <Grid
+                  size={12}
                   sx={{
                     display: { xs: 'none', sm: 'flex' },
                     flexDirection: 'column',
@@ -105,7 +159,6 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                     alignItems: 'stretch',
                     width: '100%',
                     padding: 0,
-                    marginTop: 'auto',
                   }}
                 >
                   <DefaultButton>
@@ -116,9 +169,11 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                         borderBottomLeftRadius: { xs: 0, sm: 4 },
                         borderBottomRightRadius: { xs: 0, sm: 4 },
                         padding: { xs: 1, sm: 1.5 },
+                        gap: 4,
                       }}
                     >
-                      Review and book!
+                      See details
+                      <ArrowForwardIosIcon sx={{ fontFamily: theme.typography.h5 }} />
                     </Button>
                   </DefaultButton>
                 </Grid>
@@ -143,9 +198,11 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                     borderBottomLeftRadius: { xs: 0, sm: 4 },
                     borderBottomRightRadius: { xs: 0, sm: 4 },
                     padding: { xs: 1, sm: 1.5 },
+                    gap: 4,
                   }}
                 >
-                  Review and book!
+                  See more!
+                  <ArrowForwardIosIcon />
                 </Button>
               </DefaultButton>
             </CardContent>

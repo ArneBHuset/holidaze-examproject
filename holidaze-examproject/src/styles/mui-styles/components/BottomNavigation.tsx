@@ -14,18 +14,25 @@ const DefaultBottomNavigation: React.FC<ReusableBottomNavigationProps> = ({ chil
       sx={{
         position: 'fixed',
         bottom: 0,
-
         left: '50%',
         transform: 'translateX(-50%)',
-        maxWidth: 'sm',
-        width: '100%',
+        maxWidth: 'md',
+        zIndex: 100,
+        width: { xs: '100%', md: '66vw !important' },
         backgroundColor: 'none',
         display: 'flex',
         justifyContent: 'center',
       }}
       elevation={3}
     >
-      <BottomNavigation sx={{ backgroundColor: theme.palette.secondary.main, width: '100%' }}>
+      <BottomNavigation
+        sx={{
+          backgroundColor: theme.palette.secondary.main,
+          width: '100%',
+          borderTopLeftRadius: '6px',
+          borderTopRightRadius: '6px',
+        }}
+      >
         {children}
       </BottomNavigation>
     </Paper>

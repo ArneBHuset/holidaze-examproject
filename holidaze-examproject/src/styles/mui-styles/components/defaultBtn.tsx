@@ -1,5 +1,6 @@
 import { createTheme, ThemeProvider, Theme, useTheme } from '@mui/material/styles';
 import ButtonNode from '../../../services/interfaces/react-nodes/BtnNodes.ts';
+import { alpha } from '@mui/material/styles';
 
 const customTheme = (outerTheme: Theme) =>
   createTheme({
@@ -7,18 +8,18 @@ const customTheme = (outerTheme: Theme) =>
       MuiButton: {
         styleOverrides: {
           root: {
-            backgroundColor: outerTheme.palette.secondary.main,
+            backgroundColor: alpha(outerTheme.palette.secondary.main, 0.95),
             color: outerTheme.palette.primary.main,
-            padding: '8px 14px',
+            padding: '6px 12px',
             fontSize: '1.1rem',
             fontWeight: 500,
             lineHeight: 1.75,
             letterSpacing: '0.05em',
-            border: 'none',
             fontFamily: outerTheme.typography.button.fontFamily,
 
             '&:hover': {
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+              backgroundColor: outerTheme.palette.secondary.main,
             },
 
             '&.Mui-disabled': {
