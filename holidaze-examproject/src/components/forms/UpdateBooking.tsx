@@ -61,7 +61,6 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
     },
   });
 
-
   const checkInDate: Dayjs | null = watch('checkInDate');
 
   const makeApiCall = async (method: 'PUT' | 'DELETE', data: BookingUpdateData | null = null) => {

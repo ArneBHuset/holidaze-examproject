@@ -35,7 +35,7 @@ const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
  */
 function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
   const [success, setSuccess] = useState(false);
-  const anchor: 'bottom' = 'bottom';
+  const anchor = 'bottom' as const;
   const navigate = useNavigate();
 
   const {
