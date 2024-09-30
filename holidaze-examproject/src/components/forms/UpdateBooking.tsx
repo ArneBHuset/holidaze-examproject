@@ -55,11 +55,12 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
   } = useForm({
     resolver: yupResolver(newBookingValidation(venue?.maxGuests || 1)),
     defaultValues: {
-      checkInDate: booking.dateFrom ? dayjs(booking.dateFrom) : null,
-      checkOutDate: booking.dateTo ? dayjs(booking.dateTo) : null,
+      checkInDate: booking.dateFrom ? dayjs(booking.dateFrom) : undefined,
+      checkOutDate: booking.dateTo ? dayjs(booking.dateTo) : undefined,
       guests: booking.guests,
     },
   });
+
 
   const checkInDate: Dayjs | null = watch('checkInDate');
 

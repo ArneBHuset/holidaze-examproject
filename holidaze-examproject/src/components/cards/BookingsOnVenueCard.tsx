@@ -67,8 +67,14 @@ const BookingsOnVenueCard: React.FC<BookingsOnVenueCardProps> = ({ venue }) => {
                     name: selectedBooking.customer?.name || 'Guest',
                     email: selectedBooking.customer?.email || 'No email provided',
                     bio: selectedBooking.customer?.bio || 'No bio available',
-                    avatar: selectedBooking.customer?.avatar || { url: '', alt: 'Default avatar' },
-                    banner: selectedBooking.customer?.banner || { url: '', alt: 'Default banner' },
+                    avatar: {
+                      url: selectedBooking.customer?.avatar?.url || '',
+                      alt: selectedBooking.customer?.avatar?.alt || 'Default avatar',
+                    },
+                    banner: {
+                      url: selectedBooking.customer?.banner?.url || '',
+                      alt: selectedBooking.customer?.banner?.alt || 'Default banner',
+                    },
                   }}
                 />
               </Grid>
