@@ -1,0 +1,40 @@
+.fc .fc-button {
+  background-color: rgba(64, 64, 64, 1) !important;
+  border: 1px solid rgba(64, 64, 64, 1) !important;
+  color: white !important;
+}
+
+.fc .fc-prev-button,
+.fc .fc-next-button {
+  background-color: rgba(64, 64, 64, 1) !important;
+  border-radius: 4px !important;
+  border: 3px solid rgba(248, 131, 73, 0.85) !important;
+}
+
+.fc .fc-button:hover {
+  border: 3px solid rgba(248, 131, 73, 1) !important;
+}
+
+.fc .fc-prev-button::before,
+.fc .fc-next-button::before {
+  color: rgba(64, 64, 64, 1) !important;
+  font-size: 20px;
+}
+
+.fc .fc-prev-button:hover::before,
+.fc .fc-next-button:hover::before {
+  color: rgba(64, 64, 64, 1) !important;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.8rem;
+  font-weight: lighter;
+  text-transform: uppercase;
+  color: rgba(64, 64, 64, 1);
+  text-align: center;
+}
+
+.fc-toolbar {
+  justify-content: center;
+  margin-bottom: 10px;
+}
