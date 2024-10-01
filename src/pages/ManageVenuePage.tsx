@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, LinearProgress, useMediaQuery } from '@mui/material';
+import { Button, Container, LinearProgress, useMediaQuery } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import UserProfileCard from '../components/cards/UserProfileCard.tsx';
 import ManagedVenuesCard from '../components/cards/ManagedVenuesCard.tsx';
@@ -10,6 +10,9 @@ import VenueData from '../services/interfaces/api/venueResponse.ts';
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import theme from '../styles/mui-styles/MuiThemes.ts';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
+import DefaultButton from '../styles/mui-styles/components/defaultBtn.tsx';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -17,6 +20,7 @@ function ManageVenuePage() {
   const [venues, setVenues] = useState<VenueData[]>([]);
   const [loading, setLoading] = useState(true);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
   const { name } = profileData;
@@ -73,8 +77,20 @@ function ManageVenuePage() {
           <Typography variant="h4" mt={{ xs: 2, sm: 0 }} mb={1} textAlign={{ xs: 'center', sm: 'left' }}>
             YOUR VENUES
           </Typography>
-          {loading ? <LinearProgress color="secondary" /> : null}
-          <ManagedVenuesCard venues={venues} refreshVenues={fetchManagedVenues} />
+          {loading ? (
+            <LinearProgress color="secondary" />
+          ) : venues && venues.length > 0 ? (
+            <ManagedVenuesCard venues={venues} refreshVenues={fetchManagedVenues} />
+          ) : (
+            <Box textAlign="center" mt={3}>
+              <Typography variant="h5" mb={2}>
+                No venues found :(
+              </Typography>
+              <DefaultButton>
+                <Button onClick={() => navigate('/newvenue')}>Create your first Venue</Button>
+              </DefaultButton>
+            </Box>
+          )}
         </Grid>
       </Grid>
     </Container>
