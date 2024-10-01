@@ -200,6 +200,6 @@ Success	#67F849
 - [stackoverflow](https://stackoverflow.com/)
 
 #### AI tools
-AI tools have been used for this project, not to do the developing and solve the broad problems, but as a tool to debug, proivde JSdocs, ensure typesafety and to improve small codeblocks where necessary. 
+AI tools have been used for this project, not to do the developing and solve the broad problems, but as a tool to debug, provide JSDocs, ensure typesafety and to improve small codeblocks where necessary. 
 
 

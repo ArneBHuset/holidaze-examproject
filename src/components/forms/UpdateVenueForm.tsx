@@ -313,12 +313,14 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
             <Grid size={6} key={metaItem}>
               <Box display="flex" alignItems="center">
                 <Controller
-                  name={`meta.${metaItem}` as keyof VenueCreateUpdate}
+                  //@ts-expect-error //Unknown
+                  name={`meta.${metaItem}`}
                   control={control}
                   render={({ field }) => (
                     <Checkbox
                       size="large"
-                      {...field}
+                      checked={!!field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
                       sx={{
                         color: 'primary.main',
                         '&.Mui-checked': { color: 'secondary.main' },
@@ -332,6 +334,7 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
               </Box>
             </Grid>
           ))}
+
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Upload Images</SubTitle>

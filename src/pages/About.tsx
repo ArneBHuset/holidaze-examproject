@@ -26,9 +26,10 @@ function AboutPage() {
       >
         <Card
           sx={{
-            width: '45%',
-            ml: 65,
-            mb: 20,
+            width: { xs: '100%', sm: '80%', md: '45%' },
+            ml: { xs: 0, sm: 42, md: 65 },
+            mb: { xs: 15, md: 20 },
+            maxWidth: '500px',
             backgroundColor: alpha(theme.palette.primary.light, 0.8),
           }}
         >
@@ -44,10 +45,6 @@ function AboutPage() {
                   We strive to be your go-to platform for booking luxurious venues and villas worldwide. Whether you're
                   planning a romantic getaway, family vacation, or a special event, we offer a curated selection of
                   stunning properties to suit your needs.
-                </Typography>
-                <Typography variant="body1" textAlign="left">
-                  Holidaze makes finding the perfect luxury stay simple. Let us help you create unforgettable
-                  experiences in the world's most beautiful locations. Your dream venue is just a click away!
                 </Typography>
               </Grid>
             </Grid>
