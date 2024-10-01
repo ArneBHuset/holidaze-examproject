@@ -159,12 +159,11 @@ function Header() {
               )}
             </Box>
           </Link>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' }, ml: 6, gap: 2 }}>
             {menuItems.map((page) => (
               <Button
                 key={page.name}
-                onClick={profileData ? handleCloseNavMenu : undefined}
+                onClick={page.name === 'About' ? handleCloseNavMenu : profileData ? handleCloseNavMenu : undefined}
                 disabled={!profileData && page.name === 'My Bookings'}
                 sx={{
                   my: 2,
@@ -180,7 +179,7 @@ function Header() {
                 }}
               >
                 <Link
-                  to={profileData ? page.path : '#'}
+                  to={page.name === 'About' || profileData ? page.path : '#'}
                   style={{
                     textDecoration: 'none',
                     color:
@@ -195,7 +194,6 @@ function Header() {
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             {profileData ? (
               <>
@@ -252,7 +250,7 @@ function Header() {
               </>
             ) : (
               <DefaultButton>
-                <Button onClick={() => navigate('/auth')}>Login/ register</Button>
+                <Button onClick={() => navigate('/auth')}>Login / register</Button>
               </DefaultButton>
             )}
           </Box>
