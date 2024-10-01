@@ -10,6 +10,7 @@ export const newBookingValidation = (maxGuests: number) =>
       .min(yup.ref('checkInDate'), 'Check-out date cannot be before check-in date'),
     guests: yup
       .number()
+      .nullable()
       .min(1, 'At least 1 guest is required')
       .max(maxGuests, `Maximum guests allowed is ${maxGuests}`)
       .required('Number of guests is required'),

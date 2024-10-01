@@ -105,7 +105,7 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
         </Grid>
         <Grid size={6}>
           <Box mb={1}>
-            <DefaultSubTitle>Check-in</DefaultSubTitle>
+            <DefaultSubTitle>Checkin</DefaultSubTitle>
           </Box>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Controller
@@ -138,7 +138,7 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
         </Grid>
         <Grid size={6}>
           <Box mb={1}>
-            <DefaultSubTitle>Check-out</DefaultSubTitle>
+            <DefaultSubTitle>Checkout</DefaultSubTitle>
           </Box>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Controller
@@ -181,6 +181,11 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
                     variant="standard"
                     error={!!errors.guests}
                     helperText={errors.guests ? errors.guests.message : ''}
+                    value={field.value || ''}
+                    onChange={(e) => {
+                      const value = e.target.value === '' ? null : Number(e.target.value);
+                      field.onChange(value);
+                    }}
                   />
                 </DefaultInput>
               )}
@@ -188,7 +193,7 @@ export default function UpdateBooking({ booking, onCancel, onUpdate }: UpdateBoo
           </FormControl>
         </Grid>
         <Grid size={6}>
-          <DefaultSubTitle>Max guests</DefaultSubTitle>
+          <DefaultSubTitle>Max</DefaultSubTitle>
           <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 2 }}>
             <Person4Icon sx={{ color: 'secondary.main', fontSize: 28 }} />
             {venue?.maxGuests || 0}

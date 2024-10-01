@@ -49,7 +49,7 @@ export default function UpcomingBookingCard({ bookings = [], onBookingUpdate }: 
   });
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       {sortedBookings.map((booking) => {
         const { venue } = booking;
         const isUpdating = selectedBookingId === booking.id;
@@ -64,7 +64,7 @@ export default function UpcomingBookingCard({ bookings = [], onBookingUpdate }: 
         const isPastBooking = daysUntilCheckIn < 0;
 
         return (
-          <Grid container spacing={0} size={12} mt={2} sx={{ width: '100%' }}>
+          <Grid key={booking.id} container spacing={0} size={12} mt={1} sx={{ width: '100%' }}>
             <Card
               sx={{
                 display: 'flex',
@@ -91,7 +91,7 @@ export default function UpcomingBookingCard({ bookings = [], onBookingUpdate }: 
                   }}
                   sx={{
                     width: { xs: '100%', sm: 200 },
-                    height: { xs: 200, sm: '200px' },
+                    height: { xs: 200, sm: '215px' },
                     maxHeight: { xs: 200, sm: 260 },
                     borderRadius: { xs: '4px', sm: '6px' },
                   }}
@@ -125,7 +125,12 @@ export default function UpcomingBookingCard({ bookings = [], onBookingUpdate }: 
                         This booking has passed
                       </Typography>
                     ) : (
-                      <Typography variant="body2" display="flex" alignItems="center">
+                      <Typography
+                        variant="body1"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent={{ xs: 'center', sm: 'left' }}
+                      >
                         {`Your booking in ${venue.location?.city || 'N/A'}, ${venue.location?.country || 'N/A'} is `}
                         {`${daysUntilCheckIn} ${daysUntilCheckIn === 1 ? 'day' : 'days'}`}
                         {` away`}
@@ -139,10 +144,10 @@ export default function UpcomingBookingCard({ bookings = [], onBookingUpdate }: 
                     alignItems="center"
                     justifyContent={{ xs: 'center', sm: 'left' }}
                   >
-                    <Typography variant="h6">{dateFrom.format('DD/MM/YYYY')}</Typography>
+                    <Typography variant="h5">{dateFrom.format('DD/MM/YYYY')}</Typography>
                     <ArrowForwardIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
-                    <Typography variant="h6">{dateTo.format('DD/MM/YYYY')}</Typography>
-                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+                    <Typography variant="h5">{dateTo.format('DD/MM/YYYY')}</Typography>
+                    <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
                       <AccessTimeIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
                       {duration}
                     </Typography>
@@ -153,11 +158,13 @@ export default function UpcomingBookingCard({ bookings = [], onBookingUpdate }: 
                     gap={{ xs: 6, sm: 4 }}
                     sx={{ display: 'flex', alignItems: 'center', pt: { xs: 1, sm: 0 } }}
                   >
-                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <PersonIcon sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5 }} />
+                    <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center' }}>
+                      <PersonIcon
+                        sx={{ color: theme.palette.primary.light, fontFamily: theme.typography.h5, mb: 0.5 }}
+                      />
                       {booking.guests}/{venue.maxGuests}
                     </Typography>
-                    <Typography textAlign={{ xs: 'center', sm: 'left' }} variant="h6">
+                    <Typography textAlign={{ xs: 'center', sm: 'left' }} variant="h5">
                       Total Cost: €{totalCost.toFixed(2)}
                     </Typography>
                   </Grid>
