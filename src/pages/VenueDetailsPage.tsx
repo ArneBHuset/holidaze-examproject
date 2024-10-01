@@ -18,6 +18,7 @@ const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
 /**
  * VenueDetailsPage component renders details about a venue including images, specific details, and booking options.
+ * Bottom drawer to make booking will only be displayed for logged in customers
  * @returns JSX.Element
  */
 export default function VenueDetailsPage() {
@@ -28,7 +29,8 @@ export default function VenueDetailsPage() {
   const [loading, setLoading] = useState(false);
   const headers = getValidatedHeader();
   const { isVenueManager } = useUser();
-
+  const profileData = localStorage.getItem('profileData');
+  const accessToken = localStorage.getItem('accessToken');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toggleDrawer =
     (_anchor: 'top' | 'left' | 'bottom' | 'right', open: boolean) =>
@@ -86,7 +88,7 @@ export default function VenueDetailsPage() {
           <VenueSpecificDetails venue={venue} />
         </Grid>
       </Grid>
-      {!isVenueManager && (
+      {!isVenueManager && profileData && accessToken && (
         <DefaultBottomNavigation>
           <Button sx={{ width: '100%' }} onClick={toggleDrawer('bottom', true)} aria-label="Book venue drawer">
             BOOK VENUE

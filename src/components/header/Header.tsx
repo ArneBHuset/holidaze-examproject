@@ -12,9 +12,10 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme } from '@mui/material';
+import { alpha, useTheme } from '@mui/material';
 import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -163,18 +164,32 @@ function Header() {
             {menuItems.map((page) => (
               <Button
                 key={page.name}
-                onClick={handleCloseNavMenu}
+                onClick={profileData ? handleCloseNavMenu : undefined}
+                disabled={!profileData && page.name === 'My Bookings'}
                 sx={{
                   my: 2,
                   fontFamily: theme.typography.h5,
-                  color: theme.palette.background.default,
+                  color:
+                    !profileData && page.name === 'My Bookings'
+                      ? theme.palette.action.disabled
+                      : theme.palette.background.default,
                   display: 'block',
                   '&:hover': {
                     textDecoration: 'underline',
                   },
                 }}
               >
-                <Link to={page.path} style={{ textDecoration: 'none', color: theme.palette.background.default }}>
+                <Link
+                  to={profileData ? page.path : '#'}
+                  style={{
+                    textDecoration: 'none',
+                    color:
+                      !profileData && page.name === 'My Bookings'
+                        ? alpha(theme.palette.background.default, 0.5)
+                        : theme.palette.background.default,
+                    pointerEvents: !profileData && page.name === 'My Bookings' ? 'none' : 'auto',
+                  }}
+                >
                   {page.name}
                 </Link>
               </Button>
@@ -182,50 +197,64 @@ function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open menu">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  sx={{ width: '50px', height: '50px', border: `1px solid ${theme.palette.secondary.main}` }}
-                  alt={profileData?.avatar?.alt || 'User avatar'}
-                  src={profileData?.avatar?.url || ''}
-                />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '50px', padding: 4 }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem
-                sx={{
-                  borderBottom: 0.5,
-                  borderColor: theme.palette.secondary.main,
-                  pointerEvents: 'none',
-                  backgroundColor: theme.palette.background.paper,
-                }}
-              >
-                <Typography variant="h4" textAlign="center">
-                  {profileData?.name || 'Guest'}
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <Typography variant="h5" width="100%" display="flex" alignItems="center" justifyContent="space-between">
-                  Logout
-                  <ExitToAppIcon />
-                </Typography>
-              </MenuItem>
-            </Menu>
+            {profileData ? (
+              <>
+                <Tooltip title="Open menu">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      sx={{ width: '50px', height: '50px', border: `1px solid ${theme.palette.secondary.main}` }}
+                      alt={profileData?.avatar?.alt || 'User avatar'}
+                      src={profileData?.avatar?.url || ''}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '50px', padding: 4 }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem
+                    sx={{
+                      borderBottom: 0.5,
+                      borderColor: theme.palette.secondary.main,
+                      pointerEvents: 'none',
+                      backgroundColor: theme.palette.background.paper,
+                    }}
+                  >
+                    <Typography variant="h4" textAlign="center">
+                      {profileData?.name || 'Guest'}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <Typography
+                      variant="h5"
+                      width="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      Logout
+                      <ExitToAppIcon />
+                    </Typography>
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <DefaultButton>
+                <Button onClick={() => navigate('/auth')}>Login/ register</Button>
+              </DefaultButton>
+            )}
           </Box>
         </Toolbar>
       </Container>

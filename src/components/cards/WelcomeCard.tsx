@@ -1,6 +1,8 @@
 import Typography from '@mui/material/Typography';
-import { CardContent, Box, useTheme, alpha } from '@mui/material';
+import { CardContent, Box, useTheme, alpha, Button } from '@mui/material';
 import Card from '@mui/material/Card';
+import { Link } from 'react-router-dom';
+import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
 function WelcomeCard() {
   const theme = useTheme();
@@ -41,6 +43,13 @@ function WelcomeCard() {
           <Typography variant="h4" sx={{ color: theme.palette.background.paper }}>
             Your luxurious adventures are only few clicks away
           </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'right', marginTop: 8 }}>
+          <DefaultButton>
+            <Button component={Link} to="/">
+              Browse venues
+            </Button>
+          </DefaultButton>
         </Box>
       </CardContent>
     </Card>
