@@ -107,14 +107,7 @@ function App() {
                     </MainLayout>
                   }
                 />
-                <Route
-                  path="/about"
-                  element={
-                    <MainLayout>
-                      <AboutPage />
-                    </MainLayout>
-                  }
-                />
+                <Route path="/about" element={<AboutPage />} />
                 <Route
                   path="/user-overview"
                   element={

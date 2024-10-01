@@ -143,7 +143,7 @@ function Header() {
                 variant="h3"
                 fontSize={isVenueManager ? theme.typography.h5.fontSize : theme.typography.h4.fontSize}
                 noWrap
-                sx={{ mr: 2, display: { xs: 'flex', sm: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
+                sx={{ mr: 6, display: { xs: 'flex', sm: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
               >
                 HOLIDAZE
               </Typography>

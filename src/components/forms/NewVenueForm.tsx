@@ -114,6 +114,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="name"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -135,12 +136,13 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="description"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
                       fullWidth
                       multiline
-                      rows={4}
+                      rows={2}
                       placeholder="Description"
                       variant="standard"
                       {...field}
@@ -158,6 +160,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.country"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -179,6 +182,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.city"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -200,6 +204,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.zip"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -221,6 +226,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.address"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -242,6 +248,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="price"
                 control={control}
+                defaultValue={0}
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -252,6 +259,11 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
                       {...field}
                       error={!!errors.price}
                       helperText={errors.price?.message}
+                      value={field.value || ''}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
                     />
                   </DefaultInput>
                 )}
@@ -264,6 +276,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="maxGuests"
                 control={control}
+                defaultValue={0}
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -274,6 +287,11 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
                       {...field}
                       error={!!errors.maxGuests}
                       helperText={errors.maxGuests?.message}
+                      value={field.value || ''}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
                     />
                   </DefaultInput>
                 )}

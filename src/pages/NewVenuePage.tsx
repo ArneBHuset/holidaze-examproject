@@ -43,13 +43,13 @@ function NewVenuePage() {
     }
   };
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ p: 0 }}>
       <Grid container>
         <Grid size={12} my={2}>
           <MainCard>
             <CardContent sx={{ margin: 2 }}>
-              <Typography variant="h3" width="100%" textAlign="center">
-                POST A NEW VENUE!
+              <Typography variant="h4" width="100%" textAlign="center">
+                ADD A NEW VENUE
               </Typography>
             </CardContent>
           </MainCard>
