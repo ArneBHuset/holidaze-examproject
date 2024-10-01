@@ -100,8 +100,8 @@ function ImageDisplayCard({ venueMedia }: { venueMedia: MediaData[] }) {
           </Box>
         ) : (
           <ImageList variant="masonry" cols={1} gap={4}>
-            {displayedMedia.map((media) => (
-              <ImageListItem key={media.url}>
+            {displayedMedia.map((media, index) => (
+              <ImageListItem key={`${media.url}-${index}`}>
                 <img
                   src={media.url}
                   alt={media.alt || 'Venue image'}

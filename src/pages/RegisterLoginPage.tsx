@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid2';
 function RegisterLoginPage({ onLoginSuccess }: { onLoginSuccess: () => void }) {
   const [isRegistering, setIsRegistering] = useState(true);
   return (
-    <Container maxWidth={false}>
+    <Container maxWidth={false} sx={{ p: 1 }}>
       <Grid container spacing={1}>
         <Grid
           size={{ xs: 12, sm: !isRegistering ? 5 : 6 }}

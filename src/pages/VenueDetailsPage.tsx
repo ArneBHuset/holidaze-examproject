@@ -77,7 +77,7 @@ export default function VenueDetailsPage() {
   }
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ p: 0 }}>
       <Grid container spacing={1} mt={2} mb={8}>
         <Grid size={{ xs: 12, sm: 4 }} marginBottom={2}>
           <ImageDisplayCard venueMedia={venue.media ?? []} />

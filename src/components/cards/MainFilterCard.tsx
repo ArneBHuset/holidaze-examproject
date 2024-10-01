@@ -12,7 +12,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 
 /**
- * MainFilterCard component that handles search and sort functionalities.
+ * MainFilterCard component that handles search and sort functionalities using API query params and sort options.
  */
 function MainFilterCard({
   onSearch,
@@ -101,7 +101,7 @@ function MainFilterCard({
             <Box display="flex" alignItems="center" justifyContent="space-between" mt={1} paddingX={1}>
               <Typography variant="body1">{submittedSearchTerm}</Typography>
               <IconButton onClick={handleClearSearch} size="small">
-                <CloseIcon />
+                <CloseIcon sx={{ '&:hover': { color: theme.palette.primary.main } }} />
               </IconButton>
             </Box>
           )}

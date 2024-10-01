@@ -39,7 +39,7 @@ function WelcomeCard() {
             HOLIDAZE
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.background.paper }}>
-            Your luxurious adventures are only a few clicks aways
+            Your luxurious adventures are only few clicks away
           </Typography>
         </Box>
       </CardContent>

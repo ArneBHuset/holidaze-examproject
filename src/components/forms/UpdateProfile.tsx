@@ -35,6 +35,7 @@ function EditProfile({ onClose, currentProfile, onProfileUpdate }: EditProfilePr
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<EditProfileFormData>({
     resolver: yupResolver(editProfileValidationSchema),
     defaultValues: {
@@ -63,6 +64,9 @@ function EditProfile({ onClose, currentProfile, onProfileUpdate }: EditProfilePr
       },
     });
   }, [currentProfile, reset]);
+
+  const avatarUrl = watch('avatar.url');
+  const bannerUrl = watch('banner.url');
 
   const onSubmit = async (data: EditProfileFormData) => {
     const updatedFields: Partial<HostData> = {};
@@ -157,27 +161,29 @@ function EditProfile({ onClose, currentProfile, onProfileUpdate }: EditProfilePr
           />
         </Grid>
 
-        <Grid size={12}>
-          <SubTitle>Avatar description</SubTitle>
-          <Controller
-            name="avatar.alt"
-            control={control}
-            render={({ field }) => (
-              <DefaultInput>
-                <TextField
-                  fullWidth
-                  type="text"
-                  placeholder="Me at my 24th birthday..."
-                  variant="standard"
-                  {...field}
-                  error={!!errors.avatar?.alt}
-                  helperText={errors.avatar?.alt?.message}
-                  aria-label="Avatar description"
-                />
-              </DefaultInput>
-            )}
-          />
-        </Grid>
+        {avatarUrl && (
+          <Grid size={12}>
+            <SubTitle>Avatar description</SubTitle>
+            <Controller
+              name="avatar.alt"
+              control={control}
+              render={({ field }) => (
+                <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    placeholder="Me at my 24th birthday..."
+                    variant="standard"
+                    {...field}
+                    error={!!errors.avatar?.alt}
+                    helperText={errors.avatar?.alt?.message}
+                    aria-label="Avatar description"
+                  />
+                </DefaultInput>
+              )}
+            />
+          </Grid>
+        )}
 
         <Grid size={12}>
           <SubTitle>Banner picture</SubTitle>
@@ -201,27 +207,29 @@ function EditProfile({ onClose, currentProfile, onProfileUpdate }: EditProfilePr
           />
         </Grid>
 
-        <Grid size={12}>
-          <SubTitle>Banner description</SubTitle>
-          <Controller
-            name="banner.alt"
-            control={control}
-            render={({ field }) => (
-              <DefaultInput>
-                <TextField
-                  fullWidth
-                  type="text"
-                  placeholder="My favorite view..."
-                  variant="standard"
-                  {...field}
-                  error={!!errors.banner?.alt}
-                  helperText={errors.banner?.alt?.message}
-                  aria-label="Banner description"
-                />
-              </DefaultInput>
-            )}
-          />
-        </Grid>
+        {bannerUrl && (
+          <Grid size={12}>
+            <SubTitle>Banner description</SubTitle>
+            <Controller
+              name="banner.alt"
+              control={control}
+              render={({ field }) => (
+                <DefaultInput>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    placeholder="My favorite view..."
+                    variant="standard"
+                    {...field}
+                    error={!!errors.banner?.alt}
+                    helperText={errors.banner?.alt?.message}
+                    aria-label="Banner description"
+                  />
+                </DefaultInput>
+              )}
+            />
+          </Grid>
+        )}
         {errors.formError && (
           <Grid size={12}>
             <Typography variant="body1" color="error" display="flex" alignItems="center">

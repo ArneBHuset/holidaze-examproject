@@ -22,7 +22,7 @@ interface VenueFormProps {
   submitLabel?: string;
 }
 
-function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel = 'Save Changes' }: VenueFormProps) {
+function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel = 'Save' }: VenueFormProps) {
   const [imageUrl, setImageUrl] = useState<string>('');
   const [imageUrls, setImageUrls] = useState<{ url: string; alt: string }[]>(
     initialValues?.media?.map((item) => ({ url: item.url, alt: item.alt || '' })) || [],
@@ -340,7 +340,7 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
                   fullWidth
                   placeholder="Paste Image URL"
                   variant="standard"
-                  value={imageUrl} // Controlled by local state
+                  value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   onKeyDown={handleKeyDown}
                   onBlur={handleBlur}
@@ -391,14 +391,14 @@ function UpdateVenueForm({ initialValues = {}, onSubmit, onDelete, submitLabel =
             <Grid size={6}>
               <SecondaryButton>
                 <Button fullWidth onClick={onDelete} sx={{ gap: 1 }}>
-                  <DeleteOutlineIcon /> Delete
+                  Delete <DeleteOutlineIcon />
                 </Button>
               </SecondaryButton>
             </Grid>
             <Grid size={6}>
               <SecondaryButton>
                 <Button type="submit" fullWidth sx={{ gap: 1 }}>
-                  <SaveIcon /> {submitLabel}
+                  {submitLabel} <SaveIcon />
                 </Button>
               </SecondaryButton>
             </Grid>

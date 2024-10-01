@@ -9,7 +9,7 @@ const customTheme = (outerTheme: Theme) =>
           root: {
             backgroundColor: 'transparent',
             color: outerTheme.palette.primary.main,
-            padding: '8px 14px',
+            padding: '4px 12px',
             fontSize: '1.1rem',
             fontWeight: 300,
             lineHeight: 1.75,

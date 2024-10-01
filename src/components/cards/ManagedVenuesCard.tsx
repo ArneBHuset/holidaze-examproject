@@ -79,6 +79,16 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
     navigate(`/venue/${venue.id}`, { state: { venue } });
   };
 
+  const handleEditVenue = (venueId: string) => {
+    setIsEditing(venueId);
+    setIsViewingGuests(null);
+  };
+
+  const handleViewGuests = (venueId: string) => {
+    setIsViewingGuests(venueId);
+    setIsEditing(null);
+  };
+
   return (
     <Grid container spacing={1}>
       {venues.map((venue) => {
@@ -131,11 +141,12 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
               >
                 <Grid
                   container
-                  padding={0.5}
+                  padding={0}
                   spacing={1}
                   sx={{ height: '100%' }}
-                  mb={{ xs: 2, sm: 0 }}
                   display="flex"
+                  mb={{ xs: 0, sm: 0.5 }}
+                  px={{ xs: 0, sm: 0.5 }}
                   mx="auto"
                   justifyContent="center"
                 >
@@ -215,7 +226,7 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
                   <Grid
                     size={12}
                     sx={{
-                      display: { xs: 'none', sm: 'flex' },
+                      display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'flex-end',
                       alignItems: 'stretch',
@@ -258,13 +269,13 @@ export default function MainVenueCard({ venues, refreshVenues }: MainVenueCardPr
               }}
             >
               <SecondaryButton>
-                <Button onClick={() => setIsEditing(venue.id)} sx={{ width: '50%' }}>
+                <Button onClick={() => handleEditVenue(venue.id)} sx={{ width: '50%' }}>
                   <EditIcon />
                   Edit
                 </Button>
               </SecondaryButton>
               <SecondaryButton>
-                <Button onClick={() => setIsViewingGuests(venue.id)} sx={{ width: '50%' }}>
+                <Button onClick={() => handleViewGuests(venue.id)} sx={{ width: '50%' }}>
                   See guests
                   <PersonIcon />
                 </Button>

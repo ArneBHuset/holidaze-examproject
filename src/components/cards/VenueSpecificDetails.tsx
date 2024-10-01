@@ -126,6 +126,9 @@ function VenueSpecificDetails({ venue }: VenueSpecificDetailsProps) {
             </Grid>
           </Grid>
           <Grid size={{ xs: 12, sm: 12 }} sx={{ marginTop: 2 }}>
+            <Box mb={2}>
+              <DefaultSubTitle>Availability</DefaultSubTitle>
+            </Box>
             <Calendar events={bookingEvents || []} />
           </Grid>
           <Grid size={{ xs: 12, sm: 12 }}>

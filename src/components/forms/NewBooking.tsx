@@ -25,6 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import DefaultInput from '../../styles/mui-styles/components/inputs.tsx';
 import { snackBarSuccess } from '../../services/snackbar/SnackBarSuccess.tsx';
 import { ApiError } from '../../services/interfaces/error/catchError.ts';
+import SecondaryButton from '../../styles/mui-styles/components/SecondaryBtn.tsx';
 
 dayjs.extend(isBetween);
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
@@ -97,15 +98,15 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
       role="dialog"
       aria-labelledby="booking-form-title"
     >
-      <Box sx={{ width: 'auto' }} role="presentation" display="flex" justifyContent="center" padding={4}>
+      <Box sx={{ width: 'auto' }} role="presentation" display="flex" justifyContent="center" padding={4} mb={14}>
         <FormControl component="form" onSubmit={handleSubmit(onSubmit)} aria-labelledby="booking-form-title">
           <Grid container spacing={3} maxWidth="sm" justifyContent="center">
             <Grid size={12} textAlign="center">
-              <DefaultSubTitle>Place booking</DefaultSubTitle>
+              <Typography variant="h4">PLACE BOOKING</Typography>
             </Grid>
             <Grid size={6}>
               <Box mb={1}>
-                <DefaultSubTitle>Check-in</DefaultSubTitle>
+                <DefaultSubTitle>Checkin</DefaultSubTitle>
               </Box>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller
@@ -136,16 +137,11 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
                     />
                   )}
                 />
-                {errors.checkInDate && (
-                  <Typography id="check-in-error" color="error" variant="caption">
-                    {errors.checkInDate.message}
-                  </Typography>
-                )}
               </LocalizationProvider>
             </Grid>
             <Grid size={6}>
               <Box mb={1}>
-                <DefaultSubTitle>Check-out</DefaultSubTitle>
+                <DefaultSubTitle>Checkout</DefaultSubTitle>
               </Box>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller
@@ -174,11 +170,6 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
                     />
                   )}
                 />
-                {errors.checkOutDate && (
-                  <Typography id="check-out-error" color="error" variant="caption">
-                    {errors.checkOutDate.message}
-                  </Typography>
-                )}
               </LocalizationProvider>
             </Grid>
             <Grid size={6}>
@@ -197,37 +188,39 @@ function BookVenueDrawer({ open, toggleDrawer, venue }: DrawerComponentProps) {
                       variant="standard"
                       error={!!errors.guests}
                       helperText={errors.guests ? errors.guests.message : ''}
+                      value={field.value || ''}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
                     />
                   )}
                 />
-                {errors.guests && (
-                  <Typography id="guests-error" color="error" variant="caption">
-                    {errors.guests.message}
-                  </Typography>
-                )}
               </DefaultInput>
             </Grid>
             <Grid size={6}>
-              <DefaultSubTitle>Max guests</DefaultSubTitle>
+              <DefaultSubTitle>Max</DefaultSubTitle>
               <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 2 }}>
                 <Person4Icon sx={{ color: 'secondary.main', fontSize: 28 }} />
                 {venue.maxGuests}
               </Typography>
             </Grid>
-            <Grid size={success ? 8 : 12}>
-              <DefaultButton>
-                <Button fullWidth onClick={handleSubmit(onSubmit)} aria-label="Book venue">
-                  BOOK
-                </Button>
-              </DefaultButton>
-            </Grid>
-            {success && (
-              <Grid size={4}>
+            {!success && (
+              <Grid size={12}>
                 <DefaultButton>
+                  <Button fullWidth onClick={handleSubmit(onSubmit)} aria-label="Book venue">
+                    BOOK
+                  </Button>
+                </DefaultButton>
+              </Grid>
+            )}
+            {success && (
+              <Grid size={12}>
+                <SecondaryButton>
                   <Button fullWidth onClick={handleViewBookings} aria-label="View your bookings">
                     VIEW BOOKINGS
                   </Button>
-                </DefaultButton>
+                </SecondaryButton>
               </Grid>
             )}
           </Grid>

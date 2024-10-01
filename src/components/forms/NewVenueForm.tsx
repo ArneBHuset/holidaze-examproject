@@ -90,7 +90,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
       description: data.description || '',
       price: data.price || 0,
       maxGuests: data.maxGuests || 1,
-      media: imageUrls, // Use the imageUrls state for media
+      media: imageUrls,
       rating: data.rating || 0,
       meta: {
         wifi: data.meta?.wifi || false,
@@ -107,13 +107,13 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
     <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
       <FormControl component="form" onSubmit={handleSubmit(onFormSubmit)}>
         <Grid container spacing={4} maxWidth="sm">
-          {/* Venue Name */}
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Venue name</SubTitle>
               <Controller
                 name="name"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -135,12 +135,13 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="description"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
                       fullWidth
                       multiline
-                      rows={4}
+                      rows={2}
                       placeholder="Description"
                       variant="standard"
                       {...field}
@@ -158,6 +159,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.country"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -179,6 +181,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.city"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -200,6 +203,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.zip"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -221,6 +225,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="location.address"
                 control={control}
+                defaultValue=""
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -242,6 +247,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="price"
                 control={control}
+                defaultValue={0}
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -252,6 +258,11 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
                       {...field}
                       error={!!errors.price}
                       helperText={errors.price?.message}
+                      value={field.value || ''}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
                     />
                   </DefaultInput>
                 )}
@@ -264,6 +275,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
               <Controller
                 name="maxGuests"
                 control={control}
+                defaultValue={0}
                 render={({ field }) => (
                   <DefaultInput>
                     <TextField
@@ -274,6 +286,11 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
                       {...field}
                       error={!!errors.maxGuests}
                       helperText={errors.maxGuests?.message}
+                      value={field.value || ''}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
                     />
                   </DefaultInput>
                 )}

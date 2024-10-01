@@ -107,7 +107,7 @@ function Login({
           <Grid size={{ xs: 6 }}>
             <SecondaryButton>
               <Button onClick={() => setIsRegistering(false)} fullWidth={true}>
-                Register ?
+                Register
               </Button>
             </SecondaryButton>
           </Grid>

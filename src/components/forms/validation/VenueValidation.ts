@@ -10,7 +10,7 @@ export const venueValidationSchema = yup.object().shape({
   }),
   description: yup.string().required('Description is required'),
   price: yup.number().min(0, 'Price must be a positive number').required('Price is required'),
-  maxGuests: yup.number().min(1, 'At least 1 guest is required').required('Max guests is required'),
+  maxGuests: yup.number().min(1, 'At least 1 guest is required').required('Min 1 guests is required'),
   rating: yup.number().min(0).max(5).nullable(),
   media: yup
     .array()

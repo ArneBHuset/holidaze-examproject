@@ -143,7 +143,7 @@ function Header() {
                 variant="h3"
                 fontSize={isVenueManager ? theme.typography.h5.fontSize : theme.typography.h4.fontSize}
                 noWrap
-                sx={{ mr: 2, display: { xs: 'flex', sm: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
+                sx={{ mr: 6, display: { xs: 'flex', sm: 'none' }, flexGrow: 1, color: theme.palette.secondary.main }}
               >
                 HOLIDAZE
               </Typography>
@@ -166,6 +166,7 @@ function Header() {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
+                  fontFamily: theme.typography.h5,
                   color: theme.palette.background.default,
                   display: 'block',
                   '&:hover': {
@@ -181,10 +182,10 @@ function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Open menu">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
-                  sx={{ width: '50px', height: '50px' }}
+                  sx={{ width: '50px', height: '50px', border: `1px solid ${theme.palette.secondary.main}` }}
                   alt={profileData?.avatar?.alt || 'User avatar'}
                   src={profileData?.avatar?.url || ''}
                 />
@@ -219,7 +220,7 @@ function Header() {
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleLogout}>
-                <Typography width="100%" display="flex" alignItems="center" justifyContent="space-between">
+                <Typography variant="h5" width="100%" display="flex" alignItems="center" justifyContent="space-between">
                   Logout
                   <ExitToAppIcon />
                 </Typography>

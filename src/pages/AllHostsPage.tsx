@@ -12,6 +12,7 @@ import MainVenueCard from '../components/cards/mainVenueCard.tsx';
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import theme from '../styles/mui-styles/MuiThemes.ts';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -71,19 +72,16 @@ function AllHostsPage() {
     fetchHostVenues();
   }, [name]);
 
-  if (loading) {
-    return <LinearProgress color="secondary" />;
-  }
-
   return (
     <Container maxWidth="md">
-      <Grid container spacing={0.5} marginTop={2}>
+      <Grid container spacing={0.5}>
         <Grid
           size={{ xs: 12, sm: 5 }}
           sx={{
             maxWidth: { xs: '100%', sm: '500px' },
             position: isSmallScreen ? 'static' : 'sticky',
             top: isSmallScreen ? 'auto' : '20px',
+            marginTop: { xs: 0, sm: 5 },
             alignSelf: 'flex-start',
           }}
         >
@@ -92,14 +90,18 @@ function AllHostsPage() {
           </MainCard>
         </Grid>
         <Grid size={{ xs: 12, sm: 7 }}>
+          <Typography variant="h4" mt={{ xs: 2, sm: 0 }} mb={1} textAlign={{ xs: 'center', sm: 'left' }}>
+            VENUES MANAGED BY HOST
+          </Typography>
+          {loading ? <LinearProgress color="secondary" /> : null}
           {venues.length > 0 ? (
             venues.map((venue) => (
-              <Grid key={venue.id} size={12}>
+              <Grid key={venue.id} size={12} mb={1}>
                 <MainVenueCard venues={[venue]} />
               </Grid>
             ))
           ) : (
-            <p>No venues found for this host.</p>
+            <Typography variant="h3">No venues managed by this host</Typography>
           )}
         </Grid>
       </Grid>

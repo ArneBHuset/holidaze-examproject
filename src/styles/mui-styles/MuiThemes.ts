@@ -82,7 +82,7 @@ const theme = createTheme({
     },
     subtitle1: {
       fontFamily: '"Cinzel-regular", "Lora", "Arial", sans-serif',
-      fontSize: '1.5rem',
+      fontSize: '1.35rem',
       fontWeight: 400,
       lineHeight: 1.6,
       letterSpacing: '0.07em',

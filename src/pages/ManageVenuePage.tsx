@@ -9,6 +9,7 @@ import { snackBarError } from '../services/snackbar/SnackBarError.tsx';
 import VenueData from '../services/interfaces/api/venueResponse.ts';
 import { getValidatedHeader } from '../services/api/variables/headers.ts';
 import theme from '../styles/mui-styles/MuiThemes.ts';
+import Typography from '@mui/material/Typography';
 
 const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
@@ -23,7 +24,7 @@ function ManageVenuePage() {
   const headers = getValidatedHeader();
 
   const fetchManagedVenues = async () => {
-    setLoading(true); // Show loading when fetching venues
+    setLoading(true);
     try {
       const response = await baseApiCall({
         url: `${profileEndpoint}${name}/venues?_owner=true&_bookings=true`,
@@ -40,7 +41,7 @@ function ManageVenuePage() {
       console.error('Error fetching managed venues:', error);
       snackBarError('Error fetching managed venues. Please try again later.');
     } finally {
-      setLoading(false); // Hide loading once the fetch is complete
+      setLoading(false);
     }
   };
 
@@ -54,22 +55,26 @@ function ManageVenuePage() {
   }, [name]);
 
   return (
-    <Container maxWidth="md">
-      <Grid container spacing={0.5} marginTop={2}>
+    <Container maxWidth="md" sx={{ p: 0 }}>
+      <Grid container spacing={0.5}>
         <Grid
           size={{ xs: 12, sm: 5 }}
           sx={{
             maxWidth: { xs: '100%', sm: '500px' },
             position: isSmallScreen ? 'static' : 'sticky',
             top: isSmallScreen ? 'auto' : '20px',
+            marginTop: { xs: 0, sm: 5 },
             alignSelf: 'flex-start',
           }}
         >
           <UserProfileCard />
         </Grid>
         <Grid size={{ xs: 12, sm: 7 }}>
+          <Typography variant="h4" mt={{ xs: 2, sm: 0 }} mb={1} textAlign={{ xs: 'center', sm: 'left' }}>
+            YOUR VENUES
+          </Typography>
           {loading ? <LinearProgress color="secondary" /> : null}
-          <ManagedVenuesCard venues={venues} refreshVenues={fetchManagedVenues} /> {/* Pass the refresh function */}
+          <ManagedVenuesCard venues={venues} refreshVenues={fetchManagedVenues} />
         </Grid>
       </Grid>
     </Container>

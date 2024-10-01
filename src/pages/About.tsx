@@ -1,24 +1,61 @@
-import { Container } from '@mui/material';
-import MainCard from '../layout/MainCard.tsx';
+import { alpha, Card, Container } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
+import Header from '../components/header/Header.tsx';
+import Footer from '../components/footer/Footer.tsx';
+import theme from '../styles/mui-styles/MuiThemes.ts';
 
 function AboutPage() {
   return (
-    <Container maxWidth="sm" sx={{ my: 2 }}>
-      <MainCard>
-        <CardContent>
-          <Grid container>
-            <Grid size={12}>
-              <Typography component="h1" variant="h5" textAlign="center">
-                WELCOME TO HOLIDAZE
-              </Typography>
+    <>
+      <Header />
+      <Container
+        maxWidth={false}
+        sx={{
+          backgroundImage: `url('https://www.villaretreats.com/Images/static-hero/hero-romantic-retreats.jpg')`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center',
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Card
+          sx={{
+            width: '45%',
+            ml: 65,
+            mb: 20,
+            backgroundColor: alpha(theme.palette.primary.light, 0.8),
+          }}
+        >
+          <CardContent>
+            <Grid container spacing={2} sx={{ color: theme.palette.background.paper }} py={1}>
+              <Grid size={12} textAlign="left">
+                <Typography variant="h3" sx={{ color: theme.palette.secondary.main }}>
+                  WE ARE HOLIDAZE
+                </Typography>
+              </Grid>
+              <Grid size={12}>
+                <Typography variant="body1" textAlign="left" mb={2}>
+                  We strive to be your go-to platform for booking luxurious venues and villas worldwide. Whether you're
+                  planning a romantic getaway, family vacation, or a special event, we offer a curated selection of
+                  stunning properties to suit your needs.
+                </Typography>
+                <Typography variant="body1" textAlign="left">
+                  Holidaze makes finding the perfect luxury stay simple. Let us help you create unforgettable
+                  experiences in the world's most beautiful locations. Your dream venue is just a click away!
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
-      </MainCard>
-    </Container>
+          </CardContent>
+        </Card>
+      </Container>
+      <Footer />
+    </>
   );
 }
 
