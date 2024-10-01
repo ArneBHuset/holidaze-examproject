@@ -20,6 +20,16 @@ interface MainVenueCardProps {
   venues: VenueData[];
 }
 
+/**
+ * MainVenueCard component renders a list of venue cards, displaying key details such as the name, price,
+ * location, maximum guests, and rating of each venue. It also provides a link to navigate to the venue's
+ * details page.
+ *
+ * @param {Object} props - The component's props.
+ * @param {VenueData[]} props.venues - An array of venue objects to be displayed in the card format.
+ *
+ * @returns {JSX.Element} A grid of venue cards
+ */
 export default function MainVenueCard({ venues }: MainVenueCardProps) {
   const navigate = useNavigate();
 
@@ -56,7 +66,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                 }}
                 sx={{
                   width: { xs: '100%', sm: 200 },
-                  height: { xs: 200, sm: '200px' },
+                  height: { xs: 200, sm: '205px' },
                   maxHeight: { xs: 200, sm: 260 },
                   borderRadius: { xs: '4px', sm: '6px' },
                 }}
@@ -86,7 +96,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
 
                 <Grid size={{ xs: 6, sm: 12 }}>
                   <Typography
-                    variant="h6"
+                    variant="h5"
                     sx={{
                       pl: { xs: 6, sm: 0 },
                       textAlign: { xs: 'center', sm: 'left' },
@@ -95,13 +105,13 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                       gap: 1,
                     }}
                   >
-                    <EuroIcon sx={{ fontFamily: theme.typography.h6, mb: 0.2 }} />
+                    <EuroIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
                     {venue.price} / DAY
                   </Typography>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12 }}>
-                  <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     {venue.location?.city && venue.location?.country ? (
                       <a
                         href={
@@ -122,7 +132,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                         <PlaceIcon
                           sx={{
                             color: theme.palette.primary.light,
-                            fontFamily: theme.typography.h6,
+                            fontFamily: theme.typography.h5,
                             transition: 'transform 0.2s ease-in-out',
                             '&:hover': { transform: 'scale(1.2)' },
                           }}
@@ -136,16 +146,16 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 3 }} display="flex" alignItems="center">
                   <Typography
-                    variant="h6"
-                    sx={{ pl: { xs: 6, sm: 0 }, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 0.5 }}
+                    variant="h5"
+                    sx={{ pl: { xs: 5.5, sm: 0 }, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 0.5 }}
                   >
-                    <PersonIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
+                    <PersonIcon sx={{ fontFamily: theme.typography.h4, mb: 0.2 }} />
                     {venue.maxGuests}
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 9 }} display="flex" alignItems="center" gap={0.5}>
-                  <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center gap', gap: 0.5 }}>
-                    <GradeIcon sx={{ fontFamily: theme.typography.h5, mb: 0.2 }} />
+                  <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center ', gap: 0.5 }}>
+                    <GradeIcon sx={{ fontFamily: theme.typography.h4, pb: 0.3 }} />
                     {venue.rating || 0}
                   </Typography>
                 </Grid>
@@ -201,7 +211,7 @@ export default function MainVenueCard({ venues }: MainVenueCardProps) {
                     gap: 4,
                   }}
                 >
-                  See more!
+                  See more
                   <ArrowForwardIosIcon />
                 </Button>
               </DefaultButton>
