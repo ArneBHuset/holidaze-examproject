@@ -90,7 +90,7 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
       description: data.description || '',
       price: data.price || 0,
       maxGuests: data.maxGuests || 1,
-      media: imageUrls, // Use the imageUrls state for media
+      media: imageUrls,
       rating: data.rating || 0,
       meta: {
         wifi: data.meta?.wifi || false,
@@ -107,7 +107,6 @@ function NewVenueForm({ initialValues = {}, onSubmit, submitLabel = 'Post venue'
     <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
       <FormControl component="form" onSubmit={handleSubmit(onFormSubmit)}>
         <Grid container spacing={4} maxWidth="sm">
-          {/* Venue Name */}
           <Grid size={{ xs: 12 }}>
             <Box>
               <SubTitle>Venue name</SubTitle>

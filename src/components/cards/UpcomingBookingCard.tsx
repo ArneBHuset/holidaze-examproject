@@ -22,7 +22,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 interface UpcomingBookingCardProps {
   bookings: BookingData[];
-  onBookingUpdate: () => void; // Add this prop
+  onBookingUpdate: () => void;
 }
 /**
  * UpcomingBookingCard component that renders a list of upcoming and past venue bookings.

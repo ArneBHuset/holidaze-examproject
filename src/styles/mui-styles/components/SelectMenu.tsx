@@ -64,7 +64,7 @@ const customSelectTheme = (outerTheme: Theme) =>
               borderLeft: `1px solid var(--Select-brandBorderColor)`,
               content: '""',
               position: 'absolute',
-              height: '100%', // Ensure it covers the entire height
+              height: '100%',
               bottom: 0,
               left: 0,
             },
