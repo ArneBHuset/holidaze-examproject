@@ -139,7 +139,11 @@ VITE_NOROFF_API_KEY='your key'
 5. Start the development server
 
 ```bash
-  npm run dev
+  npm run build
+```
+
+```bash
+  npm run host
 ```
 
 
