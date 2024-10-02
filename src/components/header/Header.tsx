@@ -15,7 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { alpha, useTheme } from '@mui/material';
 import { useUser } from '../../services/utilities/UserTypeContext.tsx';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import DefaultButton from '../../styles/mui-styles/components/defaultBtn.tsx';
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -249,9 +248,22 @@ function Header() {
                 </Menu>
               </>
             ) : (
-              <DefaultButton>
-                <Button onClick={() => navigate('/auth')}>Login / register</Button>
-              </DefaultButton>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate('/auth')}
+                sx={{
+                  color: theme.palette.primary.main,
+                  display: 'block',
+                  py: { xs: 0.5, sm: 1 },
+                  px: 1,
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  },
+                }}
+              >
+                Login
+              </Button>
             )}
           </Box>
         </Toolbar>
